@@ -6,6 +6,8 @@ AssertQuest is a free, self-hostable platform for practicing automation testing
 difficulty tiers, and a learning platform (`th-web`) with a challenge board,
 leaderboard, and community features.
 
+![SwiftCargo login page](docs/images/login.png)
+
 ## Repo layout
 
 This is an npm workspaces monorepo:
