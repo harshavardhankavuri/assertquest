@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-dropdown-survives-navigation",
+  "module": "notifications",
+  "title": "Dropdown Survives Navigation",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 26,
+  "description": "The notification bell sits in NavShell's header, rendered once and shared across every route — but does its unread state actually stay accurate as a user clicks around the app, or does it silently go stale on one page and forget to refresh on the next?",
+  "successCondition": "With an unread notification present, navigating between at least three different routes (e.g. /, /tracking, /billing) without ever reloading the browser keeps the bell's unread count badge correctly showing the same accurate count on every page (verified by re-reading the badge after each navigation), and marking one notification read on one page is reflected in the badge count immediately after navigating to a different page, without a manual refresh.",
+  "hints": [
+    "NavShell wraps every authenticated route with the same NotificationBell instance — its polling interval keeps running across client-side route changes, it doesn't reset per page.",
+    "Mark the notification read while the dropdown happens to be open on one route, then close it, navigate away, and check the badge on the new route rather than reopening the dropdown there."
+  ]
+}

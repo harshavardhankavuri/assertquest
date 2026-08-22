@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-quiet-goodbye",
+  "module": "auth",
+  "title": "Quiet Goodbye",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Logging out should retire the session's boarding pass without touching the crew member's actual account record. Prove the blast radius of a logout stops exactly at the one refresh token.",
+  "successCondition": "Log in to get a th_refresh cookie, then call POST /api/auth/logout with it. Afterward, POST /api/auth/refresh with that same cookie returns 401. Querying the DB via `npm run db:psql`: the corresponding refresh_tokens row now has a non-null revoked_at, while the users row for that account is completely unchanged (same passwordHash, same createdAt, same role) — logout only ever writes to refresh_tokens.",
+  "hints": [
+    "POST /api/auth/logout isn't documented in docs/api/auth.md but is implemented in apps/api/src/modules/auth/routes.ts — it reads the th_refresh cookie the same way /refresh does.",
+    "logout() (apps/api/src/modules/auth/service.ts) uses updateMany scoped to revokedAt: null, and silently no-ops if the token is already gone or already revoked — it never throws."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-quota-exceeded",
+  "module": "admin",
+  "title": "Quota Exceeded",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A partner's CSV import contains a large batch with a deliberate mix of valid rows, rows missing required columns, and rows with an unknown customer email — simulating a real-world messy export from a legacy system. Confirm the import handles a sizeable, heterogeneous batch correctly end to end.",
+  "successCondition": "POST /api/admin/shipments/import as admin with a 10-data-row CSV: 6 fully valid rows referencing existing customer accounts, 2 rows missing one required column each, and 2 rows with a customerEmail that was never registered. The response is 200 with totalRows 10, accepted 6, rejected 4. Every rejected row's status is \"rejected\" with a non-empty errors array, and every accepted row's status is \"accepted\" with a shipmentId. GET /api/tracking as an admin (or per-customer) afterward confirms exactly 6 new shipments exist that weren't there before the import.",
+  "hints": [
+    "row numbers in the response are 1-indexed counting the header as row 1, so your first data row is reported as row 2 — use that to match each result back to the row you wrote.",
+    "Register the customer accounts you intend to reference before building the CSV, and deliberately leave the other two emails unregistered."
+  ]
+}

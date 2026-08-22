@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-full-manifest-audit",
+  "module": "auth",
+  "title": "Full Manifest Audit",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A dockside audit doesn't take the crew roster's word for it — it counts heads against the ship's log. Register one fresh account per role and reconcile the API's story against the database's.",
+  "successCondition": "Register 4 new accounts, one per role (admin, dispatcher, driver, customer), each with a unique email. Each POST /api/auth/register returns 201 with the correct role echoed back. Querying users via `npm run db:psql` (select role, count(*) from users where email in (<the 4 new emails>) group by role;) shows exactly 1 row per role for the new emails, and a fifth registration attempt reusing any of the 4 emails with a DIFFERENT role still returns 409 — the email uniqueness constraint doesn't care that the role changed.",
+  "hints": [
+    "role is validated against the Role enum in the request schema (apps/api/src/modules/auth/schema.ts) before it ever reaches Postgres.",
+    "Give each account a distinct, throwaway email like audit-admin-<random>@swiftcargo.test so you don't collide with seeded demo accounts."
+  ]
+}

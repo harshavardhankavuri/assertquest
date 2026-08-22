@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-role-manifest",
+  "module": "auth",
+  "title": "Role Manifest",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Every crew member needs a berth assignment before boarding — SwiftCargo's register form offers exactly four. Confirm the role dropdown lists all of them, no more, no fewer.",
+  "successCondition": "On /register, the \"Role\" select element contains exactly four <option> elements with values admin, dispatcher, driver, customer (case-sensitive, matching the ROLES constant) — verified by reading the select's options collection, not just visually.",
+  "hints": [
+    "The select is labelled \"Role\" via FormField's htmlFor/id pairing — use a label-based locator.",
+    "Order isn't part of the contract, only membership — assert on the set of values, not their position."
+  ]
+}

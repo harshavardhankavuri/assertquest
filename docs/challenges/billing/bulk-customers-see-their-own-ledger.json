@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-customers-see-their-own-ledger",
+  "module": "billing",
+  "title": "Customers See Their Own Ledger",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "One customer's invoices are their own business — not another customer's, and not something a driver should be able to browse. The Billing page's row visibility has to match SwiftCargo's ownership rules exactly.",
+  "successCondition": "With two distinct customer accounts each having booked and invoiced at least one shipment, logging in as customer A's /billing page shows only customer A's shipment/invoice rows (customer B's shipment id never appears), logging in as customer B shows the mirror image, and logging in as admin (or dispatcher) shows both customers' rows together on the same page.",
+  "hints": [
+    "Register two fresh customer accounts via /register if the seeded data doesn't already give you two distinct customers with invoices.",
+    "Check by shipment id presence/absence in the DOM, not by row count alone — a count-only check could pass even if the wrong rows leaked through."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-live-summary-updates",
+  "module": "booking",
+  "title": "Live Summary Updates",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "A summary that only shows up at the last step isn't much of a summary. Confirm the Booking Summary sidebar updates immediately after each step, not just once you reach Confirm.",
+  "successCondition": "After completing the Origin & Destination step and clicking Next, the sidebar's Origin and Destination fields immediately show the selected labels while still on the Package Details step (before Pricing or Confirm are reached); after completing Package Details, the sidebar's Package field immediately shows the weight/dimensions summary while still on the Pricing step.",
+  "hints": [
+    "Check the sidebar's content right after each Next click, before advancing further — don't wait until Confirm to look.",
+    "The Package summary format is \"<weight>kg · <length>×<width>×<height>cm\" — match the exact separator characters if your assertion is text-based."
+  ]
+}

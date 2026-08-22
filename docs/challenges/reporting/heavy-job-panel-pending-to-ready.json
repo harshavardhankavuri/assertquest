@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-job-panel-pending-to-ready",
+  "module": "reporting",
+  "title": "Job Panel: Pending to Ready",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "FR-1303's scheduled report is genuinely asynchronous — the panel has to show an honest pending state first, then flip to ready only once the CSV is actually generated, never faking an instant download link.",
+  "successCondition": "Clicking \"Generate CSV report\" immediately renders a role=\"status\" region showing a Badge with warning tone and text \"pending\", with no \"Download CSV\" link present yet; after the background job completes (poll interval 1s, queue delay ~500ms), the same region updates in place to a Badge with success tone and text \"ready\", and only at that point does a \"Download CSV\" link appear.",
+  "hints": [
+    "Check for the absence of the download link during the pending phase specifically — a bug that renders the link immediately but disabled would still be wrong per this challenge's success condition.",
+    "ReportJobPanel polls every 1 second (POLL_MS) — don't assert \"ready\" before giving it at least one full poll cycle past the queue delay."
+  ]
+}

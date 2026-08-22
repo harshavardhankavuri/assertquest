@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-loading-dock",
+  "module": "fleet",
+  "title": "Loading Dock",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 15,
+  "description": "A dispatcher drags a shipment card onto a vehicle's column on the scheduling board to assign it. Assign a shipment to a vehicle and driver for a time slot, then confirm it shows up correctly.",
+  "successCondition": "PUT /api/fleet/assignments/:shipmentId with a valid vehicleId, driverId, scheduledStart, and scheduledEnd returns 200, and the same assignment (matching vehicleId and driverId) appears in GET /api/fleet/assignments.",
+  "hints": [
+    "GET /api/fleet/vehicles and GET /api/fleet/drivers list the valid ids to assign.",
+    "This endpoint requires a dispatcher or admin session — customer/driver tokens get 403."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-full-retry-journey-ui",
+  "module": "billing",
+  "title": "Full Retry Journey",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "Walk one invoice through its entire life at the counter: generated, declined, retried and timed out, retried again and paid, then the receipt downloaded — every UI state along the way has to be correct, not just the final one.",
+  "successCondition": "A test books a shipment, generates an invoice in EUR, confirms the initial Badge reads \"open\"; pays with the declined card and confirms the Badge stays \"open\" and one attempt line appears; retries with the timeout card and confirms the Badge still reads \"open\" and a second attempt line appears; retries a third time with an ordinary card and confirms the Badge flips to \"paid\", the payment form disappears, and a third attempt line reading \"succeeded\" appears; finally clicks \"Download PDF\" and confirms a request to GET /api/billing/invoices/:id/pdf returns Content-Type application/pdf.",
+  "hints": [
+    "This is one continuous invoice, not three separate ones — don't regenerate between attempts.",
+    "Check the Badge state after every single attempt, not just at the end — an intermediate implementation bug (e.g. flipping to paid on a declined attempt) would otherwise slip through."
+  ]
+}

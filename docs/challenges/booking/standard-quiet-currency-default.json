@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-quiet-currency-default",
+  "module": "booking",
+  "title": "Quiet Currency Default",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "SwiftCargo prices every shipment in USD unless told otherwise, and a shipment's own currency column should say so on the record — not leave it implicit.",
+  "successCondition": "POST /api/booking with a request body that has no currency field at all (only origin/destination/package). The 201 response's shipment.currency is \"USD\". Querying the shipments table via `npm run db:psql` for that row confirms the currency column literally stores 'USD', not NULL or an empty string.",
+  "hints": [
+    "Shipment.currency defaults to \"USD\" at the Prisma schema level (prisma/schema.prisma) — POST /api/booking's request shape (docs/api/booking.md) doesn't even expose a currency field to set otherwise.",
+    "This is a genuine default, not just a display fallback — verify the raw column value in the database, not only the API response."
+  ]
+}

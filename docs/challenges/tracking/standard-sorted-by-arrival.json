@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-sorted-by-arrival",
+  "module": "tracking",
+  "title": "Sorted By Arrival",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "The tracking table's default sort claims to show the newest shipments first — prove that ordering actually reflects when each row was inserted into the database, not some arbitrary or unstable order.",
+  "successCondition": "Book 3 shipments in sequence a few seconds apart (A, then B, then C). GET /api/tracking with default sort (createdAt desc) returns them in the exact order C, B, A. Querying the shipments table directly via `npm run db:psql` with `select id, created_at from shipments where id in ('<A>','<B>','<C>') order by created_at desc` confirms the same C, B, A order independently at the database level, matching the API's claimed default sort.",
+  "hints": [
+    "Default sort is createdAt desc per docs/api/tracking.md — pause a second or two between the three bookings so their timestamps are unambiguously ordered.",
+    "Comparing the API's order against a raw SQL ORDER BY on the same column is the point here — it rules out the API silently sorting on something else (like id) that happens to usually agree."
+  ]
+}

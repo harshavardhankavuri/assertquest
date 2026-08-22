@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-documents-pile-up",
+  "module": "booking",
+  "title": "Documents Pile Up",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "Customs paperwork for one shipment is rarely a single file. Confirm the Confirm step's document uploader accumulates a growing list rather than replacing the previous file each time.",
+  "successCondition": "After a booking is confirmed, uploading a PDF and then a JPG through the customs document uploader results in a list showing exactly two entries — one per uploaded file, each with its own correct filename and mimeType — with the first upload's entry still present after the second upload completes, not overwritten.",
+  "hints": [
+    "The upload input's value is cleared after each selection (e.target.value = \"\"), which is what allows selecting a same-named file again without the browser silently no-op'ing — but the list itself is additive state, check that separately.",
+    "Any combination of application/pdf, image/jpeg, or image/png works for this — the file content itself doesn't need to be a real document."
+  ]
+}

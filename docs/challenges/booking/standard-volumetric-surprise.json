@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-volumetric-surprise",
+  "module": "booking",
+  "title": "Volumetric Surprise",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A featherweight but oversized crate — foam packing peanuts padding out a huge box — should still be billed by its volume, not its low actual weight. Confirm the pricing engine charges for whichever is bigger.",
+  "successCondition": "POST /api/booking/quote with a package where weightKg is small (e.g. 2) but lengthCm/widthCm/heightCm are large enough that (lengthCm*widthCm*heightCm)/5000 exceeds weightKg (e.g. 100x100x100) returns 200 with chargeableWeightKg equal to the computed volumetricWeightKg, not weightKg, and weightFeeCents equal to round(chargeableWeightKg * 120).",
+  "hints": [
+    "The volumetric divisor is 5000 and the per-kg rate is 120 cents — both documented in docs/api/booking.md.",
+    "Pick dimensions where the volumetric calculation clearly and unambiguously exceeds the actual weight, so there's no rounding ambiguity about which value wins."
+  ]
+}

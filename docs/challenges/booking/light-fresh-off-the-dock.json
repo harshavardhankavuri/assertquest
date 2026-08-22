@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-fresh-off-the-dock",
+  "module": "booking",
+  "title": "Fresh Off The Dock",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A brand-new shipment hasn't gone anywhere or hit any snags yet — the ledger should reflect that plainly the instant it's created.",
+  "successCondition": "POST /api/booking to create a shipment. The 201 response doesn't surface status/approved directly, so confirm via `npm run db:psql`: the new shipments row has status = 'booked' and approved = true, both without your request ever mentioning either field.",
+  "hints": [
+    "ShipmentStatus defaults to \"booked\" and approved defaults to true at the Prisma schema level (prisma/schema.prisma) — POST /api/booking's body never accepts either field.",
+    "select status, approved from shipments where id = '<id>'; is enough to check both defaults at once."
+  ]
+}

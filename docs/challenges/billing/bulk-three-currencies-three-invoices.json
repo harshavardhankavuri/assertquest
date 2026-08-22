@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-three-currencies-three-invoices",
+  "module": "billing",
+  "title": "Three Currencies, Three Invoices",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "The same shipment priced three different ways for three different customers' books — prove the fixed exchange-rate math lands exactly where the constants say it should, in every currency SwiftCargo supports.",
+  "successCondition": "Book three identical-package shipments (same weight/dimensions/route, so the same USD priceCents) and create one invoice per shipment with currency EUR, GBP, and INR respectively. For each, compute the expected amountCents yourself using the fixed rates in apps/api/src/modules/billing/currency.ts applied to the shipment's priceCents, and confirm it matches the invoice.amountCents returned by the API exactly (integer cents, no rounding drift). Querying invoices via `npm run db:psql` for the three new rows confirms currency and amount_cents match your hand-computed values exactly, and each row's shipment_id is unique (one invoice per shipment, never shared).",
+  "hints": [
+    "Use identical origin/destination/package on all three bookings so the underlying USD priceCents is the same baseline for your manual conversion math.",
+    "apps/api/src/modules/billing/currency.ts's rates are fixed constants, not live FX — round the same way the service does (check the file) to avoid an off-by-one-cent false failure."
+  ]
+}

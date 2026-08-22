@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-exact-time-window",
+  "module": "fleet",
+  "title": "Exact Time Window",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A dispatcher who books a driver for 08:00-10:00 expects the schedule to say exactly that later — not 07:59, not an hour off because of a timezone slip somewhere in the pipeline.",
+  "successCondition": "PUT /api/fleet/assignments/:shipmentId with scheduledStart \"2026-09-01T08:00:00.000Z\" and scheduledEnd \"2026-09-01T10:00:00.000Z\". Querying the assignments table via `npm run db:psql` for that row confirms scheduled_start and scheduled_end, when converted back to ISO 8601 UTC, exactly equal the two values submitted — no rounding, truncation, or timezone offset was introduced between the request and the stored DateTime.",
+  "hints": [
+    "Postgres timestamps in this schema are timezone-aware (DateTime in Prisma) — always compare in UTC to avoid a false failure from your psql client's local session timezone display.",
+    "select scheduled_start at time zone 'UTC', scheduled_end at time zone 'UTC' from assignments where id = '<id>'; keeps the comparison unambiguous."
+  ]
+}

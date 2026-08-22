@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-first-currency-wins",
+  "module": "billing",
+  "title": "First Currency Wins",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "The idempotent invoice-creation endpoint is supposed to hand back the SAME invoice on a repeat call — prove it doesn't quietly reprice or recreate the ledger entry just because the second call asked for a different currency.",
+  "successCondition": "POST /api/billing/shipments/:shipmentId/invoice with { \"currency\": \"EUR\" } (201, note the returned id and amountCents). POST the exact same endpoint again for the same shipmentId with { \"currency\": \"GBP\" } instead — it still returns 200/201 with the SAME invoice id, currency still \"EUR\", and the same amountCents as the first call; the second call's requested currency is ignored entirely. Querying invoices via `npm run db:psql` (select count(*) from invoices where shipment_id = '<id>') confirms exactly 1 row exists — the DB-level shipmentId unique constraint on invoices backs this up.",
+  "hints": [
+    "docs/api/billing.md notes invoice creation is idempotent — calling it again \"returns the existing invoice instead of erroring\"; verify it also ignores the new currency rather than silently updating the existing row.",
+    "Invoice.shipmentId carries @unique in prisma/schema.prisma — even a direct duplicate insert attempt would violate that constraint at the DB level."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-paper-copy",
+  "module": "billing",
+  "title": "Paper Copy",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "Finance wants a real PDF they can archive, not a JSON blob renamed with a .pdf extension. Confirm the export endpoint returns an actual, well-formed PDF with correct headers, and that it's gated by the same ownership rules as everything else in billing.",
+  "successCondition": "Create an invoice as Customer A. GET /api/billing/invoices/:id/pdf as Customer A returns 200 with Content-Type application/pdf, a Content-Disposition header containing the invoice id, and a body whose first bytes are the literal ASCII string \"%PDF-\". The same request made as Customer B (a different customer account) returns 403 FORBIDDEN instead of a PDF.",
+  "hints": [
+    "Read the raw response body as bytes/buffer, not as parsed JSON, or you won't be able to check the %PDF- magic number correctly.",
+    "The Content-Disposition filename pattern is documented in the route as invoice-<id>.pdf — check it contains the id, not necessarily an exact string match."
+  ]
+}

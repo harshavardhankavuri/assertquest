@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-reshuffled-registration",
+  "module": "auth",
+  "title": "Reshuffled Registration",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Chaos doesn't stop at the login page — the register form deserves the same locator-resilience workout. Combine several Practice mode toggles at once and prove a full registration still completes cleanly.",
+  "successCondition": "With Practice mode's \"Dynamic ids\", \"Slow network\", and \"Layout shift\" toggles all switched on together, a test completes a full registration on /register — filling email, password, and selecting a role by label/name rather than hardcoded id, submitting, and confirming the resulting session lands on the dashboard — and the same script re-run after toggling all three off and back on still passes (ids differ between runs, an extra ~1.5-3.5s latency is tolerated, and a layout-shifting banner doesn't cause a mis-click).",
+  "hints": [
+    "Combine presets instead of hand-picking: the Practice mode drawer's \"Intermediate\" preset is close, but this challenge specifically wants dynamicIds + slowNetwork + layoutShift together, so toggle them individually.",
+    "Prefer role/label-based locators throughout, and give the submit action a generous timeout rather than a fixed short wait — three chaos toggles are stacked here."
+  ]
+}

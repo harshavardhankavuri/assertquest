@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-reading-the-pdf-changes-nothing",
+  "module": "billing",
+  "title": "Reading The PDF Changes Nothing",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "Printing a copy of an invoice for the customer's records shouldn't leave a mark on the original ledger entry.",
+  "successCondition": "Create an invoice, record its status/amountCents/currency/createdAt from GET /api/billing/invoices/:id, then call GET /api/billing/invoices/:id/pdf three times in a row (each returns 200 with Content-Type application/pdf and a body starting with the %PDF- magic number). Re-fetch GET /api/billing/invoices/:id afterward and confirm every field is byte-identical to before — also confirm via `npm run db:psql` that the invoices row's updated nothing (status/amount_cents/currency/created_at unchanged, and no new payments rows were created).",
+  "hints": [
+    "PDF generation is a pure read — it derives the document from the existing Invoice row and never calls prisma.invoice.update or prisma.payment.create.",
+    "Compare the full JSON of both GET /api/billing/invoices/:id responses rather than eyeballing individual fields, so nothing subtle slips by."
+  ]
+}

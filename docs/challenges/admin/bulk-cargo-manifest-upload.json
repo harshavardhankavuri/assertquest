@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-cargo-manifest-upload",
+  "module": "admin",
+  "title": "Cargo Manifest Upload",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A logistics partner sends a CSV of shipments to bulk-import. Some rows are well-formed, some reference a customer that doesn't exist, and some have garbage numeric fields. Prove the import validates and reports on every row independently rather than accepting or rejecting the whole file.",
+  "successCondition": "POST /api/admin/shipments/import with a CSV containing one fully valid row, one row with an unknown customerEmail, and one row with a non-numeric weightKg returns 200 with totalRows 3, accepted 1, rejected 2, and a rows array where each rejected row lists a human-readable reason. GET /api/tracking afterward shows exactly one new shipment was actually created — the rejected rows were never persisted.",
+  "hints": [
+    "Required CSV columns are documented in docs/api/admin.md — the file is uploaded as multipart/form-data with a field named \"file\".",
+    "Origin/destination labels can legitimately contain commas (e.g. \"Port of Los Angeles, CA, USA\") — a correct test CSV quotes those fields."
+  ]
+}

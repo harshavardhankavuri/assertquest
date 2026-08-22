@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-midnight-in-rotterdam",
+  "module": "reporting",
+  "title": "Midnight in Rotterdam",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A shipment created near midnight UTC can land on a different calendar day (or even a different month) depending on which timezone the report is viewed in. Prove the day-bucketing is timezone-aware, not hardcoded to UTC.",
+  "successCondition": "Set a shipment's createdAt directly in the database to 2026-01-01T23:30:00.000Z (a value chosen to sit right at a day boundary in some timezones but not others). GET /api/reporting/summary?groupBy=day&timeZone=UTC buckets it under period \"2026-01-01\", while the same query with timeZone=Pacific/Kiritimati (UTC+14) buckets it under \"2026-01-02\" — the same shipment, two different day buckets, purely from the timezone parameter.",
+  "hints": [
+    "This one needs direct DB access to set up a deterministic fixture — `npm run db:psql` (see docs/self-host.md) or any Postgres client works against the local dev database.",
+    "timeZone accepts any IANA zone name — Node's Intl API resolves it, no timezone database setup required on your end."
+  ]
+}

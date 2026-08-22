@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-survives-the-reload",
+  "module": "auth",
+  "title": "Survives the Reload",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 35,
+  "description": "The access token lives only in memory, gone the instant the tab reloads — but the voyage shouldn't end there. Confirm the silent-refresh-on-mount flow actually restores a full session, nav and all, without asking the passenger to sign in again.",
+  "successCondition": "After logging in and reloading the browser tab, a test observes a brief \"Loading…\" state, then the dashboard renders with the same user's nav items and sidebar footer email as before the reload — no redirect to /login occurs. This is repeated across all four roles, and additionally verified that reloading while on a deep route (e.g. /billing, as a customer) lands back on /billing after the silent refresh, not bounced to /.",
+  "hints": [
+    "This relies on AuthContext's refresh() call on mount reading the httpOnly th_refresh cookie — it only works if the cookie is actually present, so don't clear cookies between login and reload.",
+    "The loading state is brief but real — an assertion that fires before it resolves could see a false-negative flash of /login."
+  ]
+}

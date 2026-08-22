@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-all-channels",
+  "module": "notifications",
+  "title": "All Channels",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Not every event uses the same channels — booking a shipment only sends an email, but a shipment being delivered sends both an email and an SMS. Map out which events produce which channels rather than assuming they're all the same.",
+  "successCondition": "After booking a shipment, the outbox contains exactly one new message for that customer: an \"email\". After advancing that same shipment through tracking until its status becomes \"delivered\", the outbox additionally contains both a new \"email\" and a new \"sms\" message for that customer — booking never produces an sms, only delivery does.",
+  "hints": [
+    "POST /api/tracking/:id/advance (dispatcher/admin) can be called repeatedly to walk a shipment to \"delivered\" without waiting for the real-time feed.",
+    "Filter the outbox by channel as well as recipient to avoid conflating the booking email with the delivery email."
+  ]
+}

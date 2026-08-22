@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-no-double-invoice",
+  "module": "billing",
+  "title": "No Double Invoice",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 30,
+  "description": "A dispatcher's itchy trigger finger shouldn't be able to conjure two invoices for one shipment. The button disables mid-request — but a fast double-click still deserves a real test, not just an assumption it's safe.",
+  "successCondition": "Rapidly double-clicking \"Generate Invoice\" on a shipment with no existing invoice results in exactly one invoice existing for that shipment afterward — verified via GET /api/billing/invoices filtered to that shipmentId returning a single record — and the UI ends up showing exactly one invoice row, not a duplicated or flickering one.",
+  "hints": [
+    "The button sets disabled={busy} on click, but the true safety net is server-side idempotency (POST /api/billing/shipments/:id/invoice returns the existing invoice on a repeat call) — this challenge is proving both layers hold up together.",
+    "A programmatic double-dispatch of the click event (rather than two separate slow manual clicks) is the more reliable way to catch a race."
+  ]
+}

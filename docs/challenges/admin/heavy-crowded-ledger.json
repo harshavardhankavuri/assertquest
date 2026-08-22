@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-crowded-ledger",
+  "module": "admin",
+  "title": "Crowded Ledger",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 30,
+  "description": "The audit log is capped at its 100 most recent entries and lives in a scrollable panel, not a paginated one. Generate enough activity to fill it and prove every entry is still reachable — just below the fold, not lost.",
+  "successCondition": "After generating at least 30 distinct auth.login events (looping login/logout across the seeded accounts, or via repeated POST /api/auth/login calls), the Audit log card on /admin renders inside a scrollable container (max-h-64 overflow-y-auto) — a test scrolls that container to its bottom and confirms the oldest of the generated entries is present in the DOM (not virtualized away), and scrolling back to the top surfaces the newest entry again.",
+  "hints": [
+    "You don't need 100 real entries — enough to overflow the fixed-height container (roughly a dozen rows) is enough to prove the scroll mechanics work.",
+    "Scroll the specific card's inner container by its class, not the whole page — the outer page doesn't scroll for this element."
+  ]
+}

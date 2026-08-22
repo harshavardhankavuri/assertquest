@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-nothing-to-report",
+  "module": "reporting",
+  "title": "Nothing to Report",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A dispatcher runs the summary report over a date window with no shipments in it, like a slow holiday week. The chart should render zero everything, not error out.",
+  "successCondition": "GET /api/reporting/summary as a dispatcher, with a from/to window set far in the past where no shipments exist (e.g. year 2000), returns 200 with buckets equal to an empty array [], totalShipments 0, and totalRevenueCents 0.",
+  "hints": [
+    "This is a clean, valid 200 response with empty/zero fields — not a 404 or validation error.",
+    "Pick a date range you're confident predates any seeded or test-created shipment data in your environment."
+  ]
+}

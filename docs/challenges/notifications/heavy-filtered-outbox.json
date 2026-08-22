@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-filtered-outbox",
+  "module": "notifications",
+  "title": "Filtered Outbox",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "An admin investigating a support ticket needs to pull up exactly one customer's message history, not wade through everyone else's. Confirm the outbox's recipient filter is exact, not a fuzzy or partial match.",
+  "successCondition": "Trigger notify-worthy actions (e.g. bookings) for two customers with clearly distinct emails. After waiting past the queue delay, GET /api/notifications/outbox?to=<customerA's exact email> as admin returns only messages where every entry's to field equals that exact email — none belonging to customer B. GET /api/notifications/outbox with no to param at all returns messages for both customers.",
+  "hints": [
+    "The filter is a plain Prisma where: { to } equality match — there's no partial/substring matching, so a query with a truncated or differently-cased email should return zero matches for that customer's messages, worth trying as a follow-up.",
+    "Give the two customers emails that don't share a common substring, so a passing test can't be accidentally explained by a fuzzy match you didn't intend to allow."
+  ]
+}

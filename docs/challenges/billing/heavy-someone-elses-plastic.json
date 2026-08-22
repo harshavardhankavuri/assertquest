@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-someone-elses-plastic",
+  "module": "billing",
+  "title": "Someone Else's Plastic",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A customer shouldn't be able to pay down a stranger's invoice, even with a perfectly valid-looking card number. Confirm the ownership check on the pay endpoint is as strict as the one on invoice lookups.",
+  "successCondition": "Customer A books a shipment and creates an invoice. Customer B (a distinct account) calls POST /api/billing/invoices/:id/pay against Customer A's invoice id with a well-formed card number and receives 403 with error.code FORBIDDEN — no Payment row is created, confirmed via GET /api/billing/invoices/:id/payments as Customer A or an admin afterward (0 payments).",
+  "hints": [
+    "The ownership check (findOwnedInvoice) runs before any gateway interaction, so this should fail fast without touching payment logic at all.",
+    "Use the admin or Customer A's own token to check the payments list afterward — Customer B has no access to view it either."
+  ]
+}

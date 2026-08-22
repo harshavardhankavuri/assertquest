@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-role-based-dashboard-differences",
+  "module": "tracking",
+  "title": "Role-Based Dashboard Differences",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Four roles, one dashboard, four different experiences — a customer sees a narrow slice with no controls to move freight, while dispatch sees everything with full control. Map out exactly what each role gets on /tracking in one pass.",
+  "successCondition": "Logging in as each of the four roles and inspecting /tracking confirms: customer sees only their own shipments (row count matches their own bookings, never another customer's shipment id) and no Actions column; driver sees the full fleet-wide list like dispatch does but also no Actions column (drivers can view, not advance); dispatcher and admin both see every shipment across all customers AND an Actions column with a working Advance button. CSV export is available and functional (downloads a non-empty CSV matching the visible filter) for all four roles, each scoped to what that role is allowed to see.",
+  "hints": [
+    "This requires at least two distinct customer accounts with their own shipments to meaningfully prove the customer-scoping half of the check.",
+    "The CSV export shares the same ownership scoping as the table listing — a customer's export should never contain another customer's shipment id, same as the on-screen table."
+  ]
+}

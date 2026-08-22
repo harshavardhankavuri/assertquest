@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-createdat-survives-reassignment",
+  "module": "fleet",
+  "title": "CreatedAt Survives Reassignment",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Dragging a shipment's card to a new slot updates the assignment, but it shouldn't rewrite history — the record of when this shipment was FIRST put on the board ought to stay put.",
+  "successCondition": "PUT /api/fleet/assignments/:shipmentId to create an assignment. Query the assignments table via `npm run db:psql` and record its created_at. Wait a couple seconds, then PUT the same shipmentId again with a different vehicleId/driverId/time window. Re-query the same row (same assignment id) and confirm created_at is byte-identical to the first reading — the upsert changed vehicle_id/driver_id/scheduled_start/scheduled_end but never touched created_at.",
+  "hints": [
+    "Prisma's upsert only sets createdAt on the create branch — the update branch (docs/api/fleet.md's PUT semantics) never includes it in its data payload.",
+    "select created_at from assignments where shipment_id = '<id>'; before and after the second PUT is the whole check."
+  ]
+}

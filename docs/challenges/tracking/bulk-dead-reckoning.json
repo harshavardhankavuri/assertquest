@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-dead-reckoning",
+  "module": "tracking",
+  "title": "Dead Reckoning",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 40,
+  "description": "Live tracking is only useful if the dashboard notices when its WebSocket connection drops and reconnects on its own, instead of silently going stale (FR-804). Enable connection flakiness on the tracking module and confirm the dashboard surfaces the drop and recovers.",
+  "successCondition": "With FLAKE_FAILURE_RATE_TRACKING set high enough to force a drop, the tracking dashboard UI visibly indicates a disconnected/reconnecting state (not just a silent console error) and, once reconnected, resumes receiving live shipment updates without requiring a manual page reload.",
+  "hints": [
+    "FLAKE_FAILURE_RATE_TRACKING is an environment variable on the API — see docs/self-host.md for how flakiness injection works.",
+    "The reconnect indicator should be an actual visible UI element (banner/toast/status text), per the project's rule that flaky states must never be console-only."
+  ]
+}

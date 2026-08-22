@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-expired-papers",
+  "module": "auth",
+  "title": "Expired Papers",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A driver's boarding papers (access token) have expired mid-shift. Call a protected route with an expired or malformed token and confirm SwiftCargo rejects it cleanly instead of leaking a stack trace.",
+  "successCondition": "GET /api/auth/me with an expired or invalid Authorization header returns 401 with body { error: { code: \"TOKEN_EXPIRED\" | \"UNAUTHORIZED\", message } }.",
+  "hints": [
+    "You can mint an already-expired token by setting ACCESS_TOKEN_TTL_SECONDS very low before logging in, or simply tamper with a valid token's signature.",
+    "Look at core/errors.ts in the api app for the exact error shape to assert against."
+  ]
+}

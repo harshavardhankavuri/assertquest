@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-sort-by-price",
+  "module": "tracking",
+  "title": "Sort by Price",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher wants to find the most expensive shipments at a glance by clicking the price column header. Confirm the sort parameter actually reorders by priceCents, ascending and descending both.",
+  "successCondition": "Book three shipments with clearly different priceCents (vary package weight or distance so the prices differ meaningfully). GET /api/tracking?sort=priceCents&order=asc returns items where, restricted to your three known shipments, priceCents values appear in non-decreasing order. GET /api/tracking?sort=priceCents&order=desc returns them in non-increasing order.",
+  "hints": [
+    "Use POST /api/booking/quote first to preview prices for a few candidate packages so you can deliberately pick three that land at clearly different price points.",
+    "If the account can see other pre-existing shipments too, filter your comparison to just your three known shipment ids rather than asserting the entire array is sorted (unless you're confident the whole dataset is clean)."
+  ]
+}

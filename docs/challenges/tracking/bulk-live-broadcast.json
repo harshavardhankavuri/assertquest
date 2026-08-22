@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-live-broadcast",
+  "module": "tracking",
+  "title": "Live Broadcast",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "The whole point of the tracking WebSocket is that a connected customer sees their shipment move without refreshing the page. Prove a real end-to-end round trip: open a socket, trigger an advance through the REST API, and watch the update arrive over the wire.",
+  "successCondition": "As a customer, book a shipment and open a WebSocket connection to /api/tracking/ws?token=<their accessToken>, confirming the initial { \"type\": \"connected\" } message. As a dispatcher/admin (a separate REST call), POST /api/tracking/:id/advance for that customer's shipment. Within a few seconds, the customer's open WebSocket receives a message with type \"tracking-update\" whose shipment.id matches the advanced shipment and whose shipment.status/currentPosition reflects the new state returned by the advance call.",
+  "hints": [
+    "Keep the WebSocket connection open in one execution context while making the advance REST call from another — this is inherently a two-actor, two-channel test.",
+    "Compare the WebSocket message's shipment object field-by-field against the advance endpoint's own HTTP response body — they should describe the identical post-advance state."
+  ]
+}

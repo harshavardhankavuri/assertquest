@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-map-dot-count-matches-page",
+  "module": "tracking",
+  "title": "Map Dot Count Matches Page",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "The mocked-GPS map above the table only plots the shipments currently on screen, not the whole fleet — its own accessible label needs to say exactly that number, and the rendered dots need to match it precisely.",
+  "successCondition": "With more shipments in the system than fit on one page, the TrackingMap's <svg role=\"img\"> aria-label reads \"Map showing the live position of N shipment(s)\" where N exactly equals the number of shipment rows currently rendered in the table below it (not the grand total), and the count of rendered position <circle> elements inside the map (excluding the smaller origin/destination dot markers) equals that same N — re-verified after changing pages, where both N and the dot count should update together.",
+  "hints": [
+    "Each shipment renders three circles (origin, destination, current position) — distinguish the moving \"current position\" dot (radius 3, pulsing) from the two static endpoint markers (radius 2) when counting.",
+    "Changing the page changes which shipments prop is passed to TrackingMap — the map has no independent data source of its own."
+  ]
+}

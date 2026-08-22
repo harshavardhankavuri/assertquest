@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-two-ways-to-fail",
+  "module": "reporting",
+  "title": "Two Ways to Fail",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "The same bad timezone name is rejected two different ways depending on which endpoint you ask — one loudly, one quietly. A dispatcher relying on the async job endpoint to behave like the synchronous one is in for a surprise.",
+  "successCondition": "Send the same invalid IANA timeZone (e.g. \"Mars/Olympus_Mons\") to both endpoints with an otherwise-identical query: GET /api/reporting/summary returns a 500 with error.code \"INTERNAL_ERROR\" (the Intl failure is uncaught at that layer), while POST /api/reporting/jobs instead returns 202 and the job is accepted — polling GET /api/reporting/jobs/:id afterward shows status transition to \"failed\" with a non-null failureReason, never \"ready\". Document that the two endpoints do not fail the same way for identical bad input.",
+  "hints": [
+    "The async path wraps report generation in a try/catch that writes status \"failed\" (see apps/api/src/modules/reporting/service.ts) — the sync /summary path has no equivalent guard.",
+    "Give the background job a moment to run before polling GET /jobs/:id — it starts as \"pending\" and only flips to \"failed\" once the queued work actually executes."
+  ]
+}

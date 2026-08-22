@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-pdf-download-click",
+  "module": "billing",
+  "title": "PDF Download Click",
+  "difficulty": "standard",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 20,
+  "description": "FR-1001's PDF export is only useful if the actual button in the browser fires it correctly — an authenticated fetch, a real PDF blob, and a download, not a dead link.",
+  "successCondition": "Clicking \"Download PDF\" on a generated invoice triggers a fetch to GET /api/billing/invoices/:id/pdf with the current bearer token, the response's Content-Type is application/pdf, and the resulting blob is used to programmatically click a generated <a download> link (observable via the download attribute name \"invoice-<id>.pdf\" set just before the click, or by intercepting the blob URL creation) — the click must not simply open a static href.",
+  "hints": [
+    "This isn't a real <a href> link sitting in the DOM waiting to be clicked — it's a button that fetches, builds a blob URL, and synthesizes the click itself, so a network-level assertion is more reliable than a static href check.",
+    "The button is only visible once an invoice has been generated for that shipment."
+  ]
+}

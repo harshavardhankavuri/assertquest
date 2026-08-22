@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-already-aboard",
+  "module": "auth",
+  "title": "Already Aboard",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "There's no reason to show a logged-in passenger the boarding gate again. Confirm PublicOnlyRoute actually redirects a signed-in user away from /login and /register instead of re-rendering the forms.",
+  "successCondition": "While logged in, navigating directly to /login and separately to /register both redirect (client-side, via Navigate) to / (the dashboard) rather than rendering the login/register form — verified by checking the resulting URL and that dashboard content, not a form, is what's on screen after navigation settles.",
+  "hints": [
+    "A direct browser navigation (not just clicking an in-app link) is the more faithful test, since it exercises the route guard fresh.",
+    "There's a brief \"Loading…\" state while auth resolves on mount — wait for it to clear before asserting on the final URL."
+  ]
+}

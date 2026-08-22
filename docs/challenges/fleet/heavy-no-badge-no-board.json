@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-no-badge-no-board",
+  "module": "fleet",
+  "title": "No Badge, No Board",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "The nav hides the \"Fleet & scheduling\" link from customers and drivers — but a hidden link isn't the same as a locked door. Check whether typing the URL directly still lets the wrong badge onto the dispatch floor.",
+  "successCondition": "Logged in as a customer or driver account, directly navigating the browser to /fleet is checked against what actually renders — document precisely whether the FleetBoard page content (or an error/redirect) appears, since FleetPage itself contains no client-side role check beyond requiring some accessToken to be present. Whatever the actual behavior is, record it exactly (renders full board / renders but data calls fail with visible errors / redirects) rather than assuming the nav's hiding of the link is sufficient protection.",
+  "hints": [
+    "Compare this to /admin, which also has no route-level role guard beyond ProtectedRoute — the real enforcement for both pages happens at the API layer (403 responses), not in the route itself.",
+    "If the page renders but every data-fetching call 403s, note what the resulting UI actually looks like — an unhandled or confusing error state is itself worth flagging even if data access is correctly blocked."
+  ]
+}

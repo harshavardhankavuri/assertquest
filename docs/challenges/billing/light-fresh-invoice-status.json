@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-fresh-invoice-status",
+  "module": "billing",
+  "title": "Fresh Invoice Status",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A newly cut invoice hasn't been paid yet — the ledger should say so plainly the moment it's created, before any payment attempt has even happened.",
+  "successCondition": "Book a shipment, then POST /api/billing/shipments/:shipmentId/invoice with no payment attempted yet. The 201 response's invoice.status is \"open\". Querying the invoices table via `npm run db:psql` for that row confirms status = 'open' and that no row exists yet in payments for that invoice_id (select count(*) from payments where invoice_id = '<id>' returns 0).",
+  "hints": [
+    "InvoiceStatus defaults to \"open\" at the Prisma schema level (prisma/schema.prisma) — nothing sets it to \"paid\" until a successful payment does.",
+    "You'll need to book a shipment first via POST /api/booking to have a shipmentId to invoice."
+  ]
+}

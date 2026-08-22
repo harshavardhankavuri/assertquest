@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-double-booked",
+  "module": "fleet",
+  "title": "Double Booked",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 25,
+  "description": "The API deliberately allows a dispatcher to schedule the same driver for two overlapping shipments — real dispatch boards let mistakes happen. Prove the conflict-detection endpoint catches it anyway.",
+  "successCondition": "Create two assignments for the same driverId (different shipments/vehicles) with overlapping scheduledStart/scheduledEnd windows. GET /api/fleet/conflicts then includes an entry with resourceType \"driver\", resourceId equal to that driver's id, and assignmentIds containing both assignment ids.",
+  "hints": [
+    "PUT /api/fleet/assignments/:shipmentId does not reject overlapping schedules — that's intentional, see docs/api/fleet.md.",
+    "\"Overlapping\" means the two time windows intersect at all, not that they're identical."
+  ]
+}

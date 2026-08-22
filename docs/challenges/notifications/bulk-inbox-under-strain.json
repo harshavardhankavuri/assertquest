@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-inbox-under-strain",
+  "module": "notifications",
+  "title": "Inbox Under Strain",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "With the flake simulation dialed up on this module, confirm the notification center's reads stay consistent — a flaky GET should never return a corrupted or partial notifications list, and mark-as-read operations should never silently lose an update.",
+  "successCondition": "With FLAKE_LATENCY_MS_NOTIFICATIONS and FLAKE_FAILURE_RATE_NOTIFICATIONS set to nonzero values, book at least 3 shipments as one customer to generate notifications, then repeatedly (at least 5 times) call GET /api/notifications and POST /api/notifications/read-all. Every call either returns its normal successful shape (200 with a well-formed notifications array / marked count) or fails with 503 { error: { code: \"INTERNAL_ERROR\" } }, never a malformed body. After all retries, a final successful GET /api/notifications shows unreadCount 0 and every notification read true, confirming no read-all call's effect was lost even though some attempts may have 503'd.",
+  "hints": [
+    "Because the flake hook runs before the handler, a 503'd read-all call has no effect at all — keep retrying read-all until you get a 200, rather than assuming a single attempt is enough under nonzero failure rates.",
+    "Set the env vars before starting the API server, since this is server-side configuration, not something a request payload can control."
+  ]
+}

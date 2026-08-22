@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-full-voyage",
+  "module": "auth",
+  "title": "Full Voyage",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 40,
+  "description": "Trace one crew member's entire session lifecycle end to end: register, use the access token, refresh it, use the new one, and finally log out — confirming every handoff is clean and nothing from an earlier stage leaks into a later one.",
+  "successCondition": "Register a new account (201, capture accessToken v1 and the th_refresh cookie). GET /api/auth/me with accessToken v1 returns 200 with matching user data. POST /api/auth/refresh with the cookie returns 200 with a new accessToken v2 and a new th_refresh cookie value (different from v1's cookie). GET /api/auth/me with accessToken v2 returns 200. POST /api/auth/logout with the newest cookie returns 204. A final POST /api/auth/refresh reusing that now-logged-out cookie returns 401.",
+  "hints": [
+    "accessToken v1 doesn't need to be invalidated by the refresh call — access tokens are stateless JWTs valid until they expire on their own; only the refresh token is rotated/revoked.",
+    "Capture the Set-Cookie header value explicitly after each call rather than relying on a client's automatic cookie jar, so you can prove the cookie value actually changed between steps."
+  ]
+}

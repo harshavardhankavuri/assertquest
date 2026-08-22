@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-payments-belong-to-their-invoice",
+  "module": "billing",
+  "title": "Payments Belong To Their Invoice",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "With several invoices and several retried payments scattered across them, prove the payments-history endpoint — and the foreign key backing it — never lets one invoice's attempts leak into another's list.",
+  "successCondition": "Create three invoices for three different shipments. Against invoice A, make 2 payment attempts (decline then succeed); against invoice B, make 1 attempt (succeed); leave invoice C with zero attempts. GET /api/billing/invoices/:id/payments for A returns exactly 2 payments, for B exactly 1, for C an empty array. Querying payments via `npm run db:psql` with `select invoice_id, count(*) from payments where invoice_id in ('<A>','<B>','<C>') group by invoice_id` confirms the exact same counts at the database level — no payment row's invoice_id points anywhere other than the invoice it was actually attempted against.",
+  "hints": [
+    "Payment.invoiceId carries a foreign key to Invoice with onDelete Cascade in prisma/schema.prisma — it's a hard relation, not just an application-level convention.",
+    "Keep a scratch note of which invoice id is A/B/C as you create them — it's easy to mix them up once you're three shipments deep."
+  ]
+}

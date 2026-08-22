@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-bad-timezone",
+  "module": "reporting",
+  "title": "Bad Timezone",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher fat-fingers the timezone selector into something that isn't a real IANA name. The schema itself doesn't catch this — it's checked later, when the bucketing logic tries to actually use it.",
+  "successCondition": "GET /api/reporting/summary as a dispatcher with timeZone set to a non-existent zone name (e.g. \"Mars/Olympus_Mons\") does not return a 200 with silently-wrong data — it either returns a 400/500 error response with a structured error.code, or (if the API instead falls back to a default) a follow-up request confirms the response's behavior is documented and deliberate, not silently corrupted.",
+  "hints": [
+    "docs/api/reporting.md notes timezone validity is deferred to Intl itself and \"caught in the service layer\" — read apps/api/src/modules/reporting/bucketing.ts to see exactly what happens when Intl.DateTimeFormat is given a bad zone name, and assert on that actual behavior rather than assuming.",
+    "Compare against a request with a valid but unusual IANA name (e.g. \"Pacific/Kiritimati\") to confirm the failure is specific to invalid names, not timezones generally."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-page-zero",
+  "module": "tracking",
+  "title": "Page Zero",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "Pages are counted starting from 1 in the tracking table, not 0 — a client that assumes zero-indexing should get a clear rejection, not a confusing empty or duplicated first page.",
+  "successCondition": "GET /api/tracking?page=0 as a logged-in user returns 400 with error.code VALIDATION_ERROR. GET /api/tracking?page=1 (the minimum, and also the default) returns 200 successfully.",
+  "hints": [
+    "page is validated with a minimum of 1 — 0 fails schema validation before any query runs.",
+    "Also try a negative page number as a related boundary check if you have time — it should fail the same way."
+  ]
+}

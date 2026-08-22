@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-forged-flag",
+  "module": "admin",
+  "title": "Forged Flag",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A tester wonders whether the flags endpoint might quietly trust a client-supplied override, like a query string or body field, instead of only reading server-side environment configuration. Prove it can't be steered.",
+  "successCondition": "GET /api/admin/feature-flags?priorityLane=true and GET /api/admin/feature-flags with a JSON body { \"priorityLane\": true } both return 200 with flags.priorityLane identical to a plain GET /api/admin/feature-flags with no extra input — proving the query string and body are ignored entirely and only the server's env var configuration is consulted.",
+  "hints": [
+    "Fastify GET handlers don't parse a request body by default for routing purposes, so sending one shouldn't change the outcome at all.",
+    "Run a baseline GET with no extras first so you have something concrete to diff the other two responses against."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-same-truck-twice",
+  "module": "fleet",
+  "title": "Same Truck Twice",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A vehicle conflict is detected the same way a driver conflict is — two assignments sharing a vehicle with overlapping windows — but it needs to be reported as its own distinct resourceType, not lumped in with driver conflicts.",
+  "successCondition": "Book two shipments. Assign both to the same vehicleId with two different driverIds and overlapping time windows. GET /api/fleet/conflicts returns a conflicts array containing an entry with resourceType exactly \"vehicle\" (not \"driver\"), resourceId equal to the shared vehicleId, and assignmentIds containing both assignment ids — and no driver-type conflict entry, since the two drivers are different.",
+  "hints": [
+    "Fetch two distinct driverIds from GET /api/fleet/drivers so the driver dimension is deliberately NOT shared, isolating the vehicle conflict as the only overlap.",
+    "A single pair of overlapping assignments can produce up to two conflict entries (one per shared resource) — here you're confirming exactly one (vehicle), not two."
+  ]
+}

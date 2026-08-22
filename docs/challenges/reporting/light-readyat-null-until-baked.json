@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-readyat-null-until-baked",
+  "module": "reporting",
+  "title": "ReadyAt, Null Until Baked",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "The moment a report actually finished baking is worth recording separately from when it was requested — and until that moment arrives, the column should honestly say it hasn't happened yet.",
+  "successCondition": "POST /api/reporting/jobs. Querying report_jobs via `npm run db:psql` immediately confirms ready_at IS NULL. Poll GET /api/reporting/jobs/:id until status becomes \"ready\", then re-query the same row and confirm ready_at is now NOT NULL and is a timestamp after created_at.",
+  "hints": [
+    "readyAt is only set inside the queued job's success branch, right alongside setting status to \"ready\" (apps/api/src/modules/reporting/service.ts) — the two always change together.",
+    "The queue delay is NOTIFICATION_QUEUE_DELAY_MS (default 500ms, see docs/self-host.md) — poll with a short interval rather than a single fixed sleep."
+  ]
+}

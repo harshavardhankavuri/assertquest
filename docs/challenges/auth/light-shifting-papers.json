@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-shifting-papers",
+  "module": "auth",
+  "title": "Shifting Papers",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 15,
+  "description": "Paperwork that changes its own reference numbers mid-review would raise eyebrows at any border crossing — so should a login form whose field ids reshuffle underneath your test. Turn on the Practice mode toolbar's \"Dynamic ids\" toggle and prove your login automation survives it.",
+  "successCondition": "With Practice mode's \"Dynamic ids\" toggle switched on (the red floating button, bottom-right of any page), a test logs in successfully at /login using a locator strategy that does not hardcode the current id/data-testid suffix — e.g. by label text or a stable prefix match — and the same test still passes after toggling \"Dynamic ids\" off and back on (ids differ between runs, the locator still finds the right field).",
+  "hints": [
+    "The toggle lives under \"Locators\" in the Practice mode drawer, bottom-right of every page.",
+    "Inspect the email/password fields before and after re-enabling the toggle: the visible id changes, but there's a stable attribute or label you can key off instead."
+  ]
+}

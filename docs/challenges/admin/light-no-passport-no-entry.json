@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-no-passport-no-entry",
+  "module": "admin",
+  "title": "No Passport, No Entry",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "Even the feature-flag endpoint, open to every logged-in role, still requires someone to be logged in at all. Confirm an anonymous caller is turned away at the door.",
+  "successCondition": "GET /api/admin/feature-flags with no Authorization header returns 401. GET /api/admin/audit-log and POST /api/admin/shipments/bulk with no Authorization header each also return 401 rather than 403 or 200.",
+  "hints": [
+    "The preHandler authenticate hook runs on every route in this module before the per-route role check.",
+    "Don't send an Authorization header at all — an empty string or malformed header is a different (still 401) case, not the same test."
+  ]
+}

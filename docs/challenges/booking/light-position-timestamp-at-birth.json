@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-position-timestamp-at-birth",
+  "module": "booking",
+  "title": "Position Timestamp At Birth",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A shipment's position is only ever as fresh as its last update — and the very first \"update\" is simply the moment it was booked.",
+  "successCondition": "POST /api/booking to create a shipment and note the wall-clock time. Querying the shipments table via `npm run db:psql` confirms position_updated_at is NOT NULL and is within a few seconds of both created_at and the moment you made the request — the two timestamp columns are independently set but start off equal (or effectively equal) for a brand-new shipment.",
+  "hints": [
+    "Both createdAt and positionUpdatedAt default to now() independently in prisma/schema.prisma — they aren't derived from each other, so verify both rather than assuming one implies the other.",
+    "select created_at, position_updated_at from shipments where id = '<id>'; puts both columns side by side."
+  ]
+}

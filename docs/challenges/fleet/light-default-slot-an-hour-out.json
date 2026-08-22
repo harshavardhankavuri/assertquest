@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-default-slot-an-hour-out",
+  "module": "fleet",
+  "title": "Default Slot an Hour Out",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Dispatchers shouldn't have to think about the clock every time they open the board — the slot-start field defaults to something schedulable right away: an hour from now, not the current instant.",
+  "successCondition": "On first loading /fleet, the \"Slot start (2-hour window)\" datetime-local input's default value is within a few minutes of exactly one hour after the page loaded (not the current time, and not some fixed placeholder date).",
+  "hints": [
+    "defaultDateTimeLocal() in FleetPage.tsx computes Date.now() + 1 hour, seconds/millis zeroed — allow a small tolerance window for time elapsed during page load.",
+    "Parse the input's value as a local datetime and compare it against your test's own \"now + 1h\" rather than a hardcoded timestamp."
+  ]
+}

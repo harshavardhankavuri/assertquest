@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-schedule-in-time-order",
+  "module": "fleet",
+  "title": "Schedule in Time Order",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "A dispatcher reading the day's schedule needs it in the order things actually happen, not the order they happened to get assigned in on the board.",
+  "successCondition": "Creating three assignments out of chronological order (e.g. an afternoon slot first, then a morning slot, then an evening slot) results in the Schedule table below the board rendering its rows in ascending chronological order by Start time, regardless of the order the assignments were dragged onto the board.",
+  "hints": [
+    "Change the \"Slot start\" field's value between each drag so the three assignments land on genuinely different times.",
+    "ScheduleList.tsx sorts by a.scheduledStart.localeCompare(b.scheduledStart) — ISO timestamps sort correctly lexicographically, but only if you're comparing full ISO strings, not shorthand local times."
+  ]
+}

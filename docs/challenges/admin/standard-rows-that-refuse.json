@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-rows-that-refuse",
+  "module": "admin",
+  "title": "Rows That Refuse",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "A good import report doesn't drown you in noise — CsvImportPanel only lists the rows that actually failed, each with its own reason, so a busy admin can act on exactly what needs fixing. Prove that filtering is real.",
+  "successCondition": "Uploading a CSV with one valid row and two invalid rows (e.g. an unknown customerEmail and a non-numeric weightKg) through the CSV import dropzone on /admin renders exactly two list items under the report, each prefixed \"Row N:\" with the matching error text — the accepted row never appears in that list, even though it's counted in the Accepted stat tile.",
+  "hints": [
+    "The file input is labelled \"Drop a CSV file here, or click to browse\" — use it directly rather than simulating a real drag event.",
+    "Row numbers are 1-indexed counting the header row, so your first data row is reported as row 2."
+  ]
+}

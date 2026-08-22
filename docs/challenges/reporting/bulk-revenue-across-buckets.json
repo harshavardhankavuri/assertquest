@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-revenue-across-buckets",
+  "module": "reporting",
+  "title": "Revenue Across Buckets",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Spread a batch of shipments across several different days and confirm the reporting engine slices revenue into exactly the right daily buckets — no shipment's revenue counted twice, none silently dropped between two adjacent buckets.",
+  "successCondition": "Book at least 6 shipments with known priceCents values, timed (or backdated via direct DB update if your test setup allows it, otherwise booked in real time across a session) to fall into at least 3 distinct day buckets in UTC. GET /api/reporting/summary?groupBy=day for a range covering all of them. For each of the 3+ buckets, querying `select sum(price_cents), count(*) from shipments where created_at >= '<bucket start>' and created_at < '<bucket end>'` via `npm run db:psql` (using UTC day boundaries) confirms the bucket's shipmentCount and revenueCents in the API response exactly match, for every bucket — and the sum of all buckets' revenueCents equals totalRevenueCents exactly.",
+  "hints": [
+    "Bucketing happens in the requested timeZone (docs/api/reporting.md) — using timeZone=UTC for this challenge keeps your manual SQL day-boundary math straightforward (each bucket is exactly midnight-to-midnight UTC).",
+    "If your shipments all get created within one real-time test session, either spread the test across several real days, or directly UPDATE a few shipments' created_at via psql to backdate them into distinct buckets for testing purposes."
+  ]
+}

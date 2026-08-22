@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-many-jobs-one-owner",
+  "module": "reporting",
+  "title": "Many Jobs, One Owner",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A busy dispatcher who fires off five different report requests in one sitting expects to find all five later, each intact and correctly attributed — not merged, not missing, not attributed to the wrong desk.",
+  "successCondition": "As one dispatcher, POST /api/reporting/jobs five times with five distinct from/to ranges. Querying report_jobs via `npm run db:psql` with `select id, requested_by_id, from_date, to_date from report_jobs where requested_by_id = '<dispatcher id>' order by created_at desc limit 5` confirms exactly 5 rows exist matching your 5 requests, each with the correct from_date/to_date pairing (no two swapped), and every single one has requested_by_id equal to that one dispatcher's id. Poll all 5 to ready and confirm GET /api/reporting/jobs/:id for each returns 200 for that dispatcher specifically (not just admin).",
+  "hints": [
+    "There's no GET /api/reporting/jobs list-all endpoint (per docs/api/reporting.md) — polling GET /jobs/:id individually by the 5 ids you captured from the 5 POST responses is the only way to check each one via the API.",
+    "Give each of the 5 ranges a visibly distinct span (different months) so mismatched from_date/to_date pairs are easy to catch by eye when you query the DB."
+  ]
+}

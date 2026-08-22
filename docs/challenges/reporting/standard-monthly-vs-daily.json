@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-monthly-vs-daily",
+  "module": "reporting",
+  "title": "Monthly vs Daily",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "The same set of shipments should roll up consistently whether a dispatcher views them day by day or month by month — the totals must agree even as the bucket shape changes.",
+  "successCondition": "Book at least 2 shipments that fall in the same calendar month (UTC). GET /api/reporting/summary with groupBy=day over a window covering them returns buckets with period in YYYY-MM-DD format, summing to the same totalShipments and totalRevenueCents as GET /api/reporting/summary with groupBy=month over the identical from/to window, where the month buckets use YYYY-MM format.",
+  "hints": [
+    "totalShipments and totalRevenueCents are computed once over the whole matched row set, independent of groupBy — they should be identical between the two calls even though buckets looks different.",
+    "Keep timeZone at its UTC default for both calls so you're isolating groupBy as the only variable."
+  ]
+}

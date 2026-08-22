@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-crossing-midnight",
+  "module": "reporting",
+  "title": "Crossing Midnight",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The same shipment can land in a different calendar day depending on which timezone the report is viewed in — a shipment booked just after UTC midnight might still be \"yesterday\" on the US West Coast. Prove the bucketing genuinely shifts with the timezone, not just the label.",
+  "successCondition": "Book a shipment at a moment you control precisely (or find one) whose UTC timestamp is between 00:00 and 03:00 UTC. GET /api/reporting/summary with groupBy=day, timeZone=UTC, and a from/to window covering that day shows the shipment counted in the UTC calendar date's bucket. The same query with timeZone=America/Los_Angeles (UTC-7 or UTC-8 depending on DST) over the same absolute from/to window shows the shipment counted in the previous calendar date's bucket instead — a genuinely different period string.",
+  "hints": [
+    "You likely can't control a shipment's createdAt directly through the API — instead, time your booking request to actually happen within the 00:00-03:00 UTC window, or pick a from/to window and timezone combination based on when you're actually running the test.",
+    "docs/api/reporting.md and bucketing.ts confirm this cross-timezone bucket shift is intentional behavior, not a bug — the test is proving the intentional behavior holds, not reporting it as a defect."
+  ]
+}

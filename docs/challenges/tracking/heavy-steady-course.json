@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-steady-course",
+  "module": "tracking",
+  "title": "Steady Course",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A shipment stepping toward its destination should get monotonically closer with every tick, never drift sideways or backtrack toward where it came from.",
+  "successCondition": "Book a shipment with an origin and destination that are clearly far apart. Call POST /api/tracking/:id/advance repeatedly (at least 4 times, or until delivered), querying current_lat/current_lng from the shipments table via `npm run db:psql` after each call. Computing the straight-line distance from the current position to destination_lat/destination_lng after each tick shows it strictly decreasing call over call — the shipment is always getting closer, never farther, and never overshoots past the destination's coordinates.",
+  "hints": [
+    "The simulation steps position a fraction of the remaining distance toward the destination each tick (apps/api/src/modules/tracking/service.ts) — a simple haversine or even flat lat/lng distance approximation is precise enough to confirm the monotonic trend here.",
+    "Log current_lat/current_lng after every single advance call rather than just checking the first and last, so a transient backtrack in the middle can't hide."
+  ]
+}

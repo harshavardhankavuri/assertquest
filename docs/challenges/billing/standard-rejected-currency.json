@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-rejected-currency",
+  "module": "billing",
+  "title": "Rejected Currency",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "SwiftCargo only bills in five supported currencies. Confirm asking for an invoice in an unsupported currency, like Canadian dollars, is rejected up front rather than silently falling back to something else.",
+  "successCondition": "Book a shipment, then POST /api/billing/shipments/:shipmentId/invoice with { \"currency\": \"CAD\" } returns 400 with error.code VALIDATION_ERROR, and no invoice is created — a follow-up GET /api/billing/invoices for that account does not include an invoice for that shipment.",
+  "hints": [
+    "The supported currency enum is USD, EUR, GBP, JPY, INR — anything outside that set fails schema validation before any database write.",
+    "Confirm no invoice exists afterward rather than assuming from the 400 status alone — list invoices and check the shipment isn't represented."
+  ]
+}

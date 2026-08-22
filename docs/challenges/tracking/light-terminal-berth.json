@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-terminal-berth",
+  "module": "tracking",
+  "title": "Terminal Berth",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Once a shipment has actually arrived, calling \"advance\" on it again shouldn't send it anywhere else — delivered is the end of the line.",
+  "successCondition": "Advance a shipment repeatedly until GET /api/tracking/:id shows status \"delivered\". Call POST /api/tracking/:id/advance one more time after that. Querying the shipments table via `npm run db:psql` confirms status is still exactly 'delivered' (not reverted, not errored into something else) and current_lat/current_lng still equal destination_lat/destination_lng — a call past delivery is a safe no-op at the DB level.",
+  "hints": [
+    "ShipmentStatus has no state after \"delivered\" in the enum (prisma/schema.prisma) — the service layer's advance logic should simply stop moving/transitioning once it's reached.",
+    "Depending on distance, reaching \"delivered\" may take several /advance calls — keep calling until GET /api/tracking/:id confirms it before testing the extra call."
+  ]
+}

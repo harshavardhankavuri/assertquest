@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-oversized-document-rejected",
+  "module": "booking",
+  "title": "Oversized Document Rejected",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 35,
+  "description": "A 6MB customs scan slips right past the picker's accept filter — file size isn't even checked client-side. Prove the server's 5MB cap (FR-705) still holds, and the UI reports the rejection honestly instead of pretending it worked.",
+  "successCondition": "Uploading a well-formed PDF file exceeding 5MB (5 * 1024 * 1024 bytes) through the Confirm step's document uploader results in a visible Alert with an error message, the document list gaining no new entry, and a follow-up GET /api/booking/:id/documents confirming the oversized file was never persisted server-side — the rejection is a genuine 400, not a client-side guess.",
+  "hints": [
+    "Generate a file just over the boundary (e.g. 5MB + 1 byte) to specifically exercise the edge, in addition to a comfortably oversized one.",
+    "The list only reflects documents actually added to component state on a successful upload response — a failed upload should never call setDocuments."
+  ]
+}

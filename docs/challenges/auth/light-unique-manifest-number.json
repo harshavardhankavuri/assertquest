@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-unique-manifest-number",
+  "module": "auth",
+  "title": "Unique Manifest Number",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Every SwiftCargo account is anchored to one email address, the same way a vessel gets one registration number. Prove the database itself won't allow a second account to claim an address that's already on file.",
+  "successCondition": "POST /api/auth/register twice with the identical email (any password/role) returns 201 the first time and 409 with { error: { code: \"CONFLICT\" } } the second time. Checking the users table via `npm run db:psql` (`select count(*) from users where email = '<the email>';`) afterward shows exactly 1 row, not 2 — the rejected second attempt never inserted anything.",
+  "hints": [
+    "The users.email column carries a unique constraint at the Prisma/Postgres level (see prisma/schema.prisma) — the API's 409 is just surfacing that.",
+    "Use `npm run db:psql` (documented in docs/self-host.md) to run the count query directly against Postgres."
+  ]
+}

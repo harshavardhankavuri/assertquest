@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-filtered-and-paged",
+  "module": "tracking",
+  "title": "Filtered and Paged",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher narrows the tracking table down to just in-transit shipments, then pages through the results a few at a time. Confirm filtering and pagination compose correctly together rather than one silently overriding the other.",
+  "successCondition": "Book 5 shipments and advance exactly 3 of them (as dispatcher/admin) into \"in_transit\" status (one tick from booked, stopping before delivered), leaving 2 as \"booked\". GET /api/tracking?status=in_transit&pageSize=2&page=1 as the dispatcher returns exactly 2 items, both with status \"in_transit\", and total equal to 3 (or more, if the environment has other in_transit shipments, but at least 3 including yours). GET /api/tracking?status=in_transit&pageSize=2&page=2 returns the remaining in_transit item(s), with no overlap in shipment ids between the two pages.",
+  "hints": [
+    "One call to POST /api/tracking/:id/advance moves a shipment from booked to in_transit — a second call would move it further, so stop at exactly one tick for the 3 you want to remain in_transit.",
+    "Cross-check the shipment ids returned across page 1 and page 2 against your known set of 5 to confirm no shipment appears on both pages or is missing from both."
+  ]
+}

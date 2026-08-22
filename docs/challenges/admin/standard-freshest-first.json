@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-freshest-first",
+  "module": "admin",
+  "title": "Freshest First",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "When you're chasing down what just happened, the most recent event should be the first thing you see. Confirm the Audit Log table on the admin console actually renders newest-first, not just returns that order from the API.",
+  "successCondition": "After two distinct logins (e.g. customer@swiftcargo.test then admin@swiftcargo.test) happen in that order, reloading the Admin console's Audit log card shows the admin@swiftcargo.test \"auth.login\" row rendered above (earlier in DOM order than) the customer@swiftcargo.test \"auth.login\" row.",
+  "hints": [
+    "Log in as admin last, right before reloading /admin, so its timestamp is unambiguously the newest.",
+    "Assert on DOM order of the rendered rows, not just on the underlying array — a rendering bug could reverse them even if the API order is correct."
+  ]
+}

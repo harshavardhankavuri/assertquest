@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-live-map-and-table-agree",
+  "module": "tracking",
+  "title": "Live Map and Table Agree",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 40,
+  "description": "Advance three different shipments from another session while a dispatcher's tracking page sits open and watching — the table's status badges and the map's dot positions both need to update live, in step with each other, without a reload.",
+  "successCondition": "With a dispatcher's /tracking page open and its WebSocket connected, calling POST /api/tracking/:id/advance from a separate session for three different visible shipments (staggered a few seconds apart) results in, for each one in turn and without any page reload: the table row's status Badge updating to the new status, and the map's corresponding shipment dot moving to a new projected position (or turning the \"delivered\" color if it reached the end) — both updates observed to land within a couple of seconds of each API call, for all three shipments independently.",
+  "hints": [
+    "Use a second API client (or a second browser context authenticated separately) to call /advance while keeping the dispatcher's tab open and idle — this is testing the WebSocket push, not a page-driven action.",
+    "The map's dot color changes from the in-transit blue to the delivered green only once a shipment's status actually reaches \"delivered\" — a shipment mid-route should stay blue and just visibly shift position."
+  ]
+}

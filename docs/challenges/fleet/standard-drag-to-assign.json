@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-drag-to-assign",
+  "module": "fleet",
+  "title": "Drag to Assign",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "The whole point of the Kanban board (FR-901) is that dragging a shipment card onto a vehicle column is the assignment — no form, no extra click. Prove the drag itself does the job.",
+  "successCondition": "Dragging a shipment card from the \"Unassigned\" column and dropping it onto a specific vehicle's column results in: the card no longer appearing in \"Unassigned\", the same shipment id now appearing in that vehicle's column, the vehicle lane's shipment count incrementing by one, and a corresponding row appearing in the Schedule table below with that vehicle and the currently-selected driver.",
+  "hints": [
+    "Dispatch real dragstart/dragover/drop events carrying the custom MIME type application/x-swiftcargo-shipment-id — a plain click won't trigger the handlers.",
+    "Pick a driver and slot start in the form above the board before dragging — the drop handler reads those values at drop time."
+  ]
+}

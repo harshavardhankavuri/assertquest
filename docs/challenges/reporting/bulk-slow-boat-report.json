@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-slow-boat-report",
+  "module": "reporting",
+  "title": "Slow Boat Report",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Run the whole Reporting page — filters, both charts, the table, and a scheduled CSV job — under Practice mode's \"Slow network\" toggle, and confirm nothing on the page jumps to a wrong or empty state while requests are still in flight.",
+  "successCondition": "With Practice mode's \"Slow network\" toggle switched on (every request delayed 2-3.5s), a test sets a date range, clicks Update, and confirms the page does not flash an incorrect empty/zero state before the delayed response arrives (StatTiles and charts should either show a clear loading affordance or simply remain in their prior state until the new data resolves, never briefly rendering \"0\" or \"No data\" as if that were the real answer); it then clicks \"Generate CSV report\" and confirms the pending Badge persists correctly through the extended latency before flipping to ready, with the Download link appearing only once truly ready.",
+  "hints": [
+    "The toggle lives under \"Network & links\" in the Practice mode drawer, bottom-right of every page.",
+    "A premature \"No data for this range\" render during the delay window — before the real (non-empty) response has come back — is exactly the kind of false-empty-state bug this challenge is designed to catch."
+  ]
+}

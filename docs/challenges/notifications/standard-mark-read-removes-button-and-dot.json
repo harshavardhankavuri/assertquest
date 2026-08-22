@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-mark-read-removes-button-and-dot",
+  "module": "notifications",
+  "title": "Mark Read Removes Button and Dot",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Clicking \"Mark read\" on one notification should immediately clean up everything about that item that says \"unread\" — the dot next to its title and its own \"Mark read\" link, both gone at once, without needing the dropdown to be reopened.",
+  "successCondition": "Clicking \"Mark read\" on an unread notification inside the open dropdown results in, without closing and reopening the dropdown: that item's unread dot marker disappearing, that item's own \"Mark read\" link disappearing (since it's no longer applicable), and the header's unread count badge decrementing by exactly one — all reflected from the same reload() call, in one UI update.",
+  "hints": [
+    "onMarkRead awaits the API call and then calls reload() — the update should be visible without any manual page refresh.",
+    "If there was only one unread notification before the click, the count badge should disappear entirely afterward, not show \"0 unread\"."
+  ]
+}

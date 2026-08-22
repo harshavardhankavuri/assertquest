@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-overloaded-and-unbothered",
+  "module": "fleet",
+  "title": "Overloaded And Unbothered",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "SwiftCargo's scheduling board deliberately never checks whether a shipment's weight actually fits on the vehicle it's assigned to — real dispatch software has this gap too. Prove it by loading a van far past its rated capacity and watching the system shrug.",
+  "successCondition": "Find a \"van\" type vehicle's capacityKg via GET /api/fleet/vehicles. Book a shipment with weightKg well over that capacity (e.g. 5x it). PUT /api/fleet/assignments/:shipmentId assigning that overweight shipment to the undersized van — it returns 200, not a validation error. Querying the assignments table via `npm run db:psql` confirms the row persisted with that exact vehicle_id despite the mismatch, documenting the gap rather than assuming it.",
+  "hints": [
+    "docs/api/fleet.md's 400 validation list for PUT /assignments/:shipmentId only mentions unknown ids, wrong driver role, and start >= end — capacity vs weight is deliberately absent.",
+    "GET /api/fleet/vehicles's capacityKg field is the number to compare your booked shipment's weightKg against."
+  ]
+}

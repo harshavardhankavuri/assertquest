@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-empty-range-shows-clean-message",
+  "module": "reporting",
+  "title": "Empty Range Shows Clean Message",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Ask for shipment volume during a week nothing shipped, and the chart shouldn't render a confusing blank grid — it should just say plainly that there's no data.",
+  "successCondition": "Setting the From/To date range to a window with zero shipments (e.g. entirely in the future) and clicking Update renders both bar charts showing the text \"No data for this range.\" in place of any SVG bars, and the data table below renders no rows.",
+  "hints": [
+    "A far-future date range (e.g. next year) is a reliable way to guarantee zero shipments without needing to know the exact seeded data.",
+    "Both the shipment volume and revenue charts share this same empty-state message — check both, not just one."
+  ]
+}

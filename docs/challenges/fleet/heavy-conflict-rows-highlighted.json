@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-conflict-rows-highlighted",
+  "module": "fleet",
+  "title": "Conflict Rows Highlighted",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "The banner at the top of the board isn't the only place a scheduling conflict should be visible — FR-902's calendar/schedule view is supposed to mark the specific conflicting rows in context too, so a dispatcher scanning the table doesn't have to cross-reference a separate warning.",
+  "successCondition": "After creating two overlapping assignments for the same driver (or vehicle), both conflicting rows in the Schedule table render with a distinct highlighted background (bg-negative-50, distinguishable from the default row styling) and the Driver cell of each conflicting row includes a warning icon element with aria-label=\"Scheduling conflict\" — while any non-conflicting row in the same table shows neither.",
+  "hints": [
+    "The highlight logic checks each assignment's id against the flattened assignmentIds from GET /api/fleet/conflicts — conflicts are computed server-side, not guessed client-side from overlapping times you see in the UI.",
+    "Create a third, non-overlapping assignment alongside the two conflicting ones so you have a clean row to confirm does NOT get the highlight, ruling out a bug that marks everything."
+  ]
+}

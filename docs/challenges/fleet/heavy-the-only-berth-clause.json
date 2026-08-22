@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-the-only-berth-clause",
+  "module": "fleet",
+  "title": "The Only Berth Clause",
+  "difficulty": "heavy",
+  "surfaceTags": ["db"],
+  "estimatedMinutes": 30,
+  "description": "The API's upsert-by-shipmentId is what normally keeps a shipment to one assignment — but the real guarantee lives one layer down, as a hard constraint Postgres itself enforces. Go around the API and prove the database won't allow the violation even if asked directly.",
+  "successCondition": "Create one assignment for a shipment via PUT /api/fleet/assignments/:shipmentId (note its vehicle_id/driver_id/shipment_id). Using `npm run db:psql`, attempt to directly INSERT a second row into the assignments table with a NEW random id but the SAME shipment_id (and any valid vehicle_id/driver_id/time window) — the raw SQL INSERT fails with a unique constraint violation (Postgres error referencing the shipment_id unique index), proving the guarantee isn't just application-level upsert logic but a real DB-level constraint that would hold even against a bug or a rogue script.",
+  "hints": [
+    "Assignment.shipmentId carries @unique in prisma/schema.prisma, which Prisma migrations turn into a real Postgres UNIQUE constraint/index on the assignments table — inspect it with \\d assignments in psql if you want to see the constraint name first.",
+    "You'll need a syntactically valid INSERT (all NOT NULL columns filled, including timestamps) for the failure you get back to be specifically the unique violation and not an unrelated syntax/type error."
+  ]
+}

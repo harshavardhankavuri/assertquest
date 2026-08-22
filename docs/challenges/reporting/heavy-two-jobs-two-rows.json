@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-two-jobs-two-rows",
+  "module": "reporting",
+  "title": "Two Jobs, Two Rows",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A dispatcher who requests two different reports back to back — say, one for last month and one for this month — needs each job to stay a completely separate record, never confused with or overwriting the other.",
+  "successCondition": "POST /api/reporting/jobs twice in quick succession with genuinely different from/to ranges (e.g. one for January, one for February). Both return distinct job ids. Querying report_jobs via `npm run db:psql` for both ids confirms two separate rows exist, each with its own correct from_date/to_date matching its own request (not swapped or merged), and both eventually reach status 'ready' independently with their own distinct result_csv content reflecting their own date range's data.",
+  "hints": [
+    "Each POST /api/reporting/jobs call creates a brand-new ReportJob row and its own independent queued job — there's no shared or reused job slot between concurrent requests.",
+    "Download both CSVs (GET /jobs/:id/download for each) once ready and confirm they actually differ if the two months have different shipment activity — a bug that swapped the two jobs' data would still produce two \"valid-looking\" CSVs, just with the wrong content."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-every-event-type-logged",
+  "module": "notifications",
+  "title": "Every Event Type, Logged",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Four different things can trigger a notification in SwiftCargo. Walk through all four in one continuous scenario and confirm every single one lands in the database with the right type — not just the one or two an incomplete test would happen to check.",
+  "successCondition": "For a single customer, in order: book a shipment (shipment.booked), pay its invoice successfully (payment.succeeded), pay a SECOND invoice with the decline card (payment.failed), and advance the shipment to delivered (shipment.delivered). After waiting past the queue delay for all, querying the notifications table via `npm run db:psql` for that user confirms all 4 distinct type values are present exactly once each: 'shipment.booked', 'payment.succeeded', 'payment.failed', 'shipment.delivered' — none missing, none duplicated.",
+  "hints": [
+    "The full trigger -> type -> title -> channel table is documented in docs/api/notifications.md — use it as your checklist for exactly which 4 to expect.",
+    "You'll need a second shipment/invoice to get a payment.failed entry without derailing the first shipment's payment.succeeded — don't try to decline and then re-pay the same invoice, since that invoice's SECOND payment would be the succeeded one and you'd only ever see one of the two outcomes per invoice at a time in this particular walkthrough."
+  ]
+}

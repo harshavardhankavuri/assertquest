@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-who-what-when",
+  "module": "admin",
+  "title": "Who, What, When",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Admins need to see a trail of who did what and when. Log in as a known user and confirm that action shows up in the audit log with the correct actor.",
+  "successCondition": "After logging in as customer@swiftcargo.test, GET /api/admin/audit-log (as an admin) includes an entry with action \"auth.login\", actorEmail \"customer@swiftcargo.test\", and a createdAt timestamp.",
+  "hints": [
+    "The audit log endpoint is admin-only — log in as admin@swiftcargo.test to read it, separately from the login you're trying to observe.",
+    "Entries are returned newest-first."
+  ]
+}

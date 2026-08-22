@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-two-fields-or-no-passage",
+  "module": "booking",
+  "title": "Two Fields or No Passage",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "You can't ship cargo to nowhere from nowhere — the wizard's first step needs both an origin and a destination selected before it lets you move on.",
+  "successCondition": "On the Origin & Destination step of /book, the \"Next: Package Details\" button is disabled when neither field is selected, remains disabled with only one of the two selected, and becomes enabled only once both origin and destination suggestions have been clicked/selected.",
+  "hints": [
+    "Selecting an address means clicking one of the dropdown suggestions, not just typing text into the field — typed-but-unselected text doesn't count.",
+    "Check all three intermediate states (neither, origin-only, destination-only) — a bug could easily enable the button after just one field."
+  ]
+}

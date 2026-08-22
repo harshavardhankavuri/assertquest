@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-under-simulated-strain",
+  "module": "fleet",
+  "title": "Under Simulated Strain",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "The fleet module can have injected latency and transient failures dialed in via env vars, the same as any other module. Confirm the assignment upsert and conflict detection stay correct and never leave a half-written assignment behind, even when the flake hook is actively interfering.",
+  "successCondition": "With FLAKE_LATENCY_MS_FLEET and FLAKE_FAILURE_RATE_FLEET set to nonzero values in the API's environment, repeatedly (at least 5 times) call PUT /api/fleet/assignments/:shipmentId with valid bodies against fresh shipments. Every call either succeeds with 200 and a well-formed assignment object, or fails with 503 { error: { code: \"INTERNAL_ERROR\" } } from the flake hook — and for every shipmentId that got a 503, GET /api/fleet/assignments confirms no assignment row exists for it (the flake hook rejects before the handler runs, so nothing partial is ever written).",
+  "hints": [
+    "The flake hook is registered as an onRequest hook, which runs before any route handler — a rejected request never reaches the upsert logic at all, so there's no partial-write risk to actually test, only to confirm.",
+    "Set the env vars before starting the API server — this requires control over server configuration at launch, not just request payloads."
+  ]
+}

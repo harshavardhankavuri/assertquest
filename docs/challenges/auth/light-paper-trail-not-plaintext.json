@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-paper-trail-not-plaintext",
+  "module": "auth",
+  "title": "Paper Trail, Not Plaintext",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A captain's logbook records that a crew member checked in, not the password they whispered at the gangplank. Register a fresh account and confirm what actually lands in the users table.",
+  "successCondition": "Register a new account with a memorable password (e.g. \"CorrectHorse1\") via POST /api/auth/register. Query the users table directly with `npm run db:psql` and confirm the passwordHash column for that row is neither empty nor equal to the literal password string, and that login via POST /api/auth/login with the original password still succeeds afterward (proving the hash, not the raw password, is what's checked).",
+  "hints": [
+    "passwordHash is produced with argon2 (see apps/api/src/modules/auth/service.ts) — it will look nothing like the input password, and won't be the same value between two accounts even with the same password.",
+    "select email, passwordHash from users where email = '<the email>'; is enough to eyeball the column directly."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-second-signature",
+  "module": "auth",
+  "title": "Second Signature",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Two crew members shouldn't be able to claim the same email address on the harbor's crew roster. Confirm the second registration attempt is turned away cleanly, without disturbing the first account.",
+  "successCondition": "POST /api/auth/register succeeds with 201 for a given email. A second POST /api/auth/register with that exact same email (any password/role) returns 409 with error.code CONFLICT. POST /api/auth/login with the first account's original credentials afterward still succeeds with 200, proving the conflicting attempt didn't overwrite anything.",
+  "hints": [
+    "Email matching for the conflict check is presumably exact — try it with the identical string first before exploring case sensitivity as a separate question.",
+    "The login you use to prove the original account is intact must use the very first request's password, not the second attempt's."
+  ]
+}

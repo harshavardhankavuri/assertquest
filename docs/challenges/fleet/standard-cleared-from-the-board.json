@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-cleared-from-the-board",
+  "module": "fleet",
+  "title": "Cleared From The Board",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 25,
+  "description": "Resolving a scheduling conflict by pulling one of the two overlapping cards off the board should make the conflict actually disappear — not just visually, but at the row level that the conflicts endpoint reads from.",
+  "successCondition": "Create two assignments sharing the same driverId with overlapping windows (GET /api/fleet/conflicts now includes a \"driver\" entry naming both assignment ids). DELETE one of the two assignments. GET /api/fleet/conflicts no longer includes any conflict referencing either assignment id. Querying the assignments table via `npm run db:psql` confirms exactly one of the original two rows remains (matching whichever you didn't delete) — the conflict resolved because the underlying data actually changed, not because of any caching.",
+  "hints": [
+    "GET /api/fleet/conflicts recomputes from the current assignments table on every call — there's no cached/stale conflicts list to worry about invalidating.",
+    "Note both assignment ids (not shipment ids) up front from the two PUT responses, since DELETE /api/fleet/assignments/:id takes the assignment's own id."
+  ]
+}

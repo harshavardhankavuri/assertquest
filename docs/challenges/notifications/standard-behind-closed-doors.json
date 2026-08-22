@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-behind-closed-doors",
+  "module": "notifications",
+  "title": "Behind Closed Doors",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "A delivery confirmation sealed inside its own shadow root is easy to miss if your tooling doesn't know to look. Enable \"Shadow DOM\" in Practice mode and confirm your test can still click through to it.",
+  "successCondition": "With \"Shadow DOM\" switched on, a test opens the Dashboard, pierces into the delivery-confirmation widget's shadow root, clicks the \"Confirm delivery\" button inside it, and asserts its text changes to \"Confirmed in shadow root ✓\".",
+  "hints": [
+    "Playwright locators pierce open shadow roots automatically; Selenium needs element.shadowRoot to get a reference inside first.",
+    "The widget only renders on the Dashboard (/) while \"Shadow DOM\" is on — check the Practice sandbox card at the bottom of the page."
+  ]
+}

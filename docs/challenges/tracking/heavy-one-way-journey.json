@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-one-way-journey",
+  "module": "tracking",
+  "title": "One-Way Journey",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A shipment's status should only ever move forward — booked to in_transit to delivered — never backward, and once delivered, it should hold there permanently no matter how many more times someone pokes the advance button.",
+  "successCondition": "Book a shipment (status \"booked\"). Call POST /api/tracking/:id/advance repeatedly as a dispatcher/admin, recording the status after each call, until status becomes \"delivered\". The recorded sequence never shows a status moving backward (e.g. in_transit never reverts to booked). Call POST /api/tracking/:id/advance at least 2 more times after reaching delivered — status remains \"delivered\" on every subsequent call, and currentPosition no longer changes once delivered.",
+  "hints": [
+    "The exact tick logic lives in apps/api/src/modules/tracking/gpsSimulator.ts's advanceOneTick function — read it to understand exactly what happens once status is already delivered.",
+    "Record currentPosition alongside status after each call so you can confirm it truly stops moving, not just that the status label stays the same."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-first-tick",
+  "module": "tracking",
+  "title": "First Tick",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A shipment sitting at the dock isn't \"in transit\" until dispatch actually says so — the very first advance call is what flips that switch, and it should stick.",
+  "successCondition": "Book a fresh shipment (status \"booked\" per the DB default). As dispatcher/admin, call POST /api/tracking/:id/advance once. Querying the shipments table via `npm run db:psql` for that row confirms status now literally stores 'in_transit', not 'booked' — the change is persisted, not just reflected in the response body.",
+  "hints": [
+    "The first call to /advance always transitions booked -> in_transit regardless of position, per docs/api/tracking.md — later calls step position instead.",
+    "select status from shipments where id = '<id>'; is the whole check."
+  ]
+}

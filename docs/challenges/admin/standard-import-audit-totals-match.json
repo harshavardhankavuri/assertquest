@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-import-audit-totals-match",
+  "module": "admin",
+  "title": "Import Audit Totals Match",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A CSV import's response tells the admin what just happened — the audit trail should tell the exact same story later, with no drift between what the admin saw on screen and what's permanently on file.",
+  "successCondition": "POST /api/admin/shipments/import with a CSV of 4 rows: 2 valid, 2 invalid (different reasons — e.g. one unknown customerEmail, one non-numeric weightKg). Note the response's totalRows/accepted/rejected (4/2/2). Querying audit_log via `npm run db:psql` for the newest action = 'shipment.csv_import' row confirms its metadata JSON has totalRows: 4, accepted: 2, rejected: 2 — exactly matching the API response, not an approximation or a count of only the successful rows.",
+  "hints": [
+    "importShipmentsCsv (apps/api/src/modules/admin/service.ts) computes rows/accepted/rejected once and reuses those exact numbers both in the HTTP response and in the recordAudit metadata call — they should never be able to drift apart.",
+    "CSV formatting rules (required columns, quoting fields with commas) are documented in docs/api/admin.md."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-quote-waits-for-real-data",
+  "module": "booking",
+  "title": "Quote Waits for Real Data",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Letting someone confirm a booking before the price has even loaded would be a good way to ship something for free by accident. The Pricing step's Next button should stay off until a real quote is in hand.",
+  "successCondition": "On arrival at the Pricing step, the \"Next: Confirm\" button is disabled during the brief window before POST /api/booking/quote resolves, and becomes enabled only once the quote breakdown (distance, fees, total) is actually rendered on screen — never enabled while the breakdown section is still absent.",
+  "hints": [
+    "The quote fetch is fast in local dev, so you may need to check the very first render tick rather than assuming there's a long loading window to catch.",
+    "Practice mode's \"Slow network\" toggle can widen this window deliberately if you want a more reliable repro."
+  ]
+}

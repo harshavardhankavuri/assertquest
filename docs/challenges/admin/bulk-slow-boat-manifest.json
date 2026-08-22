@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-slow-boat-manifest",
+  "module": "admin",
+  "title": "Slow Boat Manifest",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Not every upload happens on a fast connection. With Practice mode's \"Slow network\" toggle stretching every request to 2-3.5s, confirm the CSV import dropzone behaves like a well-mannered form under latency: no double submissions, no premature success state.",
+  "successCondition": "With Practice mode's \"Slow network\" toggle switched on, uploading a valid CSV through the Admin console's import dropzone disables the file input for the full duration of the request (the input's disabled attribute is true from the moment of upload until the report renders), and the import report only appears after the artificial delay — a test that polls immediately after selecting the file finds no report yet, and finds one after waiting past the delay window.",
+  "hints": [
+    "The toggle lives under \"Network & links\" in the Practice mode drawer, bottom-right of every page.",
+    "Don't use a fixed short sleep to wait for the report — poll for the report region or wait generously past 3.5s, since the delay is randomized within that range."
+  ]
+}

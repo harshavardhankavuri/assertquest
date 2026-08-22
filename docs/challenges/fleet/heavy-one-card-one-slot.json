@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-one-card-one-slot",
+  "module": "fleet",
+  "title": "One Card, One Slot",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "Dragging a shipment's card to a new time slot on the board should move it, not clone it — a shipment must never hold two simultaneous assignments.",
+  "successCondition": "Book a shipment and create an assignment for it with PUT /api/fleet/assignments/:shipmentId. Note the returned assignment.id. Call PUT /api/fleet/assignments/:shipmentId again for the same shipmentId with a different vehicleId/driverId/time window. The response's assignment.id is identical to the first call's id (proving it was updated, not duplicated), and GET /api/fleet/assignments contains exactly one assignment for that shipmentId with the second call's updated vehicleId/driverId/times.",
+  "hints": [
+    "The upsert is keyed by shipmentId per docs/api/fleet.md — the shipment id is the path param, and Prisma's upsert on a unique shipmentId is what guarantees a single row.",
+    "Pick a genuinely different vehicleId and driverId for the second call (not identical values) so you can clearly confirm the row's contents actually changed, not just its existence."
+  ]
+}

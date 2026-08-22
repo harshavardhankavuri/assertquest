@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-live-wire",
+  "module": "tracking",
+  "title": "Live Wire",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 25,
+  "description": "Dispatchers need to see shipment status changes the moment they happen, not on the next page refresh. Open a WebSocket connection, trigger a status change from another connection, and confirm the update arrives in real time (FR-801).",
+  "successCondition": "After connecting to GET /api/tracking/ws?token=<accessToken> and receiving the initial { \"type\": \"connected\" } message, calling POST /api/tracking/:id/advance as a dispatcher/admin causes a { \"type\": \"tracking-update\", \"shipment\": { ... } } message to arrive on the socket with status \"in_transit\" for that shipment id — without polling.",
+  "hints": [
+    "The access token goes in the WebSocket URL's query string (?token=...), not an Authorization header — browsers can't set custom headers on the WebSocket handshake.",
+    "Book a shipment first (or use a seeded one) so you have an id to advance."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-oversized-parcel",
+  "module": "booking",
+  "title": "Oversized Parcel",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A shady customs document upload arrives as an oversized PDF, right at and just past the 5MB ceiling. Pin down the exact boundary the server enforces, rather than trusting a round number from memory.",
+  "successCondition": "Book a shipment. POST /api/booking/:id/documents with a file exactly 5*1024*1024 bytes (5,242,880 bytes) and a valid application/pdf mimetype returns 201. The same upload with a file at 5,242,881 bytes (one byte over) returns 400 with error.code VALIDATION_ERROR mentioning the size limit, and GET /api/booking/:id/documents confirms only the first upload was persisted.",
+  "hints": [
+    "MAX_DOCUMENT_SIZE_BYTES is exactly 5 * 1024 * 1024 — construct your test files to that exact byte count and one over, not an approximation like \"5MB-ish\".",
+    "The multipart file-size limit is enforced by the upload middleware itself (Fastify's fileSize option), which is what produces the FST_REQ_FILE_TOO_LARGE path — mind that your test client actually streams the full oversized body rather than truncating it client-side."
+  ]
+}

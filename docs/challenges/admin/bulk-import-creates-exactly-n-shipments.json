@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-import-creates-exactly-n-shipments",
+  "module": "admin",
+  "title": "Import Creates Exactly N Shipments",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A messy CSV from a logistics partner has some good rows and some broken ones, mixed together with no pattern. Prove the database ends up with precisely the good rows and nothing else, no matter how the good and bad ones are interleaved.",
+  "successCondition": "Record the total shipment count via `npm run db:psql`. POST /api/admin/shipments/import with a 5-row CSV: row 1 valid, row 2 unknown customerEmail, row 3 valid, row 4 missing a required column entirely, row 5 non-numeric weightKg. The response shows totalRows: 5, accepted: 2, rejected: 3, with rows[0] and rows[2] (the 1-indexed data rows 2 and 4 counting the header) marked \"accepted\" and carrying real shipmentIds. Re-querying the shipment count confirms it increased by EXACTLY 2 from before. Querying shipments via `npm run db:psql` for those 2 specific shipmentIds confirms both exist with the correct customerId/pricing, and no shipment exists anywhere in the table referencing the 3 rejected rows' data (e.g. their distinctive origin labels appear nowhere).",
+  "hints": [
+    "Required CSV columns, and how to quote a label containing a comma, are documented in docs/api/admin.md.",
+    "row numbering in the response is 1-indexed counting the header as row 1 — the first data row is row 2, so your 5 data rows are numbered 2 through 6 in the response."
+  ]
+}

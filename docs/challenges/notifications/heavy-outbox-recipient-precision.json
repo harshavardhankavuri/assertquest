@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-outbox-recipient-precision",
+  "module": "notifications",
+  "title": "Outbox Recipient Precision",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "With several customers' messages sitting in the same outbox table, the admin's recipient filter needs to return exactly one customer's mail — never a neighbor's message that happens to share some substring.",
+  "successCondition": "Generate outbox activity for two different customers (e.g. each books a shipment, waiting past the queue delay for both). As admin, GET /api/notifications/outbox?to=<customer A's exact email> returns only messages where `to` equals customer A's email exactly — none of customer B's messages appear. Querying mock_messages via `npm run db:psql` with `select to, count(*) from mock_messages where to in ('<A email>','<B email>') group by to` confirms the API's filtered count for A exactly matches the DB's true count of A's rows, and that B's rows are correctly excluded from the filtered response despite existing in the same table.",
+  "hints": [
+    "GET /api/notifications/outbox?to=... is an exact-match filter per docs/api/notifications.md, not a substring/fuzzy search — a partial email won't match anything.",
+    "GET /api/notifications/outbox is admin-only — log in as admin@swiftcargo.test to call it."
+  ]
+}

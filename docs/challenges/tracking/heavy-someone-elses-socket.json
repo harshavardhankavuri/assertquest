@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-someone-elses-socket",
+  "module": "tracking",
+  "title": "Someone Else's Socket",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The real-time tracking WebSocket takes its access token as a query parameter, since browsers can't attach an Authorization header to a WS upgrade. Confirm a missing or invalid token is still rejected there just as strictly as it would be on a normal REST call.",
+  "successCondition": "Open a WebSocket connection to /api/tracking/ws with no token query parameter at all — the server closes it with close code 4001. A second connection attempt to /api/tracking/ws?token=not-a-real-token (a syntactically invalid/garbage token) also closes with code 4001. A third connection using a genuine, freshly obtained accessToken succeeds and receives a { \"type\": \"connected\" } message before anything else.",
+  "hints": [
+    "Most WebSocket client libraries expose the close event's code property directly — capture it rather than just checking that the connection ended.",
+    "Obtain a real access token via POST /api/auth/login for the success case, and pass it as ?token=<accessToken> in the WS URL exactly as documented in docs/api/tracking.md."
+  ]
+}

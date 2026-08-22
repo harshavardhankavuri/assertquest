@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-mark-all-clears-every-dot",
+  "module": "notifications",
+  "title": "Mark All Clears Every Dot",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "One click, and every unread item in the dropdown needs to fall in line — no stragglers left with a dot, no leftover per-item \"Mark read\" links dangling around.",
+  "successCondition": "With at least three unread notifications present, clicking \"Mark all read\" at the top of the dropdown results in: the unread count badge on the bell disappearing entirely, none of the (now at least three) items in the dropdown showing an unread dot, none of them showing a per-item \"Mark read\" link, and the \"Mark all read\" button itself remaining visible (since notifications.length is still > 0, only their read state changed).",
+  "hints": [
+    "Generate at least three unread notifications first — booking, paying, and having a shipment delivered are three distinct triggering events documented in docs/api/notifications.md.",
+    "The \"Mark all read\" button's visibility condition is notifications.length > 0, not unreadCount > 0 — it doesn't disappear just because everything's now read."
+  ]
+}

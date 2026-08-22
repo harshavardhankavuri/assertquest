@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-full-notification-lifecycle-ui",
+  "module": "notifications",
+  "title": "Full Notification Lifecycle",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "Follow one customer through a shipment's whole story — booked, paid, and delivered — and confirm every single stop lights up the bell correctly, in order, and cleans up correctly when acknowledged.",
+  "successCondition": "As a customer, booking a shipment, generating and paying its invoice successfully, and then (as a dispatcher/admin) advancing that shipment through to \"delivered\" status triggers three distinct notifications for the customer (shipment.booked, payment.succeeded, shipment.delivered) which all eventually appear in the customer's dropdown in that chronological order (newest last-triggered at the top); the unread badge correctly reads 3 at that point; marking them read one at a time correctly decrements the badge each time, ending at 0 with the badge fully gone.",
+  "hints": [
+    "Each step's notification arrives asynchronously — wait past the queue delay after each triggering action before checking the dropdown, rather than checking immediately.",
+    "The delivery advancement needs a dispatcher/admin session while the notification-checking needs the customer's session — you're driving two roles through one shared shipment."
+  ]
+}

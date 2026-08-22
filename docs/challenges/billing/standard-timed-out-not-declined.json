@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-timed-out-not-declined",
+  "module": "billing",
+  "title": "Timed Out, Not Declined",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A gateway that never answers is a different failure than a gateway that says no outright — the ledger should be able to tell the two apart later.",
+  "successCondition": "Pay an invoice using the timeout test card 4000000000000119. The response's payment.status is \"timed_out\" (not \"declined\") with failureReason containing \"gateway_timeout\". The invoice stays \"open\" afterward (GET /api/billing/invoices/:id). Querying payments via `npm run db:psql` confirms the row's status column literally stores 'timed_out', a distinct enum value from 'declined'.",
+  "hints": [
+    "The mock gateway's card-to-outcome mapping is documented in docs/api/billing.md — 4000000000000119 is the timeout case, distinct from the decline card.",
+    "PaymentStatus is a 3-value enum (succeeded | declined | timed_out) in prisma/schema.prisma — check the exact stored value, not just that the invoice remained unpaid."
+  ]
+}

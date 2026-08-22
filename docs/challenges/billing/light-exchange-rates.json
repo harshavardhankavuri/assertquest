@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-exchange-rates",
+  "module": "billing",
+  "title": "Exchange Rates",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 15,
+  "description": "SwiftCargo prices shipments in USD but bills in whatever currency the customer picks. Generate an invoice in JPY (which has no decimal places) and confirm the amount is a whole number, not rounded like a 2-decimal currency.",
+  "successCondition": "POST /api/billing/shipments/:shipmentId/invoice with { \"currency\": \"JPY\" } returns 201 with an invoice whose amountCents is a whole number representing yen (no fractional minor unit), while the same call with { \"currency\": \"EUR\" } produces a 2-decimal amount — prove the two aren't rounded the same way.",
+  "hints": [
+    "Book a shipment first (or use a seeded one) to get a shipment id.",
+    "Supported currencies and rounding rules are documented in docs/api/billing.md."
+  ]
+}

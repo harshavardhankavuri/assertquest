@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-yen-has-no-cents",
+  "module": "billing",
+  "title": "Yen Has No Cents",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Not every currency has a minor unit — the yen doesn't split into cents. Confirm invoices billed in JPY report a whole-number amount rather than a fractional or inflated value.",
+  "successCondition": "Book a shipment, then POST /api/billing/shipments/:shipmentId/invoice with { \"currency\": \"JPY\" } returns 201 with invoice.currency \"JPY\" and invoice.amountCents as a whole number of yen (per docs/api/billing.md, JPY amountCents is a whole yen count, not \"yen cents\"), computed from the exchange rate constant in the billing currency module rather than a live rate.",
+  "hints": [
+    "The fixed exchange rate constants live in apps/api/src/modules/billing/currency.ts — read them to compute the exact expected amountCents for your shipment's priceCents.",
+    "amountCents is an unfortunate field name here; for JPY it's just \"amount\", not cents — don't divide or multiply by 100 when checking it."
+  ]
+}

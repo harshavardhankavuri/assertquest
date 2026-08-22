@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-two-shipments-one-driver",
+  "module": "fleet",
+  "title": "Two Shipments, One Driver",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "One driver can legitimately be booked for two different shipments on two different days — that's not a bug, that's a normal week. Prove the two assignments stay cleanly separate rows rather than colliding on the driver.",
+  "successCondition": "Assign the same driverId to two different shipments (shipment A and shipment B) with non-overlapping time windows (e.g. different days). Both PUT calls succeed with 200. Querying the assignments table via `npm run db:psql` (select shipment_id, driver_id from assignments where driver_id = '<driver id>') confirms exactly 2 rows, one per shipment_id, both correctly referencing the same driver_id — Assignment.shipmentId's @unique constraint scopes uniqueness per shipment, not per driver, so this is expected and correct.",
+  "hints": [
+    "Assignment.shipmentId carries the @unique constraint in prisma/schema.prisma, not driverId — nothing stops the same driver from appearing in multiple assignment rows.",
+    "GET /api/fleet/conflicts should report nothing for this pair, since the time windows don't overlap — a good sanity check that this isn't secretly a conflict scenario."
+  ]
+}

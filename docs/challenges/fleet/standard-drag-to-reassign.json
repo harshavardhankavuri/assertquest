@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-drag-to-reassign",
+  "module": "fleet",
+  "title": "Drag to Reassign",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "Plans change at the dock all the time — a shipment already on one truck's lane needs to move to a different truck. Dragging it directly between two vehicle columns should move it, not create a second, duplicate assignment.",
+  "successCondition": "After a shipment card is already assigned to Vehicle A's column, dragging that same card directly onto Vehicle B's column results in the card appearing only in Vehicle B's column afterward (no longer in Vehicle A's), Vehicle A's shipment count decreasing by one and Vehicle B's increasing by one, and exactly one row for that shipment in the Schedule table (its vehicle updated in place, not a second row added).",
+  "hints": [
+    "This is a single PUT /api/fleet/assignments/:shipmentId call under the hood — an upsert keyed by shipment id, so the assignment updates rather than duplicating.",
+    "Verify the shipment count arithmetic on both the source and destination lanes, not just the destination — a bug could add to B without removing from A."
+  ]
+}

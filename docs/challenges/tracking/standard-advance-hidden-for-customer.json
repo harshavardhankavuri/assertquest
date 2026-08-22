@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-advance-hidden-for-customer",
+  "module": "tracking",
+  "title": "Advance Hidden for Customer",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Only dispatchers and admins move freight along its route — a customer or driver watching their own shipment shouldn't see a button suggesting they can do that themselves.",
+  "successCondition": "Logged in as a customer or a driver, the tracking table renders with no \"Actions\" column header and no \"Advance\" button anywhere in the table; logged in as a dispatcher or admin, the same table does render an \"Actions\" column with an \"Advance\" button per row.",
+  "hints": [
+    "canAdvance in TrackingDashboard.tsx gates both the column header and the button cells together — a partial bug might show the header without buttons or vice versa, so check both.",
+    "This is purely a rendering check — separately, the API also enforces this server-side, but that's not what this challenge is testing."
+  ]
+}

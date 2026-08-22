@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-partial-credit",
+  "module": "admin",
+  "title": "Partial Credit",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Approve a batch of shipments where one id is already delivered, and the Bulk Actions panel is supposed to tell you exactly which ones made it through — not just a vague \"done\". Verify the succeeded/failed StatTiles agree with the itemized list below them.",
+  "successCondition": "On the Admin console, selecting two open shipments and one already-delivered shipment via the checkboxes, then clicking \"Approve selected\", renders a role=\"status\" region where the \"Succeeded\" StatTile value plus the \"Failed\" StatTile value equals 3, and the itemized list underneath shows exactly one line ending in \"failed — \" with a reason for the delivered shipment's id.",
+  "hints": [
+    "Get a shipment into \"delivered\" status first via the Tracking dashboard's Advance button (dispatcher/admin only), repeated until status stops changing.",
+    "The result region has role=\"status\" and aria-live=\"polite\" — wait for it rather than asserting immediately after the click."
+  ]
+}

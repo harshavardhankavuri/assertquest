@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-currency-tour",
+  "module": "billing",
+  "title": "Currency Tour",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "SwiftCargo's fixed exchange-rate table needs to hold up across every supported currency at once, not just the one or two most people test. Book identical shipments and invoice each in a different currency to confirm the conversion math is consistent across the board.",
+  "successCondition": "Book five shipments with identical origin/destination/package (so they all share the same priceCents). Create one invoice per shipment, one in each of USD, EUR, GBP, JPY, and INR. Each invoice's amountCents equals priceCents multiplied by that currency's fixed rate constant from apps/api/src/modules/billing/currency.ts (rounded per whatever rounding rule the code applies), and the USD invoice's amountCents exactly equals the shared priceCents (1:1).",
+  "hints": [
+    "Reuse the exact same origin/destination/package body for all five bookings so priceCents is identical across shipments — that isolates the currency conversion as the only variable.",
+    "Read the actual rate constants and any rounding (Math.round, etc.) from currency.ts rather than guessing — an off-by-one-cent assumption will fail this otherwise-correct test."
+  ]
+}

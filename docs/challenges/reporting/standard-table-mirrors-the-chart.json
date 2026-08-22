@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-table-mirrors-the-chart",
+  "module": "reporting",
+  "title": "Table Mirrors the Chart",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "The bar charts and the data table below them are two views of the exact same buckets — if a bar shows one number and the table row for the same period shows another, someone's report is lying to them.",
+  "successCondition": "For every period row rendered in the Reporting page's data table, the shipment volume chart's bar for that same period (matched by its label/period text) shows the identical shipmentCount value, and the revenue chart's bar for that period shows the identical revenueCents-derived dollar value — checked across every row, not just the first.",
+  "hints": [
+    "Both charts' <title> elements inside each <rect> (visible on hover, or readable from the DOM) restate the exact label and formatted value for that bar — a convenient source to diff against the table row.",
+    "Pick a date range with at least 3-4 buckets so a single-row coincidental match doesn't give a false pass."
+  ]
+}

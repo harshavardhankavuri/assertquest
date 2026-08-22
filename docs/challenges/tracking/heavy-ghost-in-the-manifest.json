@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-ghost-in-the-manifest",
+  "module": "tracking",
+  "title": "Ghost in the Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "A shipment record that quietly gets rebuilt out from under you every few seconds will make any cached reference go stale. Enable \"Stale elements\" in Practice mode and confirm your automation re-queries instead of trusting a handle it grabbed earlier.",
+  "successCondition": "With \"Stale elements\" switched on, a test opens the Dashboard, locates the \"Track shipment\" button in the Practice sandbox, waits past its ~3s remount cycle (the button unmounts and remounts as a new DOM node with the same visible text), re-queries the element, and clicks it successfully without throwing a stale-element/detached-node error.",
+  "hints": [
+    "Use \"Reset session\" in the Practice toolbar right before the test starts, so the remount cycle is predictable.",
+    "Do not cache the element handle across the wait — re-locate it by its visible text/testid immediately before clicking."
+  ]
+}

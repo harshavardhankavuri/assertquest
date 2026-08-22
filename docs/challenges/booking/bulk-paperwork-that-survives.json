@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-paperwork-that-survives",
+  "module": "booking",
+  "title": "Paperwork That Survives",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A real customs clerk uploads a stack of documents for one shipment, and inevitably one file in the stack is the wrong format. Prove the good files in the stack are unaffected by the one bad one, no matter where in the sequence it lands.",
+  "successCondition": "For one shipment, upload 4 documents in this order: valid PDF, valid JPEG, an invalid .exe/text file (rejected, 400 VALIDATION_ERROR), valid PNG. GET /api/booking/:id/documents returns exactly 3 documents (the three valid ones), in the order they were successfully created. Querying customs_documents via `npm run db:psql` confirms exactly 3 rows for that shipment_id, and that none of their filename/mimeType values reference the rejected file — the rejected upload never touched the table, and its rejection didn't roll back or otherwise affect the documents uploaded before or after it.",
+  "hints": [
+    "Each upload is its own independent request/transaction — a 400 on one call has zero effect on rows already committed by earlier successful calls.",
+    "Allowed MIME types (application/pdf, image/jpeg, image/png) and the 5MB size cap are documented in docs/api/booking.md."
+  ]
+}

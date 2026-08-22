@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-fresh-registration-timestamp",
+  "module": "auth",
+  "title": "Fresh Registration Timestamp",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A new account should carry the moment it actually joined the fleet, not a null placeholder waiting to be filled in later.",
+  "successCondition": "POST /api/auth/register a new account and note the current wall-clock time. The response body's user.createdAt is a valid ISO timestamp within a few seconds of that moment. Querying the users table via `npm run db:psql` for that row's created_at confirms it is NOT NULL and matches the same timestamp returned in the API response (to the second).",
+  "hints": [
+    "createdAt on the users table defaults to now() at insert time (see prisma/schema.prisma) — there's no separate code path that sets it later.",
+    "Postgres stores the column as created_at (snake_case) even though Prisma/the API expose it as createdAt."
+  ]
+}

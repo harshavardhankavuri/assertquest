@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-clean-sweep",
+  "module": "notifications",
+  "title": "Clean Sweep",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A crew member returning after a busy day wants one click to clear their whole inbox — but marking all as read must never touch messages that were already read, nor anyone else's inbox.",
+  "successCondition": "As a customer, generate at least 3 distinct notifications (e.g. book 3 shipments), then manually mark exactly one of them read via POST /api/notifications/:id/read. POST /api/notifications/read-all returns 200 with marked equal to 2 (only the still-unread ones). GET /api/notifications afterward shows unreadCount 0 and every notification's read field true. A second, separate customer account's own unrelated notifications (created before or after this test) remain unaffected — check their read/unread state didn't change.",
+  "hints": [
+    "Wait for each booking's notification to actually land (past the queue delay) before manually marking one read, or you may mark the wrong one, or none yet.",
+    "Set up the second, unrelated customer's notifications first and record their read states before running the read-all call on the first customer, so you have a real \"before\" snapshot to compare against."
+  ]
+}

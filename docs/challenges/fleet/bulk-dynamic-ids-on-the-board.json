@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-dynamic-ids-on-the-board",
+  "module": "fleet",
+  "title": "Dynamic IDs on the Board",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Row ids on the scheduling board reshuffle under Practice mode's \"Dynamic ids\" toggle, same trick as the login form — except here it's applied to a live drag-and-drop surface, which is a much less forgiving place for a brittle locator to fail.",
+  "successCondition": "With Practice mode's \"Dynamic ids\" toggle switched on, a test drags a shipment card (located by its visible content — shipment id text or origin/destination labels — not a hardcoded data-testid) from Unassigned onto a vehicle column, and the same script re-run after toggling the setting off and back on (which reshuffles the salt) still succeeds identically both times.",
+  "hints": [
+    "The toggle lives under \"Locators\" in the Practice mode drawer, bottom-right of every page.",
+    "FleetBoard's row ids follow the pattern fleet-row-<shipmentId>-<salt> when the toggle is on — locate by the shipment's rendered content instead, since the salt changes every time the toggle is re-enabled."
+  ]
+}

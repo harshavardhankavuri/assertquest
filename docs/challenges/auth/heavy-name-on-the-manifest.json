@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-name-on-the-manifest",
+  "module": "auth",
+  "title": "Name on the Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "The sidebar's footer is the one place every logged-in page quietly tells you who you are and what you're allowed to do. Confirm it's accurate for all four roles, not just the one everyone tests with.",
+  "successCondition": "For each of the four seeded roles, after logging in the sidebar footer displays text matching the pattern \"<role> · <email>\" with the exact role name (admin, dispatcher, driver, or customer) and the exact email used to log in — checked for all four roles in the same test run, not just one.",
+  "hints": [
+    "The footer sits at the bottom of the left nav, above the \"log out\" button, inside NavShell.tsx.",
+    "Log out fully (click the log out button, don't just navigate away) between role switches so no stale session bleeds into the next check."
+  ]
+}

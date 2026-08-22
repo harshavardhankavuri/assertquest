@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-two-inboxes-never-mix",
+  "module": "notifications",
+  "title": "Two Inboxes Never Mix",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Two customers running through the exact same booking-to-delivery flow at the same time is an everyday occurrence — prove their notifications and outbox trails stay completely partitioned by user, with zero rows crossing between them.",
+  "successCondition": "As customer A and customer B (two separate accounts), each independently: book a shipment, pay its invoice, and advance it to delivered. After waiting past the queue delay, querying notifications and mock_messages via `npm run db:psql`, scoped to A's user id and B's email/user id respectively, confirms each customer has their own complete, correctly-typed set of rows (per docs/api/notifications.md's event table) and that NEITHER customer's rows reference the other's userId, email, or shipment/invoice ids anywhere — cross-check by confirming `select count(*) from notifications where user_id = '<A id>' and body like '%<B's shipment id>%'` returns 0, and vice versa.",
+  "hints": [
+    "Run A's and B's flows close together in time (interleaved, not strictly sequential) to genuinely exercise the queue processing multiple users' jobs around the same time, rather than one fully finishing before the other starts.",
+    "Keep a scratch table of A's and B's ids/emails/shipment ids/invoice ids as you go — with two parallel flows it's easy to mix up whose data you're checking."
+  ]
+}

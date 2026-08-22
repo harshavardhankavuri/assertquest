@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-the-hulls-stay-put",
+  "module": "fleet",
+  "title": "The Hulls Stay Put",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Removing a shipment's card from the board should only ever remove that one card — the vehicle and driver it was pointing at need to still be sitting in the yard afterward, ready for the next job.",
+  "successCondition": "Note a vehicle's id (from GET /api/fleet/vehicles) and a driver's id (from GET /api/fleet/drivers) up front. Create an assignment linking them to a shipment, then DELETE that assignment (204). Querying the DB via `npm run db:psql` confirms: the assignments row is gone, but the vehicles row for that vehicle id and the users row for that driver id both still exist completely unchanged (same plate, same email/role respectively) — DELETE /api/fleet/assignments/:id never cascades beyond the one assignments row it targets.",
+  "hints": [
+    "Vehicle and User both have relations FROM Assignment (assignments have onDelete: Cascade fields pointing at them, prisma/schema.prisma) — that cascade direction only matters if the VEHICLE or DRIVER were deleted, which never happens here.",
+    "select count(*) from vehicles where id = '<id>' and select count(*) from users where id = '<driver id>' should both still return 1 after the assignment delete."
+  ]
+}

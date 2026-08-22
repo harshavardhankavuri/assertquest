@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-every-vehicle-accounted-for",
+  "module": "fleet",
+  "title": "Every Vehicle Accounted For",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Spread a batch of shipments out across every vehicle in the yard and reconcile the dispatch board's own bookkeeping against a straight count of the assignments table, vehicle by vehicle.",
+  "successCondition": "List every seeded vehicle via GET /api/fleet/vehicles. Book one shipment and create one assignment per vehicle (so each vehicle gets exactly one assignment, all with non-overlapping windows so there's no conflict noise). GET /api/fleet/assignments's full list, grouped by vehicleId, shows exactly 1 assignment per vehicle id, for every single vehicle from the roster. Querying `select vehicle_id, count(*) from assignments where vehicle_id in (<all vehicle ids>) group by vehicle_id` via `npm run db:psql` confirms the exact same 1-per-vehicle distribution at the database level, with no vehicle id missing from either result and no vehicle id appearing twice.",
+  "hints": [
+    "If the seeded fleet is small (check GET /api/fleet/vehicles's length first), this is very doable within the time budget — if it's larger, this challenge is meant to be worked through systematically with a script rather than one PUT call at a time by hand.",
+    "assignments has an index on vehicleId (@@index([vehicleId]) in prisma/schema.prisma) specifically to make this kind of grouped lookup efficient — a good sign this is a realistic query pattern, not a synthetic one."
+  ]
+}

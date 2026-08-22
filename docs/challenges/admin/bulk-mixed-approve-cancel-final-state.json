@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-mixed-approve-cancel-final-state",
+  "module": "admin",
+  "title": "Mixed Approve/Cancel Final State",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher clears a backlog by approving some shipments and cancelling others in the same afternoon. Reconcile the database's final state, field by field, against exactly what each individual action requested.",
+  "successCondition": "Book 4 shipments: A, B, C, D. Advance D all the way to \"delivered\". Call POST /api/admin/shipments/bulk with action \"approve\" for [A, B]. Call POST /api/admin/shipments/bulk with action \"cancel\" for [B, C, D] (B gets cancelled after being approved; D is delivered so this item fails). Querying the shipments table via `npm run db:psql` for all 4 afterward confirms the exact final state: A has approved=true, status='booked'; B has approved=true, status='cancelled' (both actions landed); C has status='cancelled'; D still has status='delivered' (the cancel on it was rejected and never wrote). Cross-check that the second call's results array shows D's item with success:false.",
+  "hints": [
+    "approved and status are independent columns — approving a shipment never touches its status, and cancelling never touches approved, so B ending up with both approved=true AND status='cancelled' is the expected, correct outcome of the two calls.",
+    "\"Cannot cancel a delivered shipment\" is the specific rejection reason for D, per docs/api/admin.md — advance D to delivered first via POST /api/tracking/:id/advance (dispatcher/admin) before attempting to cancel it."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-metadata-shipment-ids-complete",
+  "module": "admin",
+  "title": "Metadata Shipment IDs, Complete",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "The audit entry for a bulk action should name every shipment that was IN the request, including the ones that failed — an incomplete audit trail is as bad as no trail at all when someone's investigating what happened.",
+  "successCondition": "Call POST /api/admin/shipments/bulk with 3 shipmentIds: one that's a real, cancellable shipment, and two that are fabricated/unknown UUIDs (so 1 succeeds, 2 fail with \"Shipment not found\"). GET /api/admin/audit-log's matching entry (or querying audit_log directly via `npm run db:psql` and inspecting the metadata JSON column) shows metadata.shipmentIds containing all 3 original ids — including the 2 that failed — and metadata.succeeded = 1, metadata.failed = 2, matching the actual outcome exactly.",
+  "hints": [
+    "The audited metadata.shipmentIds is the original input.shipmentIds array, captured before the per-item loop runs — it isn't filtered down to just the successful ones afterward.",
+    "select metadata from audit_log where id = '<id>'; in psql prints the JSON blob directly, or use the API response's metadata field if you're checking via GET /api/admin/audit-log."
+  ]
+}

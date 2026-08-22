@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-fleet-wide-tangle",
+  "module": "fleet",
+  "title": "Fleet-Wide Tangle",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 40,
+  "description": "A chaotic scheduling day: multiple shipments, drivers, and vehicles with a mix of clean assignments and deliberate overlaps on both dimensions. The conflicts endpoint needs to surface every real conflict and nothing that isn't one, across a busier board than a single pair.",
+  "successCondition": "Book five shipments. Create assignments so that: shipments 1 and 2 share a vehicle with overlapping windows (a vehicle conflict), shipments 3 and 4 share a driver with overlapping windows (a driver conflict), and shipment 5 has a unique vehicle/driver/window that overlaps nothing. GET /api/fleet/conflicts returns exactly one \"vehicle\" conflict (assignmentIds covering shipments 1 and 2's assignments) and exactly one \"driver\" conflict (covering 3 and 4's), with no conflict entry referencing shipment 5's assignment at all.",
+  "hints": [
+    "Keep a clear mapping from shipment number to assignment id as you build this out — with five assignments in flight it's easy to lose track of which id belongs to which shipment.",
+    "Give shipments 1/2 and 3/4 completely disjoint vehicle/driver pairs from each other so the two conflicts don't accidentally interact (e.g. don't reuse a vehicleId from the first pair as a driverId anywhere else — those are different id spaces anyway, but keep every non-shared field genuinely distinct)."
+  ]
+}

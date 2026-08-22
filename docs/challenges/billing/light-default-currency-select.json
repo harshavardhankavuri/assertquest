@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-default-currency-select",
+  "module": "billing",
+  "title": "Default Currency Select",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Before a currency is deliberately chosen, the Billing page's invoice generator has to default to something sensible. Confirm it lands on USD and offers every currency SwiftCargo actually supports.",
+  "successCondition": "On /billing, for a shipment with no invoice yet, the currency <select> defaults to \"USD\" on first render (before any interaction) and its options exactly match the five BILLING_CURRENCIES values: USD, EUR, GBP, JPY, INR.",
+  "hints": [
+    "The select and \"Generate Invoice\" button only render for shipments that don't have an invoice yet — pick a fresh shipment or use a customer with an un-invoiced booking.",
+    "Read the select's value attribute directly rather than assuming from the first <option> tag order in the DOM."
+  ]
+}

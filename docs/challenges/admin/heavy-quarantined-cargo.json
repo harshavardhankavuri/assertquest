@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-quarantined-cargo",
+  "module": "admin",
+  "title": "Quarantined Cargo",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A CSV import lands with a mix of malformed coordinates: latitudes outside +/-90 and longitudes outside +/-180. The importer needs to catch these out-of-range values with the same rigor it applies to missing columns, row by row.",
+  "successCondition": "POST /api/admin/shipments/import as admin with a CSV of three data rows — one fully valid, one with originLat set to 95 (out of range), and one with destinationLng set to -200 (out of range) — returns 200 with totalRows 3, accepted 1, rejected 2. The rejected rows' errors arrays each contain a message naming the offending field and its bound (e.g. \"originLat must be <= 90\").",
+  "hints": [
+    "Required columns and the bulk-import shape are documented in docs/api/admin.md; latitude bounds are -90..90, longitude bounds are -180..180.",
+    "Quote the label fields in your CSV if they contain commas, or the row will be misparsed before the numeric checks even run."
+  ]
+}

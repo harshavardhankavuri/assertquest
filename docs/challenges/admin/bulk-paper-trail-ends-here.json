@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-paper-trail-ends-here",
+  "module": "admin",
+  "title": "Paper Trail Ends Here",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 35,
+  "description": "A bulk cancellation isn't finished when the Admin console says \"succeeded\" — the shipment has to actually die everywhere a customer or dispatcher would look for it. Follow one cancelled shipment from the admin checkbox all the way to the Tracking dashboard.",
+  "successCondition": "On the Admin console, a test selects an open (not delivered) shipment's checkbox and clicks \"Cancel selected\", confirming the itemized result shows success:true for that id. The test then navigates to /tracking (same session or a dispatcher/admin session) and confirms the same shipment's row now shows a \"cancelled\" Badge — without the test itself calling any cancel API directly; the state change must be observed purely through the two UI surfaces.",
+  "hints": [
+    "The tracking page shows the same underlying shipment records the admin bulk panel does — no separate cancelled-shipments view exists.",
+    "If the shipment isn't visible on /tracking yet, remember customers only see their own shipments — use a dispatcher or admin account to view it there too."
+  ]
+}

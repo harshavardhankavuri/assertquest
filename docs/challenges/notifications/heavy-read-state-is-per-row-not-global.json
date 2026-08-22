@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-read-state-is-per-row-not-global",
+  "module": "notifications",
+  "title": "Read State Is Per Row, Not Global",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Opening one notification in the inbox should mark exactly that one as read — every other unread notification sitting in the same inbox needs to stay untouched, dot and all.",
+  "successCondition": "Generate at least 3 notifications for one customer (e.g. book 3 shipments, waiting past the queue delay for all). POST /api/notifications/:id/read for just ONE of the three. Querying the notifications table via `npm run db:psql` for all 3 ids confirms exactly the targeted one has read = true, and the other 2 still have read = false. GET /api/notifications's unreadCount afterward equals exactly (original unread count minus 1), not zero and not unchanged.",
+  "hints": [
+    "markRead() (apps/api/src/modules/notifications/service.ts) updates by the notification's own id, a single-row prisma.notification.update — there's no updateMany or userId-wide side effect in that code path.",
+    "Compute unreadCount before and after the single markRead call so you're confirming an exact delta of 1, not just \"some notifications are still unread\"."
+  ]
+}

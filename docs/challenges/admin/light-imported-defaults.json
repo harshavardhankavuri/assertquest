@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-imported-defaults",
+  "module": "admin",
+  "title": "Imported Defaults",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A shipment that entered the system via a bulk CSV upload is still a normal shipment underneath — it should carry the same fresh, unremarkable defaults as one a customer booked by hand.",
+  "successCondition": "Import a single valid row via POST /api/admin/shipments/import. Querying the shipments table via `npm run db:psql` for the resulting shipment confirms status = 'booked', approved = true, and currency = 'USD' — the exact same defaults a normal POST /api/booking shipment gets, even though this row never went through the booking wizard.",
+  "hints": [
+    "The import path calls prisma.shipment.create with the same underlying model as booking (apps/api/src/modules/admin/service.ts) — Prisma's column defaults apply identically regardless of which route created the row.",
+    "Required CSV columns and formatting are documented in docs/api/admin.md."
+  ]
+}

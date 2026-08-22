@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-second-attempt",
+  "module": "billing",
+  "title": "Second Attempt",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A declined card shouldn't be a dead end — SwiftCargo lets the customer retry with a different card (FR-1004). Decline a payment, then retry with a valid card, and verify the full attempt history is preserved rather than overwritten.",
+  "successCondition": "After a first POST /api/billing/invoices/:id/pay with the decline test card and a second with a valid card, GET /api/billing/invoices/:id/payments returns exactly two payments in order, with attemptNumber 1 (status \"declined\") and attemptNumber 2 (status \"succeeded\"), and GET /api/billing/invoices/:id shows the invoice as \"paid\".",
+  "hints": [
+    "Each call to POST /api/billing/invoices/:id/pay on an open invoice creates a new Payment row rather than overwriting the previous attempt — check the DB's payments table directly if you want to verify beyond the API response.",
+    "The decline test card number is documented in docs/api/billing.md."
+  ]
+}

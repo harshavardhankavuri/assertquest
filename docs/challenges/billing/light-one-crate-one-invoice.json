@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-one-crate-one-invoice",
+  "module": "billing",
+  "title": "One Crate, One Invoice",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "SwiftCargo bills one invoice per shipment, no exceptions. Confirm asking for an invoice on the same shipment twice hands back the original rather than minting a duplicate.",
+  "successCondition": "Book a shipment, then POST /api/billing/shipments/:shipmentId/invoice twice in a row with the same currency. Both calls return 201 with an invoice object, and both responses have the identical invoice id and createdAt — the second call did not create a new row.",
+  "hints": [
+    "The endpoint always responds 201 even on the second, idempotent call — check the id field to prove it's the same invoice, not the status code alone.",
+    "Book the shipment first via POST /api/booking to get a real shipmentId to invoice against."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-revenue-sum-exact",
+  "module": "reporting",
+  "title": "Revenue Sum, Exact",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Revenue is tracked in whole cents everywhere in SwiftCargo — a bucketed report's revenue figures should add up to the exact same integer a plain SQL SUM would produce, with zero floating-point drift creeping in anywhere along the way.",
+  "successCondition": "Book at least 5 shipments with varied, deliberately \"awkward\" priceCents values (not round numbers) within a known date range. GET /api/reporting/summary for that range. Querying `select sum(price_cents) from shipments where created_at >= '<from>' and created_at < '<to>'` via `npm run db:psql` confirms it exactly equals the API response's totalRevenueCents, AND that summing every individual bucket's revenueCents in the response also exactly equals that same total — bucketing the data across multiple day/month buckets never loses or double-counts a single cent.",
+  "hints": [
+    "priceCents/amountCents are always integers throughout the schema (Int columns, not Float) — there should be no rounding involved in a straight SUM, making an exact match the correct expectation, not just a \"close enough\" one.",
+    "Use groupBy=day with a date range spanning several distinct days so the bucketing logic actually has to split the data across multiple buckets, rather than lumping everything into one."
+  ]
+}

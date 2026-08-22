@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-many-notifications-scroll",
+  "module": "notifications",
+  "title": "Many Notifications Scroll",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 35,
+  "description": "Generate enough activity to overflow the notification dropdown's fixed-height list and prove the oldest entries are still reachable by scrolling, not silently clipped off or dropped from the DOM.",
+  "successCondition": "After generating at least 10 notifying events for one user (e.g. booking and paying for several shipments), the dropdown's notification list renders inside a scrollable container (max-h-80 overflow-y-auto), all 10+ items are present in the DOM (not virtualized away), and a test scrolling that specific container to its bottom can locate and interact with (e.g. click \"Mark read\" on) the oldest notification in the list.",
+  "hints": [
+    "Booking a shipment and paying its invoice each produce one notification — repeat that pair a handful of times across different shipments to build up volume quickly.",
+    "Scroll the notification list's own container element, not the page — the dropdown panel itself doesn't grow past its max height."
+  ]
+}

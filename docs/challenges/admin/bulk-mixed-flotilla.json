@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-mixed-flotilla",
+  "module": "admin",
+  "title": "Mixed Flotilla",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher queues a large bulk-cancel across a fleet of shipments in every state: freshly booked, already delivered, and already cancelled. Prove the endpoint sorts the good crates from the bad ones without a single failure derailing the batch, and that the audit trail records the whole operation as one event.",
+  "successCondition": "Book four shipments as a customer. As admin/dispatcher, drive one to delivered by repeatedly calling POST /api/tracking/:id/advance until its status is \"delivered\", and bulk-cancel one directly via POST /api/admin/shipments/bulk. Then POST /api/admin/shipments/bulk with action \"cancel\" and all four shipmentIds. The response is 200 with succeeded 2 (the untouched and the already-cancelled — cancelling an already-cancelled shipment is allowed and idempotent) and failed 1 (the delivered one), with the fourth id also succeeding as newly cancelled. Afterward, GET /api/admin/audit-log as admin shows one new entry with action \"shipment.bulk_cancel\" whose metadata.shipmentIds contains all four ids.",
+  "hints": [
+    "Only \"delivered\" is explicitly blocked in the service logic — re-cancelling an already-cancelled shipment isn't rejected, so work out from the code/docs whether that counts as success before asserting the count.",
+    "The audit log entry is written once per bulk call, not once per shipment id — check metadata on that single entry rather than looking for four."
+  ]
+}

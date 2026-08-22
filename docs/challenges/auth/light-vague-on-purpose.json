@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-vague-on-purpose",
+  "module": "auth",
+  "title": "Vague on Purpose",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A careless login error message can leak which emails are registered, handing an attacker a free account-enumeration tool. Confirm SwiftCargo's login endpoint refuses to make that distinction.",
+  "successCondition": "POST /api/auth/login with an email that was never registered returns 401 with the exact same error.code (UNAUTHORIZED) and message text as POST /api/auth/login with a registered email but the wrong password.",
+  "hints": [
+    "Register one real account first so you have a known-good email to pair with a deliberately wrong password.",
+    "Diff the two 401 response bodies field by field — the message string itself, not just the status code, must match."
+  ]
+}

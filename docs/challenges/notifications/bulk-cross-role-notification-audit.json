@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-cross-role-notification-audit",
+  "module": "notifications",
+  "title": "Cross-Role Notification Audit",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "Trigger every documented notification-worthy event across two different customers and confirm, end to end, that the bell, the dropdown, and the mock outbox (admin-only) all agree on exactly what happened and to whom.",
+  "successCondition": "With two customers A and B each booking a shipment and one of them (A) additionally taking their invoice through a declined-then-successful payment retry, a test confirms: customer A's dropdown shows shipment.booked and payment.failed and payment.succeeded notifications (never payment.failed for a payment that hadn't actually failed); customer B's dropdown shows only their own shipment.booked notification and none of A's; and an admin's GET /api/notifications/outbox (or the Admin console's Mock outbox panel) shows the corresponding email records addressed to A's and B's respective emails, with subjects matching each event.",
+  "hints": [
+    "The mock outbox is admin-only (docs/api/notifications.md) — you'll need a third, admin session alongside the two customer sessions to complete this check.",
+    "payment.failed fires on either a decline or a timeout — trigger a decline specifically (card 4000000000000002) for a deterministic, documented failure reason to check against."
+  ]
+}

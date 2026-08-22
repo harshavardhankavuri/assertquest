@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-slow-boat",
+  "module": "notifications",
+  "title": "Slow Boat",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "Notification delivery is deliberately asynchronous — queued, not written in the same request that triggered it (FR-1203). Prove this by checking immediately after the triggering action and again after waiting, rather than assuming everything is synchronous.",
+  "successCondition": "Immediately after booking a shipment, GET /api/notifications for that customer does NOT yet contain the \"Shipment booked\" notification (or contains fewer matching entries than expected). Polling again after waiting past the queue delay, the notification is present. NOTIFICATION_QUEUE_DELAY_MS controls the delay — see docs/self-host.md.",
+  "hints": [
+    "This is testing a race condition on purpose — a test that only checks once, right after the action, will falsely assume nothing was sent.",
+    "A correct async test polls with a timeout rather than either asserting instantly or using a long fixed sleep."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-crew-manifest-sweep",
+  "module": "auth",
+  "title": "Crew Manifest Sweep",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 40,
+  "description": "Onboard one of each crew role and prove the RBAC boundary holds consistently across the whole roster, not just for a single admin/non-admin pair, while also confirming the /me endpoint reports the right role back to each of them.",
+  "successCondition": "Register four accounts, one per role (admin, dispatcher, driver, customer), each with a distinct email. For every account: GET /api/auth/me returns 200 with user.role exactly matching the role it registered with, and user.email matching its registration email. Then GET /api/auth/admin-check for each of the four returns 200 only for the admin account and 403 FORBIDDEN for the other three, and GET /api/admin/feature-flags returns 200 for all four (that route is open to any authenticated role).",
+  "hints": [
+    "Keep a table mapping email -> role -> accessToken as you build this out; the cross-checks at the end are easy to mix up otherwise.",
+    "feature-flags is intentionally NOT admin-gated (see docs/api/admin.md) — don't expect a 403 there for non-admin roles, that would be the wrong assertion."
+  ]
+}

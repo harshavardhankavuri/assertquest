@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-closed-gate",
+  "module": "auth",
+  "title": "Closed Gate",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "Google OAuth login is scaffolded but deliberately gated off in this environment. Confirm the stub behaves correctly whether the feature flag is off (the default) or explicitly turned on but still unimplemented.",
+  "successCondition": "GET /api/auth/google, in an environment where GOOGLE_OAUTH_ENABLED is not set to \"true\" (the default test environment), returns 404 with error.code NOT_FOUND. If you can control the environment variable and set GOOGLE_OAUTH_ENABLED=true, the same request instead returns 501, proving the route distinguishes \"feature off\" from \"feature on but not built.\"",
+  "hints": [
+    "If you can't change server environment variables in your test setup, focus the assertion on the default (unset) case returning 404 — that's the deterministic, always-available part of this scenario.",
+    "The two failure modes use different status codes (404 vs 501) precisely so a client can tell \"doesn't exist here\" apart from \"exists but not finished.\""
+  ]
+}

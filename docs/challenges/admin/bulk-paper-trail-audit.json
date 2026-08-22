@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-paper-trail-audit",
+  "module": "admin",
+  "title": "Paper Trail Audit",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "SwiftCargo's compliance officer wants proof that every sensitive admin action — logins, registrations, bulk actions, imports — actually lands in the audit log, in the right order, with nothing silently dropped.",
+  "successCondition": "Starting from a fresh sequence of actions — register a new user, log in as that user, perform a bulk approve as admin, and import a one-row CSV as admin — GET /api/admin/audit-log as admin returns entries containing all four corresponding action values (\"auth.register\", \"auth.login\", \"shipment.bulk_approve\", \"shipment.csv_import\") sorted newest first by createdAt, and each entry's actorEmail matches the account that performed it.",
+  "hints": [
+    "The log is capped at the 100 most recent entries and sorted desc by createdAt — if your test environment has heavy prior activity, the entries could scroll off; do these four actions last.",
+    "actorEmail comes from a join on the actor relation, not a stored snapshot — verify it matches the email you registered/logged in with, not a stale value."
+  ]
+}

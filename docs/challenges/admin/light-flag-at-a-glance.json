@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-flag-at-a-glance",
+  "module": "admin",
+  "title": "Flag at a Glance",
+  "difficulty": "light",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 12,
+  "description": "A dashboard is only as trustworthy as its weakest render — if the API says a flag is on, the badge on screen had better agree. Cross-check the Feature Flags panel's rendered badges against the raw API response.",
+  "successCondition": "GET /api/admin/feature-flags is called directly and its flags object is compared field-by-field against the Badge tone/text rendered for each flag row on the Admin console's Feature Flags panel — every key's UI state (\"on\"/success vs \"off\"/neutral) matches the boolean the API returned for that same key.",
+  "hints": [
+    "Fetch the API response first so you have a ground truth to diff the UI against.",
+    "docs/api/admin.md documents the exact flag keys and their env var naming if you want to sanity-check a self-hosted instance's configuration too."
+  ]
+}

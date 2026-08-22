@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-silent-alarm",
+  "module": "fleet",
+  "title": "Silent Alarm",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "Detecting a conflict in the API is only half the job — FR-903 requires the scheduling board to surface it as a visible banner or toast, not bury it in the browser console. Create a double-booking through the UI and confirm the warning is actually visible.",
+  "successCondition": "After dragging two shipments onto overlapping slots for the same driver or vehicle on the Fleet & Scheduling board, a visible on-page element (not just a console.error) announces the conflict — e.g. a banner with role=\"alert\" or role=\"status\" naming the affected driver/vehicle.",
+  "hints": [
+    "Log in as a dispatcher or admin — the fleet board is dispatch-only.",
+    "Don't just check that GET /api/fleet/conflicts returns data — verify the DOM actually renders something a user would see, per the project's rule that flaky/conflict states must never be console-only."
+  ]
+}

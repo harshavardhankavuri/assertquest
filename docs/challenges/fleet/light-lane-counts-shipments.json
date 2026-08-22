@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-lane-counts-shipments",
+  "module": "fleet",
+  "title": "Lane Counts Shipments",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "A small grammar detail that trips up more scheduling boards than it should: one shipment in a lane reads \"1 shipment\", not \"1 shipments\".",
+  "successCondition": "On the Fleet & Scheduling board, a lane (vehicle column or Unassigned) with exactly one shipment shows the count label \"1 shipment\" (singular, no trailing s), and any lane with zero or more than one shipment shows \"N shipments\" (plural) — checked across at least one lane of each case.",
+  "hints": [
+    "The label is generated per-column from laneShipments.length inside FleetBoard.tsx — a naive template string would always append \"s\".",
+    "An empty lane still renders its header — \"0 shipments\" is the expected plural form there too."
+  ]
+}

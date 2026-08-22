@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-full-dispatch-day",
+  "module": "fleet",
+  "title": "Full Dispatch Day",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 40,
+  "description": "Run a whole dispatch shift end to end on the board: three shipments assigned cleanly to three different vehicles and drivers, then a scheduling mistake that double-books one driver, and confirm the board surfaces the problem the instant it happens.",
+  "successCondition": "A test drags three distinct shipments from Unassigned onto three different vehicle columns, each with a different driver and non-overlapping time slot, and confirms no conflict banner appears and all three rows are clean in the Schedule table. It then creates a fourth assignment for the same driver as one of the first three with an overlapping time window, and confirms: the conflict banner appears with role=\"alert\" naming the affected driver, and both the new and the original conflicting row in the Schedule table now show the highlighted/conflict styling — while the two untouched assignments remain unhighlighted.",
+  "hints": [
+    "Reuse the same driver deliberately for the fourth assignment and choose a start time that overlaps one of the first three's 2-hour window — the conflict check only looks at time-range overlap on a shared driver or vehicle.",
+    "Check the banner's exact driver reference (email) matches the one you double-booked, not a generic \"a conflict exists\" message."
+  ]
+}

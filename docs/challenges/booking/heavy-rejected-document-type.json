@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-rejected-document-type",
+  "module": "booking",
+  "title": "Rejected Document Type",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 30,
+  "description": "The client-side accept hint on the file picker is UX only — the server is the real gatekeeper on customs document types (FR-705). Force a disallowed file through and confirm the UI turns the rejection into something readable.",
+  "successCondition": "Selecting a file with a disallowed MIME type (e.g. text/plain) for upload on the Confirm step's document uploader — bypassing the picker's accept filter, e.g. via direct file input manipulation — surfaces a visible Alert with an error message after the server responds 400, and the document list does not gain a new entry for the rejected file.",
+  "hints": [
+    "Browsers' native file pickers can be steered around the accept filter by setting the input's files property programmatically in your test tooling, since accept is a UX hint, not an enforced restriction.",
+    "docs/api/booking.md lists the exact allowed MIME types server-side: application/pdf, image/jpeg, image/png — anything else should 400."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-someone-elses-ledger",
+  "module": "billing",
+  "title": "Someone Else's Ledger",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A customer's invoice is their own business, not another customer's to browse. Confirm ownership is enforced on a single-invoice lookup.",
+  "successCondition": "Customer A books a shipment and creates an invoice for it. Customer B (a different logged-in customer account) calls GET /api/billing/invoices/:id with that invoice's id and receives 403 with error.code FORBIDDEN.",
+  "hints": [
+    "Register two separate customer accounts to get two independent, non-overlapping sessions.",
+    "dispatcher and admin roles are explicitly allowed to see any invoice — this test specifically needs both accounts to be role customer to exercise the ownership check."
+  ]
+}

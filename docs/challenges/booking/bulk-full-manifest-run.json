@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-full-manifest-run",
+  "module": "booking",
+  "title": "Full Manifest Run",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Walk a shipment through its entire booking lifecycle: quote it, book it, attach its customs paperwork, and confirm every downstream read reflects exactly what was quoted and uploaded — nothing drifts along the way.",
+  "successCondition": "POST /api/booking/quote for a chosen origin/destination/package returns a breakdown. POST /api/booking with that exact same body returns 201 with the shipment's priceCents, distanceKm, and currency matching the quote exactly. GET /api/booking/:id returns the identical shipment. POST /api/booking/:id/documents with a valid small PDF succeeds with 201, and GET /api/booking/:id/documents then lists exactly that one document with matching filename, mimeType, and sizeBytes. GET /api/booking (list) includes this shipment as the most recent (first) entry for that customer.",
+  "hints": [
+    "Keep the exact same origin/destination/package JSON between the quote and booking calls — even a tiny lat/lng difference will make priceCents diverge and break the comparison.",
+    "sizeBytes in the document metadata should equal the exact byte length of the file you uploaded — verify against your test file's actual size, not an assumed value."
+  ]
+}

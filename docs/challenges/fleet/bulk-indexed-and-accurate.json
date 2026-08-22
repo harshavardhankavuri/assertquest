@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-indexed-and-accurate",
+  "module": "fleet",
+  "title": "Indexed And Accurate",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "With a busy board full of assignments spread across several drivers, prove the conflicts detector's per-driver grouping is exactly right — no driver's overlap gets missed because their assignments are scattered among everyone else's.",
+  "successCondition": "Create at least 8 assignments across at least 4 different drivers (using seeded drivers/vehicles, cycling as needed), such that exactly 2 specific drivers have an internal overlap (2 overlapping assignments each) and the other drivers' assignments are all mutually non-overlapping. GET /api/fleet/conflicts returns exactly 2 \"driver\"-type conflict entries, one per overlapping driver, each naming exactly the 2 correct assignment ids for that driver — no false positive for the clean drivers, no false negative or merged/miscounted entry for the two real ones. Querying the assignments table via `npm run db:psql`, grouped by driver_id with the overlapping time windows manually checked, independently confirms the same 2-driver conflict picture.",
+  "hints": [
+    "assignments has an index on driverId (@@index([driverId]) in prisma/schema.prisma) — this challenge is effectively proving that per-driver grouping is correct at real scale, not just for a single pair.",
+    "Keep a table on paper (or in a scratch file) mapping assignment id -> driver id -> time window as you build the 8+ assignments — losing track of which ones you intended to overlap is the easiest way to fool yourself here."
+  ]
+}

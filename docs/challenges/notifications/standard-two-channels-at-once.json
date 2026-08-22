@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-two-channels-at-once",
+  "module": "notifications",
+  "title": "Two Channels at Once",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A delivered shipment is important enough to page the customer on both email and SMS, not just one. Confirm both mock channels actually fire for that specific event, while a merely booked shipment only ever fires email.",
+  "successCondition": "Book a shipment as a customer, then drive it to delivered via repeated POST /api/tracking/:id/advance calls as a dispatcher/admin. After waiting past the notification queue delay, GET /api/notifications/outbox as admin, filtered by the customer's email (?to=<email>), shows a message with subject \"Shipment delivered\" and channel \"email\". A second call to the outbox filtered by the customer's derived mock phone number (+1555 followed by the first 7 hex characters of their user id, with hyphens stripped) shows a message with the same delivered event and channel \"sms\".",
+  "hints": [
+    "The mock phone number formula is documented exactly in docs/api/notifications.md — derive it from the customer's own user id, don't guess or copy an example.",
+    "The booked event only sends email, not sms — a good sanity check is confirming there's no sms-channel message for the booking event itself, only for the later delivered one."
+  ]
+}

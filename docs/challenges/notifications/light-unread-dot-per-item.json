@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-unread-dot-per-item",
+  "module": "notifications",
+  "title": "Unread Dot Per Item",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Inside the open dropdown, each notification needs its own tiny tell for whether it's been read — a dot next to unread items only, gone once it's been acknowledged.",
+  "successCondition": "Opening the notification dropdown with at least one unread and one read notification present shows an aria-label=\"unread\" dot marker next to the unread item's title only — the read item's title renders with no such marker.",
+  "hints": [
+    "Mark one notification read first (via its \"Mark read\" link) so you have a guaranteed read item to compare against an unread one.",
+    "The dot is a small bullet character rendered conditionally on !n.read — check its presence/absence per item, not just overall unread count."
+  ]
+}

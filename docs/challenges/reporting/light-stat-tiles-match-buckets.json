@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-stat-tiles-match-buckets",
+  "module": "reporting",
+  "title": "Stat Tiles Match Buckets",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "The two big numbers at the top of the Reporting page are supposed to be the honest sum of everything in the buckets below them — not a separately-computed figure that could quietly drift out of sync.",
+  "successCondition": "On /reporting with any date range showing at least one bucket, the \"Shipments\" StatTile value exactly equals the sum of shipmentCount across all rendered buckets in the data table, and the \"Total revenue\" StatTile value (formatted as $X.XX) exactly equals the sum of revenueCents across the same buckets, divided by 100 and formatted to two decimal places.",
+  "hints": [
+    "Both stat tiles and the table read from the same summary response — this challenge is confirming totalShipments/totalRevenueCents genuinely equal the sum of the buckets array, not a separately-tracked figure.",
+    "Sum the bucket values yourself from the rendered table rows rather than trusting the API's top-level totals blindly."
+  ]
+}

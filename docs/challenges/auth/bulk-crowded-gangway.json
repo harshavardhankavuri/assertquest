@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-crowded-gangway",
+  "module": "auth",
+  "title": "Crowded Gangway",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 40,
+  "description": "Two browser tabs for the same crew member both hold a valid, unrevoked refresh token because the account logged in twice. Confirm each session's refresh token rotates independently, and revoking one session (via logout) doesn't collateral-damage the other.",
+  "successCondition": "Log in twice with the same account (two separate POST /api/auth/login calls), yielding cookie A and cookie B, each backed by a distinct refresh token. POST /api/auth/refresh with cookie A succeeds and rotates to cookie A2; cookie B is still separately valid — POST /api/auth/refresh with cookie B also succeeds independently. Then POST /api/auth/logout with cookie A2 returns 204, and a subsequent refresh attempt using cookie B (still unrevoked) still succeeds with 200 — proving logout only revoked the session it was called with.",
+  "hints": [
+    "Each login creates its own row in the refresh tokens store — nothing links the two sessions together, so an action on one shouldn't be visible in the other's data.",
+    "Keep cookie A, cookie A2, and cookie B as three clearly separate values in your test client — mixing them up is the easiest way to get a false result here."
+  ]
+}

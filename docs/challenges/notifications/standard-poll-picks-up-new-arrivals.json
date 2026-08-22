@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-poll-picks-up-new-arrivals",
+  "module": "notifications",
+  "title": "Poll Picks Up New Arrivals",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "There's no notification WebSocket in SwiftCargo (unlike tracking) — the bell relies on a plain 5-second poll instead. Confirm a new notification actually shows up on its own, without any manual reload, within that window.",
+  "successCondition": "With the notification dropdown closed and no interaction from the user, triggering a new notifying event (e.g. booking a shipment) results in the header's unread count badge updating to reflect the new notification within roughly 5-10 seconds (covering the POLL_MS interval plus the async delivery delay), with no page reload or manual re-fetch performed by the test.",
+  "hints": [
+    "The bell polls every 5000ms (POLL_MS in NotificationBell.tsx) regardless of whether the dropdown is open — you don't need to open it for the badge to update.",
+    "Budget for both the polling interval and the notification queue's own ~500ms delivery delay when deciding how long to wait before asserting."
+  ]
+}

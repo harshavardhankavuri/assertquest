@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-outbox-is-locked",
+  "module": "notifications",
+  "title": "Outbox Is Locked",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "The mock outbox can show every user's email/SMS history — that's exactly the kind of thing a customer or driver shouldn't be able to browse for anyone but themselves, since there's no per-user filter enforced on it.",
+  "successCondition": "GET /api/notifications/outbox as a logged-in customer (or driver, or dispatcher) returns 403 with error.code FORBIDDEN. The same call with a valid admin token returns 200 with a messages array.",
+  "hints": [
+    "This route uses requireRole(\"admin\") specifically, layered on top of the module-wide authenticate hook — dispatcher is NOT included here, unlike some other modules.",
+    "Register a dispatcher account specifically to confirm even that role is excluded, since dispatcher has broad access elsewhere in the API."
+  ]
+}

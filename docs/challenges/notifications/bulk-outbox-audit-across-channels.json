@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-outbox-audit-across-channels",
+  "module": "notifications",
+  "title": "Outbox Audit Across Channels",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "An admin auditing the mock outbox after a busy day needs every single field on every single row to be right — subject, body, recipient, and channel — across a real mix of email and SMS traffic from several different events.",
+  "successCondition": "For one customer, trigger at least 4 distinct notify-producing events across the module (e.g. book a shipment, pay successfully, decline a second payment, deliver the shipment). After waiting past the queue delay, querying mock_messages via `npm run db:psql` for that user's `to` value(s) (their email for email-channel rows, their derived +1555... number for sms-channel rows), build a full table of every row's channel/subject/body and confirm: every email row has a non-null subject exactly matching its notification's title; the one sms row (from delivery) has a null subject (SMS has no subject field per the mock gateway's shape) but a non-empty body; and every row's `to` column correctly matches the channel (email address for channel='email', the derived fake number for channel='sms') with no channel/recipient mismatches anywhere in the set.",
+  "hints": [
+    "toPublicMessage / the MockMessage model (prisma/schema.prisma) has subject as nullable specifically because SMS messages never set it — only email rows should have a non-null subject.",
+    "GET /api/notifications/outbox?to=<value> is admin-only and exact-match per recipient — query once per distinct `to` value you're auditing (the customer's email, then their derived SMS number) rather than trying to filter by user in one call."
+  ]
+}

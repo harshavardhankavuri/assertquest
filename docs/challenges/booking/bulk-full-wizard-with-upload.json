@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-full-wizard-with-upload",
+  "module": "booking",
+  "title": "Full Wizard With Upload",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Book a shipment from a cold start all the way through to two customs documents on file, checking that every number and label carried through the wizard is exactly what the final confirmation and upload panel show.",
+  "successCondition": "A test completes the full wizard — selects a real origin and destination via autocomplete, enters package weight/dimensions, waits for a real quote, confirms the booking — and on the resulting confirmation screen verifies: the shown shipment id is non-empty, the shown price matches the total from the Pricing step exactly, and after uploading one PDF and one PNG customs document, the document list shows exactly two entries with correct filenames and mimeTypes matching what was uploaded.",
+  "hints": [
+    "Carry the exact quote total forward from the Pricing step screen so your final assertion isn't just \"a price is shown\" but \"this specific price is shown\".",
+    "The server recomputes price independently of anything the client sends (FR-704) — if your carried-forward total doesn't match, that's a real bug worth flagging, not a test mistake to paper over."
+  ]
+}

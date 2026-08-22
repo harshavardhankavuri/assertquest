@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-two-tables-two-keys",
+  "module": "notifications",
+  "title": "Two Tables, Two Keys",
+  "difficulty": "light",
+  "surfaceTags": ["db"],
+  "estimatedMinutes": 15,
+  "description": "An in-app notification and its matching outbox email are two separate records of the same event, tracked independently — one is not secretly a view of the other.",
+  "successCondition": "Book a shipment (which both creates a Notification row and a MockMessage row of channel email). After waiting past the queue delay, using `npm run db:psql`, confirm the notifications row's id and the mock_messages row's id are two entirely different UUIDs — there is no shared primary key or foreign key column linking the two tables together (inspect \\d notifications and \\d mock_messages in psql to confirm neither table references the other).",
+  "hints": [
+    "prisma/schema.prisma's Notification and MockMessage models are independent — both are written by the same notify() call, but the schema itself never relates one to the other.",
+    "You can only correlate the two rows after the fact by matching userId/to and roughly by createdAt, exactly the way a real support engineer manually cross-referencing an outbox against an inbox would have to."
+  ]
+}

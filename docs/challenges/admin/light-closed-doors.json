@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-closed-doors",
+  "module": "admin",
+  "title": "Closed Doors",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "The Admin console link is only for people who should be behind that door — FR-604 says role-gated UI must hide what a role can't use, not just block it after the click. Confirm the nav itself never offers the door to non-admins.",
+  "successCondition": "Logged in as customer@swiftcargo.test or a driver/dispatcher account, the left nav (rendered by NavShell) contains no link with the text \"Admin console\" anywhere in the DOM. Logged in as admin@swiftcargo.test, the same nav does contain it.",
+  "hints": [
+    "Compare the rendered nav across at least two roles rather than trusting a single login.",
+    "This is a rendering check, not a routing check — don't just test that navigating to /admin redirects; assert the link is absent from the DOM."
+  ]
+}

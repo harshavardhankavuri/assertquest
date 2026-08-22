@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-download-byte-identical",
+  "module": "reporting",
+  "title": "Download, Byte Identical",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "The CSV a dispatcher downloads should be exactly the same sequence of bytes that's sitting in the database — no re-serialization, no line-ending conversion, no silent re-generation happening at download time.",
+  "successCondition": "POST /api/reporting/jobs and poll until ready. GET /api/reporting/jobs/:id/download and save the raw response body bytes. Independently, using `npm run db:psql` (or Prisma Studio's binary export), extract the raw bytes of that job's result_csv bytea column. Compare the two byte sequences: they are byte-for-byte identical (same length, same checksum/hash) — the download endpoint serves the stored bytes directly (downloadReportJob in apps/api/src/modules/reporting/service.ts just returns Buffer.from(job.resultCsv)) rather than regenerating the CSV fresh on each download.",
+  "hints": [
+    "Downloading the same job twice and confirming both downloads are also byte-identical to each other is a useful extra sanity check that nothing is being regenerated per-request.",
+    "A sha256 checksum of both byte sequences is more reliable than eyeballing raw bytes for an exact-match comparison."
+  ]
+}

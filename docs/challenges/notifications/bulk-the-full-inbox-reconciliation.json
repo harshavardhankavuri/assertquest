@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-the-full-inbox-reconciliation",
+  "module": "notifications",
+  "title": "The Full Inbox Reconciliation",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Walk one shipment through its entire life — booked, paid, delivered — and reconcile exactly what should exist in both the in-app notification center and the mock outbox against what actually got written, leaving nothing to assumption.",
+  "successCondition": "As one customer: book a shipment, create and pay its invoice successfully, then advance the shipment to delivered. After waiting past the queue delay for the last event, querying the DB via `npm run db:psql`: the notifications table has exactly 3 new rows for this user (types shipment.booked, payment.succeeded, shipment.delivered, in that chronological order by created_at), and the mock_messages table has exactly 4 new rows (email for shipment.booked, email for payment.succeeded, email AND sms for shipment.delivered) — confirm the exact 3-and-4 counts and every row's type/channel, not just that \"some\" rows exist.",
+  "hints": [
+    "The trigger -> type -> title -> channel table in docs/api/notifications.md tells you exactly which events send which channels — shipment.delivered is the only one of the three sending on both.",
+    "Scope every count query to this specific user's id/email — the seeded demo data and other test runs will have unrelated rows in both tables that would otherwise pollute your counts."
+  ]
+}

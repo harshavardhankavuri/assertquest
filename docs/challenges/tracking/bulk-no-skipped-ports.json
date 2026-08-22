@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-no-skipped-ports",
+  "module": "tracking",
+  "title": "No Skipped Ports",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "Fire off a burst of advance calls against the same shipment back to back and make sure the database ends up in a coherent final state rather than something torn or overshot by the rapid-fire requests.",
+  "successCondition": "Book a shipment, then fire 10 POST /api/tracking/:id/advance calls back to back with minimal delay between them (not waited for sequentially one response at a time — near-simultaneous). Querying the shipments table via `npm run db:psql` afterward confirms status is a valid enum value (never null, never a garbage string), current_lat/current_lng are valid finite numbers, and once status reaches \"delivered\" it stays there even though more advance calls than were needed to reach it were fired — no torn/partial write left the row in an inconsistent state despite the rapid-fire requests.",
+  "hints": [
+    "Each /advance call does its read-then-write inside the request handler — this challenge is checking that concurrent requests against the same shipment don't leave the DB in a corrupted intermediate state, not that they're perfectly serialized.",
+    "Sending all 10 requests concurrently (e.g. Promise.all in a script, or a load-testing tool) rather than one-by-one is what actually exercises this."
+  ]
+}

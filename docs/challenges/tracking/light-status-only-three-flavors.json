@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-status-only-three-flavors",
+  "module": "tracking",
+  "title": "Only Three Flavors",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A shipment is only ever booked, in_transit, or delivered — there's no fourth status a filter could legitimately ask for.",
+  "successCondition": "GET /api/tracking?status=cancelled as a logged-in user returns 400 with error.code VALIDATION_ERROR, since \"cancelled\" (used by the admin bulk-cancel action) is not one of the three values SHIPMENT_STATUSES accepts for this filter. GET /api/tracking?status=in_transit succeeds with 200.",
+  "hints": [
+    "The valid status filter values are exactly booked, in_transit, delivered — check @assertquest/shared's SHIPMENT_STATUSES constant if you're unsure of the exact spelling.",
+    "This is specifically about the query-string filter's enum, not whether a shipment's actual status field could ever be \"cancelled\" internally — that's a separate question from what /api/tracking's filter accepts."
+  ]
+}

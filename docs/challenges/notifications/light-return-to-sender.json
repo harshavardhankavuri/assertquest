@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-return-to-sender",
+  "module": "notifications",
+  "title": "Return to Sender",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 15,
+  "description": "SwiftCargo never sends a real email — every outbound message lands in a viewable mock outbox instead, like Mailhog. Book a shipment and confirm a confirmation email actually landed for that customer.",
+  "successCondition": "After booking a shipment as a customer, GET /api/notifications/outbox?to=<customer email> (as admin) eventually includes a message with channel \"email\" and subject \"Shipment booked\".",
+  "hints": [
+    "The outbox endpoint is admin-only — book the shipment as a customer, then switch to an admin session to read the outbox.",
+    "Delivery is asynchronous (see notifications-heavy-slow-boat) — you may need to wait briefly or poll."
+  ]
+}

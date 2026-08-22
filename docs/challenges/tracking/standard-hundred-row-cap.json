@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-hundred-row-cap",
+  "module": "tracking",
+  "title": "Hundred Row Cap",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 25,
+  "description": "Finance's CSV export is documented as always capped at 100 rows, unpaginated — prove that cap actually holds even when the warehouse has more shipments on the books than that.",
+  "successCondition": "As dispatcher/admin, confirm via `npm run db:psql` (select count(*) from shipments) whether the seeded DB already has 100+ shipments; if not, create enough new bookings to cross 100 total. GET /api/tracking/export.csv returns exactly 100 data rows (excluding the header) even though the total shipment count in the database is higher — cross-check the exact row count of the CSV body against the DB's total count to confirm the cap, not just that the file downloads successfully.",
+  "hints": [
+    "docs/api/tracking.md notes the CSV export is \"always unpaginated, capped at 100 rows\" — this challenge is about proving that cap is real, not just trusting the docs.",
+    "Counting CSV data rows is just (number of lines) minus 1 for the header — watch out for a trailing newline inflating a naive line count by one."
+  ]
+}

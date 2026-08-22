@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-turned-away-quietly",
+  "module": "auth",
+  "title": "Turned Away Quietly",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "A rejected login shouldn't dump you back at a blank form wondering what happened, and it definitely shouldn't say whether the email exists. Confirm the error surfaces clearly, in place, without navigation.",
+  "successCondition": "Submitting /login with a wrong password for a seeded account renders a visible Alert (role=\"alert\") on the same page with a generic message that does not reveal whether the account exists, the browser URL remains /login, and the email/password fields retain whatever was typed (not cleared).",
+  "hints": [
+    "The login form has noValidate set, so the browser's native validation UI won't intercept a bad submission — the app's own Alert is what you're checking.",
+    "Try both a nonexistent email and a wrong password for a real account — the message text should read the same either way."
+  ]
+}

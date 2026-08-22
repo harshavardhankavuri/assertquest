@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-quiet-goodbye",
+  "module": "auth",
+  "title": "Quiet Goodbye",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Logging out should be a no-drama operation even if the session is already gone — a crew member closing a stale tab shouldn't get an error just because their cookie expired first.",
+  "successCondition": "POST /api/auth/logout with no th_refresh cookie present at all returns 204 with an empty body, exactly like calling it with a valid cookie does. A subsequent attempt to refresh using a refresh token that was already logged out (once, from a prior valid session) returns 401.",
+  "hints": [
+    "Logout deliberately doesn't distinguish \"already logged out\" from \"successfully logged out\" — both return 204, per the service's missing/unknown-token-is-ignored behavior.",
+    "To set up the second assertion, log in, capture the refresh cookie, call logout once with it, then try to refresh with that same now-revoked token."
+  ]
+}

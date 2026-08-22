@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-quote-without-login",
+  "module": "booking",
+  "title": "Quote Without Login",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "SwiftCargo lets anyone window-shop a price before committing to an account. Confirm the quote calculator really doesn't require authentication, unlike the booking-creation endpoint right next to it.",
+  "successCondition": "POST /api/booking/quote with a valid origin/destination/package body and no Authorization header returns 200 with a full breakdown (baseFeeCents, weightFeeCents, distanceFeeCents, priceCents, currency). The same body sent to POST /api/booking with no Authorization header instead returns 401.",
+  "hints": [
+    "Use two real freight hub coordinates from GET /api/booking/geocode for origin/destination so the distance calculation isn't degenerate.",
+    "This is the one endpoint in the booking module explicitly documented as public — every other route requires auth."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-only-drivers-need-apply",
+  "module": "fleet",
+  "title": "Only Drivers Need Apply",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "The \"Assign as driver\" dropdown on the Fleet board is for drivers only — an admin or dispatcher's own email showing up there would let someone accidentally assign a shipment to the wrong kind of account entirely.",
+  "successCondition": "On /fleet, the \"Assign as driver\" select's options list contains only the email addresses of accounts with role \"driver\" (matching GET /api/fleet/drivers) — no admin, dispatcher, or customer email appears among the options.",
+  "hints": [
+    "Cross-check the rendered options against a direct GET /api/fleet/drivers call as your source of truth.",
+    "If the seeded data only has one or two drivers, register a couple more via /register with role \"driver\" to make the check more meaningful."
+  ]
+}

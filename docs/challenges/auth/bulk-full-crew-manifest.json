@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-full-crew-manifest",
+  "module": "auth",
+  "title": "Full Crew Manifest",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Build the complete RBAC nav matrix from scratch: register four brand-new accounts, one per role, and independently verify each one's exact visible nav set against the spec — no reliance on the pre-seeded demo accounts at all.",
+  "successCondition": "A test registers four fresh accounts via /register, one for each role (admin, dispatcher, driver, customer), then for each newly registered account logs in and records the exact set of nav item labels visible in the sidebar. The four sets are asserted against the documented mapping (driver: Dashboard, Tracking only; customer: + Book a shipment, Billing; dispatcher: Dashboard, Book a shipment, Tracking, Fleet & scheduling, Reporting; admin: all seven), and additionally confirms no two roles' sets are identical to each other (a regression that granted, say, driver the same nav as customer would be caught).",
+  "hints": [
+    "Registering doesn't require an existing session — /register is reachable while logged out, and each successful register also logs you straight in.",
+    "Log out cleanly between the four accounts so nav state from the previous role can't leak into the next check."
+  ]
+}

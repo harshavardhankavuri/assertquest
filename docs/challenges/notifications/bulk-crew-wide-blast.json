@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-crew-wide-blast",
+  "module": "notifications",
+  "title": "Crew-Wide Blast",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Three different customers each go through their own booking-and-payment flow around the same time. Confirm the notification system keeps every customer's inbox strictly to their own events, even under concurrent-ish activity, and that the admin outbox view can still see across all of them.",
+  "successCondition": "As three separate customer accounts (A, B, C) with distinct emails, each books a shipment and pays its invoice (using a guaranteed-succeed card) within a short window of each other. After waiting past the queue delay, GET /api/notifications as each customer shows exactly 2 notifications (shipment.booked and payment.succeeded) and both belong to that customer's own actions only — no cross-contamination between A/B/C. GET /api/notifications/outbox as admin with no filter shows at least 6 email messages total (2 per customer), and filtering by each customer's email in turn isolates exactly that customer's 2 messages.",
+  "hints": [
+    "Interleave the three customers' actions (A books, B books, C books, A pays, B pays, C pays) rather than doing each one fully in sequence, to genuinely exercise the system under concurrent-ish load rather than three isolated serial flows.",
+    "Track a table of customerId -> expected notification types as you go, since with three flows running close together it's easy to misattribute an event to the wrong customer when eyeballing results."
+  ]
+}

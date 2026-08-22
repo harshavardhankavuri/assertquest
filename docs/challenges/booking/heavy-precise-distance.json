@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-precise-distance",
+  "module": "booking",
+  "title": "Precise Distance",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A freight quote and the shipment it turns into should agree on how far the crate is actually traveling — not just roughly, but to the same floating-point value.",
+  "successCondition": "POST /api/booking/quote with a specific origin/destination pair and note the returned distanceKm exactly. Immediately POST /api/booking with the identical origin/destination/package. Querying the shipments table via `npm run db:psql` for the new row confirms distance_km equals the quote's distanceKm exactly (same float value, not just \"close enough\" when rounded) — both the quote and the booking call the same underlying distance calculation.",
+  "hints": [
+    "Both /quote and /booking call the same calculateQuote function (apps/api/src/modules/booking/pricing.js or .ts) — given identical inputs, the distance component should be deterministic and identical.",
+    "Compare the raw JSON number from the API response against the raw Postgres float8 value rather than a rounded display value, to catch any subtle re-computation difference."
+  ]
+}

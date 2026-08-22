@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-quote-then-book-match",
+  "module": "booking",
+  "title": "Quote Then Book Match",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "The price a customer is shown at checkout should be the exact price that lands on their invoice later — down to the cent, across several different package shapes, not just the one you happened to spot-check.",
+  "successCondition": "For 3 different package/route combinations (varying weight and dimensions enough that some are weight-driven and at least one is volumetric-weight-driven per docs/api/booking.md's chargeableWeight formula), call POST /api/booking/quote and record priceCents/distanceKm/chargeableWeightKg for each. Then POST /api/booking with the identical inputs for all 3. Querying the shipments table via `npm run db:psql` for the 3 new rows confirms price_cents and distance_km exactly match their corresponding quote's values in all 3 cases — no case where the booked price silently drifts from the quoted price.",
+  "hints": [
+    "Pick at least one case where lengthCm*widthCm*heightCm/5000 (volumetric weight) exceeds the raw weightKg, so chargeableWeight actually comes from volume — that's a distinct code path from the plain-weight case.",
+    "The server always recomputes price server-side from the request body (FR-704, docs/api/booking.md) — any client-supplied price field is ignored, so there's no shortcut around doing the quote call first."
+  ]
+}

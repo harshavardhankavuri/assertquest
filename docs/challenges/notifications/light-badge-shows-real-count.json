@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-badge-shows-real-count",
+  "module": "notifications",
+  "title": "Badge Shows Real Count",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "The little red count on the bell is the first thing a user checks — it needs to appear only when there's something unread, and disappear cleanly once there isn't.",
+  "successCondition": "For a user with zero unread notifications, the bell button shows no count badge at all (no element with an aria-label ending \"unread\"); for a user with unreadCount > 0, a badge is visible with aria-label=\"<N> unread\" where N exactly matches the unreadCount value from GET /api/notifications.",
+  "hints": [
+    "Trigger an unread notification by booking a shipment as a customer (shipment.booked notifies the booker) — allow for the async delivery delay documented in docs/api/notifications.md before checking.",
+    "The badge is conditionally rendered on unreadCount > 0 — an implementation that renders an empty badge for 0 would still be a bug worth catching."
+  ]
+}

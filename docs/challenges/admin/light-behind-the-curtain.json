@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-behind-the-curtain",
+  "module": "admin",
+  "title": "Behind the Curtain",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "SwiftCargo has a few feature flags that toggle per environment via env vars, not a database switch. Confirm the flags endpoint reports the correct set of known flags and reflects the API's current environment configuration.",
+  "successCondition": "GET /api/admin/feature-flags returns 200 with a flags object containing exactly the keys priorityLane, extendedTracking, and newAdminUi, each a boolean.",
+  "hints": [
+    "This endpoint is available to any authenticated user, not just admins — other pages read it too.",
+    "The env var naming convention (FEATURE_<UPPER_SNAKE_CASE>) is documented in docs/api/admin.md."
+  ]
+}

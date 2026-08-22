@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-dispatcher-oversight",
+  "module": "billing",
+  "title": "Dispatcher Oversight",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Dispatchers need a bird's-eye view of every customer's invoices to chase down unpaid accounts, while each customer must only ever see their own slice. Prove the visibility boundary holds across a multi-customer fleet of invoices.",
+  "successCondition": "As three separate customer accounts, book a shipment and create an invoice each (three invoices total, three different customerIds). GET /api/billing/invoices as each customer returns exactly 1 invoice — their own. GET /api/billing/invoices as a dispatcher account returns all 3 (or more, if the environment has other invoices, but at minimum contains all 3 by id), and GET /api/billing/invoices as an admin account also returns all 3. Cross-check that no customer's list contains another customer's invoice id.",
+  "hints": [
+    "listInvoices treats both dispatcher and admin as \"canSeeAll\" — the visibility rule is identical for those two roles, only customer is restricted.",
+    "Track each invoice's id alongside which customer created it so the final cross-check is a simple set-membership comparison, not a guess."
+  ]
+}

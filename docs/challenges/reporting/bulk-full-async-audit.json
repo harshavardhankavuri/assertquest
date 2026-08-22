@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-full-async-audit",
+  "module": "reporting",
+  "title": "Full Async Audit",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Take a scheduled report job through its entire lifecycle and reconcile every observable fact about it — the API's view, the raw database row, and the downloaded bytes — into one consistent story with no loose threads.",
+  "successCondition": "POST /api/reporting/jobs. Poll GET /api/reporting/jobs/:id until \"ready\", confirming along the way that it was genuinely \"pending\" at some earlier poll (not instantly ready). GET /api/reporting/jobs/:id/download and parse the CSV. Independently, querying report_jobs via `npm run db:psql` for the row confirms: requested_by_id matches the calling dispatcher's own user id, status = 'ready', ready_at is set and after created_at, and octet_length(result_csv) matches the exact byte length of the downloaded CSV. Finally, GET /api/reporting/summary with the same from/to/groupBy/timeZone produces buckets that match the downloaded CSV's rows exactly, period by period.",
+  "hints": [
+    "This challenge deliberately chains together the read-your-own-write guarantees from several smaller checks (pending-before-ready, requestedById correctness, byte-length match, summary/CSV agreement) into one full pass — work through each piece methodically.",
+    "requestedById is set from the authenticated caller at job-creation time (apps/api/src/modules/reporting/service.ts) — GET /api/auth/me gives you the id to compare against."
+  ]
+}

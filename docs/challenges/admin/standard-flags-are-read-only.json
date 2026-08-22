@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-flags-are-read-only",
+  "module": "admin",
+  "title": "Flags Are Read-Only",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A new admin assumes there must be a toggle switch in the console to flip feature flags at runtime. There isn't — they're environment configuration, not database rows. Confirm the API doesn't expose a write path that would contradict that.",
+  "successCondition": "GET /api/admin/feature-flags succeeds with 200. PUT, PATCH, POST, and DELETE to /api/admin/feature-flags (with a valid admin token) each return 404 — there is no route registered for any of those methods on this path.",
+  "hints": [
+    "Fastify returns 404, not 405, for a path with no matching route+method registered — that's the exact signal you're checking for.",
+    "docs/api/admin.md explicitly says flags are toggled per environment via env vars, with no runtime PUT."
+  ]
+}

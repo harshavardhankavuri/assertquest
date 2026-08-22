@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-strangers-shipment",
+  "module": "tracking",
+  "title": "Stranger's Shipment",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A customer tracking their own shipment shouldn't be able to peek at a stranger's crate just by guessing its id in the URL.",
+  "successCondition": "Customer A books a shipment. Customer B (a distinct customer account) calls GET /api/tracking/:id with Customer A's shipment id and receives 403 with error.code FORBIDDEN. GET /api/tracking (list) as Customer B does not include Customer A's shipment id anywhere in its items array.",
+  "hints": [
+    "This mirrors the same ownership rule as GET /api/booking/:id, since tracking reads the same underlying shipment records rather than owning separate data.",
+    "A dispatcher or admin account, by contrast, should be able to fetch Customer A's shipment successfully — useful as a contrast check if you have time."
+  ]
+}

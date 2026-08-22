@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-service-record",
+  "module": "auth",
+  "title": "Service Record",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Each demo account carries one rank and one rank only. Cross-check what the database says about a crew member's role against what the login response and the JWT actually claim.",
+  "successCondition": "For each of the four demo accounts (admin, dispatcher, driver, customer), log in and record the role field from the response's user object. For each, independently query the users table via `npm run db:psql` (select role from users where email = '...') and confirm the DB value matches the API response exactly, for all four roles — not just spot-checking one.",
+  "hints": [
+    "Demo accounts and their shared password are documented in docs/self-host.md.",
+    "The role column is a Postgres enum (admin | dispatcher | driver | customer, see prisma/schema.prisma) — there's no free-text drift possible, but this challenge is about verifying it, not assuming it."
+  ]
+}

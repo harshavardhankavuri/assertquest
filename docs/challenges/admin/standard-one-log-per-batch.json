@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-one-log-per-batch",
+  "module": "admin",
+  "title": "One Log Per Batch",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A single bulk-cancel click on five shipments is one action, not five — the audit trail should record it that way, a single entry summarizing the whole batch rather than a flood of near-identical rows.",
+  "successCondition": "Book 5 shipments and call POST /api/admin/shipments/bulk once with all 5 ids in a single request ({ action: \"cancel\", shipmentIds: [...5 ids] }). Querying audit_log via `npm run db:psql` immediately before and after the call shows the row count increased by exactly 1 (not 5) — one audit_log row represents the entire batch call, with metadata.shipmentIds (a JSON array) containing all 5 ids.",
+  "hints": [
+    "bulkShipmentAction (apps/api/src/modules/admin/service.ts) calls recordAudit exactly once, after the per-item loop finishes — the metadata carries the full shipmentIds array plus succeeded/failed counts.",
+    "select count(*) from audit_log where action = 'shipment.bulk_cancel'; before and after isolates just this action type from any other seeded/unrelated entries."
+  ]
+}

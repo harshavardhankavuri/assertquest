@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-select-and-strike",
+  "module": "admin",
+  "title": "Select and Strike",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "The Bulk Actions panel's Approve/Cancel buttons are only meaningful once something is checked — and the heading counting \"N selected\" is the one piece of UI a dispatcher trusts to know what they're about to strike from the manifest. Put both under pressure.",
+  "successCondition": "On the Admin console's Bulk Actions panel, both \"Approve selected\" and \"Cancel selected\" are disabled while zero shipments are checked; checking one checkbox enables both buttons and updates the heading to read \"Shipments · 1 selected\"; unchecking it again disables both buttons and the heading returns to \"Shipments · 0 selected\" — verified across at least three check/uncheck cycles, not just one.",
+  "hints": [
+    "The heading and button disabled state both derive from the same Set of selected ids — a stale closure bug would show up as a mismatch between the two.",
+    "Use the checkbox's own change event rather than clicking the row — the label wraps the input so either works, but the checkbox is the more precise locator."
+  ]
+}

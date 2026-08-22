@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-newest-first-by-default",
+  "module": "tracking",
+  "title": "Newest First by Default",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Without touching any sort controls, a dispatcher opening the tracking table should see their most recently booked shipment at the very top, not buried at the bottom.",
+  "successCondition": "Book two shipments in sequence (the second strictly after the first). GET /api/tracking with no sort, order, or status query params at all returns items where the second (later) shipment appears before the first (earlier) one in the array — confirming the documented default of sort=createdAt, order=desc.",
+  "hints": [
+    "Confirm the two shipments' createdAt timestamps are genuinely distinct and in the order you expect before asserting on array position.",
+    "If your account can see other pre-existing shipments too, just check the relative order of your two known shipments within the array, not that they're the very first two entries overall."
+  ]
+}

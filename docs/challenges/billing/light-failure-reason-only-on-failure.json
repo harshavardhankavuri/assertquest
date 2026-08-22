@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-failure-reason-only-on-failure",
+  "module": "billing",
+  "title": "Failure Reason, Only On Failure",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A payment that goes through cleanly has nothing to explain — the ledger's failure column should stay blank unless something actually went wrong.",
+  "successCondition": "Pay an invoice with a well-formed card number that isn't one of the two documented test-decline numbers (any other 13-19 digit number succeeds per docs/api/billing.md). The response's payment.failureReason is null. Querying the payments table via `npm run db:psql` for that row confirms failure_reason IS NULL and status = 'succeeded'.",
+  "hints": [
+    "The two special-cased decline/timeout card numbers are documented in docs/api/billing.md — use any other well-formed number to get a succeeded outcome.",
+    "select status, failure_reason from payments where id = '<id>'; is enough to check both columns at once."
+  ]
+}

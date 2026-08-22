@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.env
+.env.*
+!.env.example
+!.env.prod.example
+*.log
+coverage/
+.DS_Store
+apps/api/prisma/generated/
+playwright-report/
+test-results/
+.devdata/

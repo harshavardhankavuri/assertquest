@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-authority-carries-over",
+  "module": "auth",
+  "title": "Authority Carries Over",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Rotating a session shouldn't be a chance for a crew member to quietly get promoted. Confirm a refreshed token still reflects the same rank the database has on file.",
+  "successCondition": "Log in as admin@swiftcargo.test and confirm GET /api/auth/admin-check returns 200 with the initial access token. Call POST /api/auth/refresh to rotate the session, then call GET /api/auth/admin-check again with the NEW access token — it still returns 200. Querying the users table via `npm run db:psql` for that account's role confirms it is still \"admin\" throughout (rotation never touches the users table, only refresh_tokens).",
+  "hints": [
+    "signAccessToken (apps/api/src/core/jwt.ts) reads the role from the User row passed into issueSession — refresh() looks that row up fresh via the stored refresh token's relation, so a stale claim isn't possible by construction, but verify it rather than assume it.",
+    "Demo accounts and their shared password are documented in docs/self-host.md."
+  ]
+}

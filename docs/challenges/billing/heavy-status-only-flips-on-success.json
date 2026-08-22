@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-status-only-flips-on-success",
+  "module": "billing",
+  "title": "Status Only Flips On Success",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Map out every outcome the mock gateway can hand back and confirm the invoice's own status column only ever moves to \"paid\" for the one outcome that actually earns it.",
+  "successCondition": "Against three separate freshly-created invoices, pay one with the decline card, one with the timeout card, and one with a normal succeeding card. GET /api/billing/invoices/:id for all three afterward shows: decline -> still \"open\", timeout -> still \"open\", succeeded -> \"paid\". Querying the invoices table via `npm run db:psql` for all three ids in one query confirms the status column matches exactly this pattern — not just the two \"stays open\" cases, which are easy to conflate with each other.",
+  "hints": [
+    "Only the succeeded branch of apps/api/src/modules/billing/service.ts's pay() flow calls prisma.invoice.update to set status: \"paid\" — the declined and timed_out branches update the Payment row only.",
+    "You need three separate invoices (three separate shipments) since an already-open invoice can be paid again after a decline, but you want to isolate each outcome cleanly here."
+  ]
+}

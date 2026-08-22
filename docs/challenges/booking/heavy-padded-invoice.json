@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-padded-invoice",
+  "module": "booking",
+  "title": "Padded Invoice",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A dishonest customer tries to book a shipment while sneaking a suspiciously low price into the request. Confirm SwiftCargo's API recomputes the price itself from weight, dimensions, and distance, rather than trusting anything the client sends.",
+  "successCondition": "POST /api/booking with a valid origin/destination/package body plus an extra client-supplied priceCents field (set far below what the pricing formula would produce) returns 201, and the created shipment's priceCents in the response matches what POST /api/booking/quote returns for the same inputs — not the tampered value.",
+  "hints": [
+    "Log in first — booking creation requires an Authorization header (customer, dispatcher, or admin role).",
+    "Compute the expected price by calling POST /api/booking/quote with the same origin/destination/package first, then compare it to the created shipment."
+  ]
+}

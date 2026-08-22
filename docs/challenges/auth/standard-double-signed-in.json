@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-double-signed-in",
+  "module": "auth",
+  "title": "Double Signed In",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "Nothing stops a dispatcher from logging in on both a desktop and a phone at once. Prove SwiftCargo tracks each session as its own ticket rather than collapsing them into one.",
+  "successCondition": "Log in as the same demo account (e.g. dispatcher@swiftcargo.test) twice in a row, capturing both Set-Cookie th_refresh values. Querying the refresh_tokens table via `npm run db:psql` for that user's id shows 2 distinct rows, each with its own token_hash and a null revoked_at — logging in a second time never revoked or reused the first session's row.",
+  "hints": [
+    "Every successful login inserts a brand-new refresh_tokens row (apps/api/src/modules/auth/service.ts's issueSession) — nothing about login itself touches existing rows.",
+    "select id, revoked_at from refresh_tokens where user_id = '<user id>'; is enough to see both sessions side by side."
+  ]
+}

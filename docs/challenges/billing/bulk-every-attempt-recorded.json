@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-every-attempt-recorded",
+  "module": "billing",
+  "title": "Every Attempt Recorded",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "Push one invoice through five payment attempts — a mix of declines, timeouts, and a final success — and prove the on-screen history is a faithful, gap-free ledger of everything that happened, matching the API's own record exactly.",
+  "successCondition": "Submitting five payment attempts in sequence on one invoice (any mix of the two known-failing card numbers and ordinary numbers, ending in a successful one) results in the rendered attempt list containing exactly five lines, each with the correct attemptNumber (1 through 5, in order), each failed/timed-out line showing its failureReason and each successful line showing none, and the full rendered list is diffed against a direct GET /api/billing/invoices/:id/payments call to confirm no attempt is missing, duplicated, or reordered in the UI.",
+  "hints": [
+    "Stop attempting once the invoice is paid — a well-formed card number should always succeed on the first try after the invoice is already open, so plan your sequence so the success is genuinely last.",
+    "Fetch the API's payment list once at the end and use it as your source of truth to diff the rendered DOM against, rather than hand-tracking five outcomes yourself."
+  ]
+}

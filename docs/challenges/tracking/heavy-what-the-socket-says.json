@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-what-the-socket-says",
+  "module": "tracking",
+  "title": "What The Socket Says",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A live tracking-update pushed over the WebSocket is only trustworthy if it actually reflects what got written to the database in that same instant — not a stale snapshot or an optimistic guess.",
+  "successCondition": "Connect to GET /api/tracking/ws?token=<accessToken> for a shipment you can see. Call POST /api/tracking/:id/advance and capture the resulting { \"type\": \"tracking-update\", \"shipment\": {...} } message's status/currentLat/currentLng/positionUpdatedAt. Immediately querying the shipments table via `npm run db:psql` for that row confirms every one of those fields exactly matches what the WebSocket broadcast, field for field — the push isn't racing ahead of or lagging behind the actual commit.",
+  "hints": [
+    "The broadcast happens after the Prisma update completes inside the same request handler (apps/api/src/modules/tracking/service.ts /routes.ts), so the two should never disagree — this challenge is about proving that, not assuming it.",
+    "positionUpdatedAt in the WebSocket payload is ISO-formatted JSON; compare it against Postgres's position_updated_at down to the same instant, allowing only for serialization format differences."
+  ]
+}

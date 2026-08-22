@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-failed-job-has-no-csv",
+  "module": "reporting",
+  "title": "Failed Job Has No CSV",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "When report generation blows up partway through, the job should end up honestly marked failed with an explanation — not silently sitting at a status that implies a CSV exists when it doesn't.",
+  "successCondition": "POST /api/reporting/jobs with an invalid IANA timeZone value that isn't a real timezone (e.g. \"Nowhere/Fake\") — this causes the async bucketing step to throw. Poll GET /api/reporting/jobs/:id until status becomes \"failed\" (not \"ready\"). Querying report_jobs via `npm run db:psql` for that row confirms status = 'failed', failure_reason IS NOT NULL (a non-empty string), and result_csv IS STILL NULL — the failure path never left a partial or garbage CSV behind.",
+  "hints": [
+    "The queued job's catch block (apps/api/src/modules/reporting/service.ts's createReportJob) sets status: \"failed\" and failureReason from the caught error's message, and never touches resultCsv at all in that branch.",
+    "GET /api/reporting/jobs/:id/download against this failed job should return 409, the same as it would for a still-pending job — failed and pending both mean \"nothing downloadable exists.\""
+  ]
+}

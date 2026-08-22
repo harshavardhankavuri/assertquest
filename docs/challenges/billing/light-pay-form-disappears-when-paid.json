@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-pay-form-disappears-when-paid",
+  "module": "billing",
+  "title": "Pay Form Disappears When Paid",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "There's no reason to keep offering a card-number field once an invoice is already settled. Confirm the payment form only ever appears for invoices still in the \"open\" state.",
+  "successCondition": "On /billing, the card number input and \"Pay\" button are present for an invoice with status \"open\", and after that invoice is successfully paid, the same input and button are no longer present in the DOM for that row — verified by re-querying after the status updates, not by reusing a stale element handle.",
+  "hints": [
+    "The form is conditionally rendered on invoice.status === \"open\" inside InvoiceRow — once it flips to \"paid\" the whole form unmounts, it isn't just disabled.",
+    "Re-query the row after payment completes rather than holding a reference to the old form elements, which will now be detached from the DOM."
+  ]
+}

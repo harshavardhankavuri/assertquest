@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-quote-reflects-real-route",
+  "module": "booking",
+  "title": "Quote Reflects Real Route",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Change both the route and the package across two full back-and-forth cycles through the wizard, and confirm the quote on screen tracks reality the whole way — never showing a distance or price left over from an earlier combination.",
+  "successCondition": "Starting from a short domestic route and a light package, a test records the initial Pricing step's distanceKm and priceCents; goes back to change the destination to a distant international hub, advances again, and confirms distanceKm increases substantially and priceCents changes accordingly; goes back again to also increase the package weight significantly, advances, and confirms priceCents increases further from the previous value — three distinct quote snapshots in total, each strictly consistent with the inputs active at the time it was fetched.",
+  "hints": [
+    "Record the exact numeric values at each of the three checkpoints rather than just confirming \"the page looks different\" — this challenge is about correctness of the specific numbers, not just visible change.",
+    "The pricing formula (base + weight fee + distance fee) is documented in docs/api/booking.md if you want to sanity-check the direction each change should move the total."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-double-booked-driver",
+  "module": "fleet",
+  "title": "Double-Booked Driver",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "SwiftCargo deliberately allows a dispatcher to overbook a driver rather than blocking the write — it's the conflicts endpoint's job to surface the mistake, not the write path's job to prevent it. Prove both halves of that design hold.",
+  "successCondition": "Book two shipments. Assign both to the same driverId (different vehicleId is fine) with overlapping scheduledStart/scheduledEnd windows via two separate PUT /api/fleet/assignments/:shipmentId calls — both calls succeed with 200, proving the write is not blocked. Then GET /api/fleet/conflicts returns a conflicts array containing an entry with resourceType \"driver\", resourceId equal to the shared driverId, and assignmentIds containing both assignments' ids.",
+  "hints": [
+    "docs/api/fleet.md is explicit that overlapping schedules are never rejected at write time — if your PUT calls fail, you've mixed this up with a different validation case.",
+    "\"Overlapping\" per the conflict logic means scheduledStart of one is before scheduledEnd of the other, and vice versa — make the two windows clearly overlap (e.g. identical windows) to avoid an off-by-a-second edge case."
+  ]
+}

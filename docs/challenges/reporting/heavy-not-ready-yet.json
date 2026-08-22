@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-not-ready-yet",
+  "module": "reporting",
+  "title": "Not Ready Yet",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A dispatcher tries to download a scheduled report the instant they create it, before the queued job has had any chance to run. The download endpoint needs to say \"not yet\" clearly rather than serving a blank or broken file.",
+  "successCondition": "POST /api/reporting/jobs as a dispatcher returns 202 with job.status \"pending\". Immediately (before the queue delay elapses, within ~50ms), GET /api/reporting/jobs/:id/download for that job's id returns 409 with error.code CONFLICT and a message stating the job's current status. After waiting past NOTIFICATION_QUEUE_DELAY_MS (default 500ms), GET /api/reporting/jobs/:id shows status \"ready\", and GET /api/reporting/jobs/:id/download now succeeds with 200 and Content-Type text/csv.",
+  "hints": [
+    "The report job queue is the same queue notifications use — the default delay is documented in docs/self-host.md.",
+    "Poll GET /api/reporting/jobs/:id rather than blindly sleeping a fixed amount if you want a more robust test — but the immediate-409 assertion specifically needs you to act before any delay, so don't poll for that first part."
+  ]
+}

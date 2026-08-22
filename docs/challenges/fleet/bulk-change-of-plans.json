@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-change-of-plans",
+  "module": "fleet",
+  "title": "Change of Plans",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Dragging a shipment card to a different vehicle on the board should move it, not clone it, and a resolved conflict should actually disappear rather than lingering. Create a double-booking, then reassign one of the two shipments away from the conflict and verify it's fully resolved.",
+  "successCondition": "After two assignments conflict on the same vehicle, calling PUT /api/fleet/assignments/:shipmentId again for one of them with a different, non-conflicting vehicleId results in exactly one assignment row for that shipment (not two), and GET /api/fleet/conflicts no longer reports that vehicle pairing.",
+  "hints": [
+    "PUT is an upsert keyed by shipmentId — reassigning calls the same endpoint again with new vehicleId/driverId/time values.",
+    "Check the assignments table directly (or GET /api/fleet/assignments) to confirm there's only one row for the reassigned shipment, not a stale duplicate."
+  ]
+}

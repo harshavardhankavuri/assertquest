@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-pay-in-the-invoices-currency",
+  "module": "billing",
+  "title": "Pay In The Invoice's Currency",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A shipment is always priced in USD internally, but once an invoice is cut in EUR, every payment against it should speak EUR too — not quietly revert to the shipment's original currency.",
+  "successCondition": "Create an invoice with currency \"EUR\" for a shipment, then pay it with a succeeding card number. The response's payment.currency is \"EUR\" and payment.amountCents equals the invoice's amountCents exactly. Querying payments via `npm run db:psql` for that row confirms currency = 'EUR', not 'USD'.",
+  "hints": [
+    "POST /api/billing/invoices/:id/pay charges the invoice's own amountCents/currency, not the underlying shipment's priceCents/USD — see apps/api/src/modules/billing/service.ts.",
+    "Fixed exchange-rate constants live in apps/api/src/modules/billing/currency.ts if you want to sanity-check the converted amount."
+  ]
+}

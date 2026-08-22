@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-drivers-only",
+  "module": "fleet",
+  "title": "Drivers Only",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "The fleet driver roster should list exactly the accounts registered with the driver role — nobody with a dispatcher, admin, or customer badge belongs on it.",
+  "successCondition": "Register one account each for driver, customer, and dispatcher roles with distinct emails. GET /api/fleet/drivers as a dispatcher/admin returns a drivers array that includes the new driver's id/email, but does not include the customer's or dispatcher's id anywhere in the list.",
+  "hints": [
+    "GET /api/fleet/drivers requires a dispatcher or admin token to call at all — register a dispatcher/admin account first to make the call.",
+    "Match by id, not just email substring, in case another seeded account happens to share part of the email string."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-two-charts-never-share-scale",
+  "module": "reporting",
+  "title": "Two Charts Never Share Scale",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "Shipment count and revenue live on wildly different scales — a handful of shipments versus tens of thousands of cents — so BarChart deliberately never combines them into one chart. Prove each chart's bar widths are scaled only against its own data's own maximum.",
+  "successCondition": "For a date range with varied bucket values, the widest bar in the shipment-volume chart corresponds to the bucket with the highest shipmentCount (not highest revenueCents), and independently the widest bar in the revenue chart corresponds to the bucket with the highest revenueCents (which may be a different period than the shipment-count max) — proving each chart computes its own max from its own bars array, not a shared or cross-contaminated scale.",
+  "hints": [
+    "Look for a date range where the busiest day by shipment count isn't necessarily the highest-revenue day (e.g. many small cheap shipments vs. one expensive one) to make the two maxima genuinely diverge.",
+    "Compare relative bar widths (as SVG rect width values) rather than eyeballing a screenshot."
+  ]
+}

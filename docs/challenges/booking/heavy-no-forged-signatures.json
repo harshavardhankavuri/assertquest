@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-no-forged-signatures",
+  "module": "booking",
+  "title": "No Forged Signatures",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Reading someone else's shipment is one kind of boundary — attaching your own paperwork to it is a worse one. Confirm a customer can't slip a document onto a shipment that isn't theirs.",
+  "successCondition": "As customer@swiftcargo.test, book a shipment (shipment A). Register/log in as a second, different customer account and attempt POST /api/booking/:id/documents against shipment A's id with a valid file. The request is rejected with 403 FORBIDDEN. Querying customs_documents via `npm run db:psql` for shipment A's id confirms zero rows were created by the rejected attempt (select count(*) from customs_documents where shipment_id = '<A id>' stays at whatever it was before the attempt).",
+  "hints": [
+    "Document upload uses the same ownership check as GET /api/booking/:id (docs/api/booking.md) — a customer who doesn't own the shipment is forbidden regardless of what they're trying to do to it.",
+    "Register a second customer account with a throwaway email to act as the attacker in this scenario."
+  ]
+}

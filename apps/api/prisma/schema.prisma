@@ -1,0 +1,353 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  dispatcher
+  driver
+  customer
+}
+
+// SwiftCargo's own accounts (the app under test)
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  role          Role
+  refreshTokens RefreshToken[]
+  shipments     Shipment[]
+  assignments   Assignment[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  reportJobs    ReportJob[]
+  createdAt     DateTime  @default(now())
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
+
+// AssertQuest platform-level accounts (distinct from SwiftCargo's users above).
+// `displayName` is what the leaderboard/discussion show by default — an
+// anonymized handle, never the email — unless `publicRealName` is opted in (FR-403).
+model THUser {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  passwordHash   String
+  displayName    String
+  publicRealName Boolean  @default(false)
+  role           String   @default("learner")
+  createdAt      DateTime @default(now())
+
+  progress        THProgress[]
+  discussionPosts THDiscussionPost[]
+
+  @@map("th_users")
+}
+
+enum ChallengeDifficulty {
+  light
+  standard
+  heavy
+  bulk
+}
+
+model THChallenge {
+  id                String              @id
+  module            String
+  title             String
+  difficulty        ChallengeDifficulty
+  surfaceTags       String[]
+  estimatedMinutes  Int
+  description       String
+  successCondition  String
+  hints             String[]
+
+  progress        THProgress[]
+  discussionPosts THDiscussionPost[]
+
+  @@index([module])
+  @@map("th_challenges")
+}
+
+// Community discussion thread on a challenge page (FR-307) — manual/lightweight
+// moderation only for v1 (PRD §10), so no report/hide flow, just post + upvote.
+model THDiscussionPost {
+  id          String      @id @default(uuid())
+  challengeId String
+  challenge   THChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  userId      String
+  user        THUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body        String
+  upvotes     Int         @default(0)
+  createdAt   DateTime    @default(now())
+
+  @@index([challengeId])
+  @@map("th_discussion_posts")
+}
+
+enum ProgressStatus {
+  open
+  in_progress
+  cleared
+}
+
+model THProgress {
+  id          String         @id @default(uuid())
+  userId      String
+  user        THUser         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challengeId String
+  challenge   THChallenge    @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  status      ProgressStatus @default(open)
+  clearedAt   DateTime?
+
+  @@unique([userId, challengeId])
+  @@map("th_progress")
+}
+
+enum ShipmentStatus {
+  booked
+  in_transit
+  delivered
+  cancelled
+}
+
+// Module 2 — Shipment Booking (FR-701..FR-705)
+// Module 3 — Dashboard & Tracking (FR-801..FR-804) adds status/currentLat/currentLng,
+// tracking the same shipments rather than owning separate records.
+model Shipment {
+  id                String            @id @default(uuid())
+  customerId        String
+  customer          User              @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  originLabel       String
+  originLat         Float
+  originLng         Float
+  destinationLabel  String
+  destinationLat    Float
+  destinationLng    Float
+  weightKg          Float
+  lengthCm          Float
+  widthCm           Float
+  heightCm          Float
+  distanceKm        Float
+  priceCents        Int
+  currency          String            @default("USD")
+  status            ShipmentStatus    @default(booked)
+  approved          Boolean           @default(true)
+  currentLat        Float
+  currentLng        Float
+  positionUpdatedAt DateTime          @default(now())
+  createdAt         DateTime          @default(now())
+
+  documents  CustomsDocument[]
+  invoice    Invoice?
+  assignment Assignment?
+
+  @@index([customerId])
+  @@map("shipments")
+}
+
+model CustomsDocument {
+  id         String   @id @default(uuid())
+  shipmentId String
+  shipment   Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  filename   String
+  mimeType   String
+  sizeBytes  Int
+  content    Bytes
+  createdAt  DateTime @default(now())
+
+  @@index([shipmentId])
+  @@map("customs_documents")
+}
+
+enum InvoiceStatus {
+  open
+  paid
+}
+
+enum PaymentStatus {
+  succeeded
+  declined
+  timed_out
+}
+
+// Module 5 — Billing & Invoicing (FR-1001..FR-1004). One invoice per shipment,
+// billed in whatever currency the customer picks at invoice time (converted from
+// the shipment's USD price); each pay attempt is its own Payment row so a decline
+// or timeout can be retried without losing the history.
+model Invoice {
+  id          String        @id @default(uuid())
+  shipmentId  String        @unique
+  shipment    Shipment      @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  customerId  String
+  amountCents Int
+  currency    String
+  status      InvoiceStatus @default(open)
+  createdAt   DateTime      @default(now())
+
+  payments Payment[]
+
+  @@index([customerId])
+  @@map("invoices")
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  invoiceId      String
+  invoice        Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  attemptNumber  Int
+  amountCents    Int
+  currency       String
+  status         PaymentStatus
+  cardLast4      String
+  failureReason  String?
+  createdAt      DateTime      @default(now())
+
+  @@index([invoiceId])
+  @@map("payments")
+}
+
+enum VehicleType {
+  van
+  box_truck
+  container_truck
+}
+
+// Module 4 — Fleet & Scheduling (FR-901..FR-903).
+model Vehicle {
+  id          String      @id @default(uuid())
+  label       String
+  type        VehicleType
+  capacityKg  Float
+  plate       String      @unique
+  createdAt   DateTime    @default(now())
+
+  assignments Assignment[]
+
+  @@map("vehicles")
+}
+
+// One assignment per shipment (upserted on reassignment — dragging a card to a new
+// column updates the existing row rather than creating a duplicate). Deliberately
+// does NOT reject overlapping scheduledStart/scheduledEnd windows for the same
+// vehicle/driver at the DB or service layer — double-booking is allowed to happen,
+// exactly like a real dispatch board, and detecting it is the UI/API's job
+// (GET /api/fleet/conflicts), not a write-time constraint.
+model Assignment {
+  id             String   @id @default(uuid())
+  shipmentId     String   @unique
+  shipment       Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  vehicleId      String
+  vehicle        Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  driverId       String
+  driver         User     @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  scheduledStart DateTime
+  scheduledEnd   DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([vehicleId])
+  @@index([driverId])
+  @@map("assignments")
+}
+
+// Module 6 — Admin Console (FR-1101..FR-1104). One entry per recorded action —
+// currently written by auth (login/register) and by admin's own bulk/import
+// endpoints. `metadata` is a free-form JSON blob for action-specific detail
+// (e.g. which shipment ids succeeded/failed in a bulk operation).
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String
+  actor      User     @relation(fields: [actorId], references: [id], onDelete: Cascade)
+  action     String
+  targetType String?
+  targetId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([action])
+  @@map("audit_log")
+}
+
+enum MessageChannel {
+  email
+  sms
+}
+
+// Module 7 — Notifications (FR-1201..FR-1203). Mock email/SMS outbox — no real
+// message ever leaves the system, this is just a viewable sent-log for test
+// assertions, the same role a tool like Mailhog plays in a real dev environment.
+model MockMessage {
+  id        String         @id @default(uuid())
+  channel   MessageChannel
+  to        String
+  subject   String?
+  body      String
+  createdAt DateTime       @default(now())
+
+  @@index([to])
+  @@map("mock_messages")
+}
+
+// In-app notification center (FR-1202) — read/unread state persisted per user.
+// Rows are created asynchronously by the notification queue (FR-1203), not
+// synchronously in the request that triggered them.
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("notifications")
+}
+
+enum ReportJobStatus {
+  pending
+  processing
+  ready
+  failed
+}
+
+// Module 8 — Reporting (FR-1301..FR-1303). A scheduled report is generated
+// asynchronously via the same queue as notifications (FR-1203's pattern reused
+// here) — the CSV isn't ready until the job transitions to "ready", so callers
+// must poll rather than assume synchronous generation.
+model ReportJob {
+  id             String          @id @default(uuid())
+  requestedById  String
+  requestedBy    User            @relation(fields: [requestedById], references: [id], onDelete: Cascade)
+  fromDate       DateTime
+  toDate         DateTime
+  groupBy        String
+  timeZone       String
+  status         ReportJobStatus @default(pending)
+  resultCsv      Bytes?
+  failureReason  String?
+  createdAt      DateTime        @default(now())
+  readyAt        DateTime?
+
+  @@index([requestedById])
+  @@map("report_jobs")
+}

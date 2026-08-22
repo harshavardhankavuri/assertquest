@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-covered-manifest",
+  "module": "auth",
+  "title": "Covered Manifest",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Passwords typed at the dock shouldn't be readable over someone's shoulder. A quick pass over the login and register forms confirms the password fields actually mask input rather than just labeling themselves that way.",
+  "successCondition": "On both /login and /register, the password input's type attribute is exactly \"password\" (not text, and not toggled visible by default), and each has the correct autoComplete value for its context — \"current-password\" on /login, \"new-password\" on /register.",
+  "hints": [
+    "Read the DOM attribute directly rather than relying on the visual rendering, which a screenshot alone won't prove.",
+    "The two pages use different autoComplete values on purpose — don't copy one assertion onto both pages."
+  ]
+}

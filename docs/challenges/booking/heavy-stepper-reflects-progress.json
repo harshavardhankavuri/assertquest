@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-stepper-reflects-progress",
+  "module": "booking",
+  "title": "Stepper Reflects Progress",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "The four-step indicator down the wizard's left side is a dispatcher's at-a-glance map of where they are — active, done, and upcoming steps need to look distinctly different, and stay accurate through both forward progress and stepping back.",
+  "successCondition": "Across a full pass through the wizard (route -> package -> pricing -> confirm) and one Back navigation, each step's list item in the numbered stepper carries the correct visual state at every point: the current step shows the active styling (brand-colored border/background), completed earlier steps show the done styling (distinct from both active and upcoming), and not-yet-reached steps show the upcoming/neutral styling — verified by reading the actual class names or computed styles at each of the five wizard positions visited, not just by screenshot comparison.",
+  "hints": [
+    "The three visual states are driven by two booleans per step (active = s === step, done = steps.indexOf(step) > i) inside BookingWizard.tsx — you can derive expected state at each position from that logic.",
+    "After clicking Back once from Pricing to Package Details, the Pricing step should revert from 'active' back to 'upcoming', not stay marked 'done'."
+  ]
+}

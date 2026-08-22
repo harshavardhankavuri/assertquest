@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-ledger-at-a-glance",
+  "module": "reporting",
+  "title": "Ledger at a Glance",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 15,
+  "description": "Dispatch wants a quick chart of shipment volume and revenue over time. Book a couple of shipments and confirm the summary endpoint's totals actually add up.",
+  "successCondition": "GET /api/reporting/summary?from=&to=&groupBy=day&timeZone=UTC returns 200 with totalShipments equal to the number of shipments booked in that window, and totalRevenueCents equal to the sum of their priceCents.",
+  "hints": [
+    "This endpoint is dispatcher/admin only.",
+    "from/to are ISO datetimes — see docs/api/reporting.md for the exact inclusive/exclusive range semantics."
+  ]
+}

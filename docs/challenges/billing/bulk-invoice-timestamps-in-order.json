@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-invoice-timestamps-in-order",
+  "module": "billing",
+  "title": "Invoice Timestamps In Order",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A ledger's own chronology should hold up under scrutiny: the invoice was opened before any payment was attempted against it, and each retry happened strictly after the one before it.",
+  "successCondition": "Create an invoice, wait briefly, then make three sequential payment attempts against it (decline, timeout, succeed — pausing at least a second between each so timestamps are distinguishable). Querying via `npm run db:psql`, confirm invoices.created_at for that row is strictly earlier than every payments.created_at row referencing it, and that the three payments rows' created_at values are strictly increasing in the same order as their attempt_number (1 < 2 < 3) — the API never returned attempts out of chronological order and the DB timestamps back that up independently of the response's array order.",
+  "hints": [
+    "select attempt_number, created_at from payments where invoice_id = '<id>' order by attempt_number; lets you eyeball the sequence directly against the clock.",
+    "A short sleep (1-2s) between calls is enough — Postgres timestamp precision is finer than that, but human-paced API calls plus a deliberate pause make the ordering unambiguous to verify by eye."
+  ]
+}

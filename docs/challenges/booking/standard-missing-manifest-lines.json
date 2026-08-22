@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-missing-manifest-lines",
+  "module": "booking",
+  "title": "Missing Manifest Lines",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A booking submitted with a package block missing one of its dimension fields shouldn't be allowed to slip through with an undefined value silently treated as zero.",
+  "successCondition": "POST /api/booking as a logged-in customer with a body where the package object is missing the heightCm field entirely (origin and destination are otherwise valid) returns 400 with error.code VALIDATION_ERROR, and no shipment is created — a follow-up GET /api/booking for that account shows no new shipment.",
+  "hints": [
+    "Try the same omission against POST /api/booking/quote too — both routes share the same package schema, so the same field should be required in both places.",
+    "Confirm nothing was created by listing your own shipments afterward, not by trusting the 400 status code alone."
+  ]
+}

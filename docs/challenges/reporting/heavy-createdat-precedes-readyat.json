@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-createdat-precedes-readyat",
+  "module": "reporting",
+  "title": "CreatedAt Precedes ReadyAt",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A report job's own timeline should hold together under scrutiny — it was requested before it was ever ready, never the other way around, and the gap between the two should roughly match the queue delay it actually waited through.",
+  "successCondition": "POST /api/reporting/jobs and record wall-clock time T0. Poll until status is \"ready\". Querying report_jobs via `npm run db:psql` for that row confirms created_at is at or after T0 (within a small margin), ready_at is strictly after created_at, and the gap (ready_at - created_at) is roughly consistent with NOTIFICATION_QUEUE_DELAY_MS (default 500ms — allow generous slack for actual query/generation time, but it should be on the order of that delay, not e.g. multiple seconds or negative).",
+  "hints": [
+    "NOTIFICATION_QUEUE_DELAY_MS also governs report job timing per docs/api/reporting.md — it's the same queue notifications use.",
+    "select ready_at - created_at from report_jobs where id = '<id>'; gives you the interval directly in psql."
+  ]
+}

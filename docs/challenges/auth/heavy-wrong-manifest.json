@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-wrong-manifest",
+  "module": "auth",
+  "title": "Wrong Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A driver account is trying to access an admin-only manifest. Log in as each of the four demo roles (admin, dispatcher, driver, customer) and map out exactly which roles can reach the admin-only route, asserting the full permission matrix rather than a single case.",
+  "successCondition": "GET /api/auth/admin-check returns 200 only when logged in as admin, and 403 with { error: { code: \"FORBIDDEN\" } } for dispatcher, driver, and customer.",
+  "hints": [
+    "Demo accounts and their shared password are documented in docs/self-host.md.",
+    "Don't just test the driver case — a thorough automation suite checks every role against the boundary, not just the one obvious failure."
+  ]
+}

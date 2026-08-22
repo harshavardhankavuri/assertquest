@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-eyes-only-on-your-own-cargo",
+  "module": "tracking",
+  "title": "Eyes Only On Your Own Cargo",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A customer's dashboard should show exactly the shipments that actually belong to them — not one row more, not one row less than the database says.",
+  "successCondition": "As customer A, book 2 shipments. As a different customer B, book 1 shipment. GET /api/tracking as customer A returns exactly the 2 shipments A booked (by id). Querying the shipments table via `npm run db:psql` (select id, customer_id from shipments where id in (<A's 2 ids>, <B's id>)) confirms A's listing exactly matches the rows where customer_id equals A's own user id — B's shipment never appears despite being in the same table.",
+  "hints": [
+    "GET /api/tracking filters by customerId === the authenticated user's id for the customer role (docs/api/tracking.md) — dispatcher/admin see everyone's, customer sees only their own.",
+    "Register two separate throwaway customer accounts so you have full control over which shipment belongs to which."
+  ]
+}

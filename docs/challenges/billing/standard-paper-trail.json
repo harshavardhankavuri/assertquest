@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-paper-trail",
+  "module": "billing",
+  "title": "Paper Trail",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Customers need a downloadable PDF copy of their invoice for expense reports. Fetch the PDF export and confirm it's actually a valid PDF, not just a file with the right extension.",
+  "successCondition": "GET /api/billing/invoices/:id/pdf returns 200 with Content-Type application/pdf, and the response body's first bytes are the PDF magic number \"%PDF-\".",
+  "hints": [
+    "Create an invoice first via POST /api/billing/shipments/:shipmentId/invoice.",
+    "A quick sanity check for \"is this really a PDF\" is checking the first 5 bytes of the response body."
+  ]
+}

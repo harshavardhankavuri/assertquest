@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-priced-by-the-book",
+  "module": "admin",
+  "title": "Priced by the Book",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The CSV importer creates shipments directly, bypassing the booking wizard entirely. Confirm it still prices every accepted row with the exact same formula the wizard's quote endpoint uses, rather than some shortcut.",
+  "successCondition": "POST /api/admin/shipments/import as admin with a CSV containing one fully valid row returns 200 with rows[0].status \"accepted\" and a shipmentId. Fetch that shipment (e.g. via GET /api/tracking/:id) and confirm its priceCents and distanceKm exactly match what POST /api/booking/quote returns when called with the same origin, destination, and package dimensions from the CSV row.",
+  "hints": [
+    "The importer calls the same calculateQuote logic as the booking quote endpoint — see docs/api/admin.md and docs/api/booking.md for both shapes.",
+    "Use the exact same lat/lng/weight/dimension values in your quote call as in the CSV row, or the comparison won't be apples-to-apples."
+  ]
+}

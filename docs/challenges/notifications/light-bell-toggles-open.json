@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-bell-toggles-open",
+  "module": "notifications",
+  "title": "Bell Toggles Open",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "The notification bell in the nav is a simple toggle — click to open the dropdown, click again to close it — and its aria-expanded state should always tell the truth about which state it's in.",
+  "successCondition": "On any page while logged in, the \"Notifications\" button in the top nav has aria-expanded=\"false\" and no dropdown region visible by default; clicking it sets aria-expanded=\"true\" and reveals a role=\"region\" aria-label=\"Notifications\" panel; clicking the button again returns aria-expanded to \"false\" and hides the panel.",
+  "hints": [
+    "The button lives in the top-right of the header, rendered by NotificationBell.tsx inside NavShell — present on every authenticated page.",
+    "Check the aria-expanded attribute value directly rather than just visual presence, since it's what assistive tech relies on."
+  ]
+}

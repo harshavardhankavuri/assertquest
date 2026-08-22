@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-port-to-port",
+  "module": "tracking",
+  "title": "Port To Port",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Trace one shipment's entire journey from booking to delivery and prove the database's status/timestamp story is internally consistent at every single step, not just at the start and the end.",
+  "successCondition": "Book a shipment, then repeatedly call POST /api/tracking/:id/advance, querying the full shipments row via `npm run db:psql` after each call, until status reaches \"delivered\". Confirm: (1) status transitions in the exact order booked -> in_transit -> ... -> delivered with no skipped or repeated backward transitions, (2) position_updated_at is non-decreasing across every single tick, (3) current_lat/current_lng at the final \"delivered\" tick exactly equal destination_lat/destination_lng, and (4) created_at never changes across any of the ticks — only positional/status fields mutate.",
+  "hints": [
+    "Keep a running log of the full row (not just status) after each /advance call — this challenge is about the whole lifecycle's consistency, not just the final state.",
+    "The number of ticks needed to reach \"delivered\" depends on the origin/destination distance — a short in-city-ish route reaches delivered in fewer calls if you want to keep the test shorter."
+  ]
+}

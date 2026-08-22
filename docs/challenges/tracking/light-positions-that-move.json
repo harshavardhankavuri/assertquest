@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-positions-that-move",
+  "module": "tracking",
+  "title": "Positions That Move",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Every time a shipment's position advances, the record of WHEN it last moved should advance right along with it.",
+  "successCondition": "Book a shipment and note its position_updated_at via `npm run db:psql`. Call POST /api/tracking/:id/advance as dispatcher/admin twice (a few seconds apart), and re-query the row after each call. position_updated_at strictly increases after each advance call, and is always more recent than the value recorded before that call.",
+  "hints": [
+    "positionUpdatedAt is set to the current time on every successful /advance call, not just the first one (apps/api/src/modules/tracking/service.ts) — check it after both calls, not just the first.",
+    "select position_updated_at from shipments where id = '<id>'; between calls, with a short pause so the timestamps are visibly distinguishable."
+  ]
+}

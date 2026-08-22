@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-import-price-matches-formula",
+  "module": "admin",
+  "title": "Import Price Matches Formula",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A shipment created via the CSV side door skips the quote wizard entirely, but its price still has to come out of the exact same pricing math a customer would have seen — not a shortcut, not a rough estimate.",
+  "successCondition": "Import one CSV row with specific, known weightKg/lengthCm/widthCm/heightCm and origin/destination coordinates. Independently call POST /api/booking/quote with the identical origin/destination/package to get the \"expected\" priceCents and distanceKm. Querying the shipments table via `npm run db:psql` for the imported row confirms price_cents and distance_km exactly equal the quote's values — the import path (apps/api/src/modules/admin/service.ts's importShipmentsCsv) reuses the same calculateQuote function, not a re-derived approximation.",
+  "hints": [
+    "Pick a package where volumetric weight (lengthCm*widthCm*heightCm/5000) actually exceeds the raw weightKg, so you're also confirming the chargeableWeight branch of the formula, not just the simple case.",
+    "Required CSV columns and quoting rules for labels containing commas are documented in docs/api/admin.md."
+  ]
+}

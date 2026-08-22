@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-wrong-badge-for-the-job",
+  "module": "fleet",
+  "title": "Wrong Badge for the Job",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher accidentally tries to assign a customer's account, not a driver's, to drive a shipment. The board should catch that a driverId belongs to the wrong role before creating the assignment.",
+  "successCondition": "Book a shipment and register a customer account. PUT /api/fleet/assignments/:shipmentId as a dispatcher with driverId set to the customer's user id, a real vehicleId, and valid scheduledStart/scheduledEnd returns 400 with error.code VALIDATION_ERROR whose message indicates the id is not a known driver.",
+  "hints": [
+    "The service checks both that the user exists AND that its role is exactly \"driver\" — a real user id belonging to the wrong role fails the same way as a nonexistent id.",
+    "Fetch a real vehicleId from GET /api/fleet/vehicles first so vehicleId isn't itself the reason for the 400."
+  ]
+}

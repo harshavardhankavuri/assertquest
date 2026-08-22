@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-one-row-no-matter-how-many-times",
+  "module": "fleet",
+  "title": "One Row, No Matter How Many Times",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher who can't make up their mind drags the same shipment's card around the board five times in one sitting. Prove the assignments table never accumulates a trail of abandoned rows behind all that indecision.",
+  "successCondition": "PUT /api/fleet/assignments/:shipmentId five times in a row for the same shipmentId, each time with a different vehicleId, driverId, and time window (pick from the seeded vehicles/drivers, cycling through if needed). After EVERY single call (not just the last), query `select count(*) from assignments where shipment_id = '<id>'` via `npm run db:psql` and confirm it is exactly 1 each time. The final row's vehicle_id/driver_id/scheduled_start/scheduled_end match the 5th call's values exactly, and its id is the same across all 5 reads (proving it's the literal same row being updated in place, not deleted-and-recreated).",
+  "hints": [
+    "Capture the assignment.id from the very first PUT response and confirm it's identical in all 4 subsequent responses too — an upsert that secretly deleted-and-recreated would still pass a count-of-1 check but fail an id-stability check.",
+    "GET /api/fleet/drivers and GET /api/fleet/vehicles give you enough seeded ids to cycle through 5 distinct combinations without needing to create new ones."
+  ]
+}

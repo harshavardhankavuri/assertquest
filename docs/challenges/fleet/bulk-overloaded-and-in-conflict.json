@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-overloaded-and-in-conflict",
+  "module": "fleet",
+  "title": "Overloaded And In Conflict",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "SwiftCargo's dispatch board has two independent gaps by design: it never checks vehicle capacity, and it never blocks overlapping schedules outright. Stack both gaps on the same van in the same request sequence and confirm the database faithfully records the mess exactly as it happened, unfiltered.",
+  "successCondition": "Find a \"van\" type vehicle and its capacityKg. Book two shipments, each with weightKg well over that capacity. Assign both to the SAME van with overlapping time windows. Both PUT calls succeed (200) — capacity is never checked. GET /api/fleet/conflicts includes a \"vehicle\" conflict entry naming both assignment ids — the overlap IS caught, just not the weight. Querying the assignments table via `npm run db:psql` confirms both rows persisted with the same vehicle_id, both shipments' weightKg (join to shipments) exceed the van's capacityKg, and both assignments' time windows genuinely overlap per their scheduled_start/scheduled_end columns — the database holds the true, uncorrected picture the API exposes through two separate endpoints (assignments for the overload, conflicts for the overlap).",
+  "hints": [
+    "This deliberately combines two separate documented gaps (capacity is never validated; overlaps are allowed and only surfaced via /conflicts, never rejected at write time) — you're proving both hold simultaneously, not just one.",
+    "A join like select a.id, s.weight_kg, v.capacity_kg from assignments a join shipments s on s.id = a.shipment_id join vehicles v on v.id = a.vehicle_id where a.vehicle_id = '<van id>' pulls all three facts together in one query."
+  ]
+}

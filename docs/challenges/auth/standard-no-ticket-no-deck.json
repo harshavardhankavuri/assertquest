@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-no-ticket-no-deck",
+  "module": "auth",
+  "title": "No Ticket, No Deck",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Every protected page in SwiftCargo is guarded the same way — no session, no access, full stop. Prove every route behind ProtectedRoute actually enforces that when hit cold, with no prior login in the browser.",
+  "successCondition": "Starting from a fresh browser context with no session, directly navigating to each of /, /book, /tracking, /billing, /fleet, /admin, and /reporting redirects to /login every time (client-side Navigate, URL ends at /login), never rendering the target page's content even momentarily in a way an automated check would catch as a false pass.",
+  "hints": [
+    "Clear cookies/local storage (or use a fresh incognito-style context) before each navigation so no stale session leaks in.",
+    "All seven protected routes share the same ProtectedRoute wrapper — if one fails, check whether it's actually wrapped correctly in App.tsx."
+  ]
+}

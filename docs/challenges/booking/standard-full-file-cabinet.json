@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-full-file-cabinet",
+  "module": "booking",
+  "title": "Full File Cabinet",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "Customs paperwork for a single shipment can pile up — a commercial invoice, a packing list, a certificate of origin. Prove SwiftCargo keeps every one of them, not just the most recent upload.",
+  "successCondition": "For one shipment, upload three separate customs documents (all valid PDF/JPEG/PNG under 5MB) via POST /api/booking/:id/documents. GET /api/booking/:id/documents returns exactly 3 documents. Querying customs_documents via `npm run db:psql` (select count(*) from customs_documents where shipment_id = '<id>') confirms exactly 3 rows exist, each with a distinct id and the same shipment_id — uploading a new document never overwrites or replaces an earlier one.",
+  "hints": [
+    "There's no PUT/replace endpoint for documents — every successful POST is purely additive, creating a new customs_documents row.",
+    "Vary the filename and MIME type across the three uploads (e.g. one PDF, one JPEG, one PNG) to make each row easy to tell apart when you check the DB."
+  ]
+}

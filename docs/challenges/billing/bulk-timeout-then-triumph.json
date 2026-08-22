@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-timeout-then-triumph",
+  "module": "billing",
+  "title": "Timeout, Then Triumph",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A gateway timeout looks different from a hard decline to the customer, but both must leave the door open for a retry. Walk an invoice through timeout, decline, and eventual success, and confirm the full three-attempt history is preserved exactly.",
+  "successCondition": "Create an invoice. Attempt 1 with cardNumber 4000000000000119 returns payment.status \"timed_out\", failureReason containing \"gateway_timeout\", attemptNumber 1, invoice still open. Attempt 2 with cardNumber 4000000000000002 returns payment.status \"declined\", failureReason containing \"card_declined\", attemptNumber 2, invoice still open. Attempt 3 with a non-decline/timeout card returns payment.status \"succeeded\", attemptNumber 3, invoice now \"paid\". GET /api/billing/invoices/:id/payments returns exactly these 3 payments in order 1, 2, 3 with matching statuses, and a 4th pay attempt now returns 409 CONFLICT.",
+  "hints": [
+    "The two special-cased decline/timeout card numbers and their exact failureReason substrings are documented in the mock gateway table in docs/api/billing.md.",
+    "Run the three attempts strictly sequentially — attemptNumber is derived from a live count of existing Payment rows at the moment each call runs."
+  ]
+}

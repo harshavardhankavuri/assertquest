@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-disguised-cargo",
+  "module": "booking",
+  "title": "Disguised Cargo",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A customs document upload claims to be a harmless PDF, but its actual content type on the wire says otherwise. Confirm the server checks the declared MIME type of the uploaded part, not just its filename extension.",
+  "successCondition": "Book a shipment, then POST /api/booking/:id/documents with a file named \"invoice.pdf\" but whose multipart Content-Type is set to \"application/x-msdownload\" (or another disallowed type) returns 400 with error.code VALIDATION_ERROR naming the unsupported type, even though the filename itself looks like a PDF. Uploading the same bytes with mimetype correctly set to application/pdf instead succeeds with 201.",
+  "hints": [
+    "Most HTTP client libraries let you set the multipart part's Content-Type independently of the filename — check your tool's multipart API for that override.",
+    "The allowed set is exactly application/pdf, image/jpeg, image/png — anything else, regardless of extension, should be rejected."
+  ]
+}

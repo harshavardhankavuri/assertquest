@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-borrowed-manifest",
+  "module": "booking",
+  "title": "Borrowed Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A curious customer tries to peek at another customer's customs paperwork by guessing at a shipment id that isn't theirs. Confirm the documents endpoints enforce the exact same ownership boundary as the shipment record itself.",
+  "successCondition": "Customer A books a shipment. Customer B (a distinct account) calls GET /api/booking/:id/documents and POST /api/booking/:id/documents against Customer A's shipment id — both return 403 with error.code FORBIDDEN, and no document is created by the attempted upload (confirmed by Customer A subsequently listing 0 documents).",
+  "hints": [
+    "Both the read and write document routes call the same findOwnedShipment ownership check used by GET /api/booking/:id — test both, not just one.",
+    "A dispatcher or admin account, by contrast, should succeed at both calls against Customer A's shipment — that's a useful contrast case if you want to confirm the boundary is role-specific, not blanket."
+  ]
+}

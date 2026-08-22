@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-pagination-boundaries-disabled",
+  "module": "tracking",
+  "title": "Pagination Boundaries Disabled",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "Nobody should be able to click \"Previous\" into negative-page territory, or \"Next\" past the last page into an empty void. The pagination buttons need to know their own edges.",
+  "successCondition": "On /tracking's pagination nav, the \"Previous\" button is disabled while on page 1, and the \"Next\" button is disabled while on the final page (page >= totalPages) — both re-enabling correctly once navigated away from that boundary.",
+  "hints": [
+    "With few enough shipments there may only be one page total — in that case both buttons should be disabled simultaneously, which is itself worth checking as an edge case.",
+    "totalPages is computed as Math.ceil(total / pageSize) with a floor of 1 — verify against that formula if the boundary seems off by one."
+  ]
+}

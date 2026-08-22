@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-mark-as-read",
+  "module": "notifications",
+  "title": "Mark as Read",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "The in-app notification center's read/unread state needs to actually persist, not just update in memory for the current session. Mark a notification read and confirm it stays read.",
+  "successCondition": "After POST /api/notifications/:id/read, a subsequent GET /api/notifications shows that notification with read: true, and the response's unreadCount has decreased by exactly one.",
+  "hints": [
+    "Trigger a notification first (e.g. book a shipment) and wait for it to appear in GET /api/notifications before marking it read.",
+    "unreadCount is computed server-side from the read flags, not just a client-side counter — don't just check the individual notification's read field."
+  ]
+}

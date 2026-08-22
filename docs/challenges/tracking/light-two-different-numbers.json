@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-two-different-numbers",
+  "module": "tracking",
+  "title": "Two Different Numbers",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "\"Total shipments\" and \"On this page\" sound similar but mean very different things — mixing them up would tell a dispatcher there are only 10 shipments in the whole system when there are actually 50.",
+  "successCondition": "With more than 10 total shipments visible to the logged-in role (page size is 10), the \"Total shipments\" StatTile shows the full count across all pages while the \"On this page\" StatTile shows exactly the number of rows currently rendered in the table (10, or fewer only on the last page) — the two values are confirmed to differ.",
+  "hints": [
+    "Log in as dispatcher or admin, who see every shipment, to more easily guarantee a total greater than one page's worth.",
+    "Navigate to the last page specifically and confirm \"On this page\" drops below 10 there, while \"Total shipments\" stays constant across all pages."
+  ]
+}

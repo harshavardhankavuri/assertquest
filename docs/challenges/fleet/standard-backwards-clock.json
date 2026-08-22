@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-backwards-clock",
+  "module": "fleet",
+  "title": "Backwards Clock",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A scheduling slot where the end time is before the start time makes no physical sense on a calendar. Confirm the assignment upsert rejects that ordering rather than accepting a shipment that arrives before it departs.",
+  "successCondition": "Book a shipment, then PUT /api/fleet/assignments/:shipmentId as a dispatcher with a real vehicleId/driverId, scheduledStart set to \"2026-09-01T10:00:00.000Z\", and scheduledEnd set to \"2026-09-01T08:00:00.000Z\" (before scheduledStart) returns 400 with error.code VALIDATION_ERROR referencing scheduledEnd.",
+  "hints": [
+    "The schema-level refine check explicitly requires scheduledStart to be strictly before scheduledEnd — equal timestamps should also fail this check, worth trying as a boundary case too.",
+    "Both timestamps must otherwise be valid ISO 8601 datetime strings, or you'll get a different validation error unrelated to the ordering."
+  ]
+}

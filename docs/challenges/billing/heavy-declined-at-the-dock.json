@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-declined-at-the-dock",
+  "module": "billing",
+  "title": "Declined at the Dock",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The mock payment gateway sandbox needs to behave correctly across success, decline, and timeout paths (FR-1003) — not just the happy path. Pay the same invoice with each of the three documented test card numbers and map out what each one does to the invoice.",
+  "successCondition": "POST /api/billing/invoices/:id/pay with the decline test card returns a payment with status \"declined\" and leaves the invoice status \"open\"; with the timeout test card returns status \"timed_out\" and also leaves it \"open\"; with any other well-formed card number returns status \"succeeded\" and the invoice status becomes \"paid\".",
+  "hints": [
+    "The three test card numbers and what they trigger are documented in docs/api/billing.md — this is the same pattern real gateways like Stripe use for test-mode cards.",
+    "Use three separate invoices (or reset between attempts) since a paid invoice can't be paid again — POST /api/billing/invoices/:id/pay on a paid invoice returns 409."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-rotation-chain-ledger",
+  "module": "auth",
+  "title": "Rotation Chain Ledger",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A session that gets refreshed five times over a long shift leaves five entries in the ship's log, and only the very last one should still be an active pass. Trace the whole chain, not just the ends.",
+  "successCondition": "Log in once, then call POST /api/auth/refresh five times in sequence, always using the most recently issued th_refresh cookie for the next call. Querying refresh_tokens via `npm run db:psql` for that user's id afterward shows exactly 6 rows total (1 from login + 5 from refreshes): exactly 5 with a non-null revoked_at and exactly 1 with a null revoked_at, and that one remaining active row's token_hash is the one from the LAST refresh response — no row is skipped, duplicated, or left active early in the chain.",
+  "hints": [
+    "Each refresh call both revokes the presented token's row and inserts one new row — chain the cookie carefully, since using an already-rotated cookie will 401 early and truncate your chain.",
+    "select revoked_at is null as active, created_at from refresh_tokens where user_id = '<id>' order by created_at; makes the full chain easy to eyeball at once."
+  ]
+}

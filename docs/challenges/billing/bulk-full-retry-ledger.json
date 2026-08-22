@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-full-retry-ledger",
+  "module": "billing",
+  "title": "Full Retry Ledger",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A customer's card gets declined, they try again and the gateway times out, and on the third attempt it finally goes through. The ledger should read like a story, not overwrite itself at each step.",
+  "successCondition": "Against one invoice, call POST /api/billing/invoices/:id/pay three times in sequence: decline card, then timeout card, then a succeeding card. GET /api/billing/invoices/:id/payments returns exactly 3 payments, oldest first, with attemptNumber 1/2/3 and status declined/timed_out/succeeded respectively. Querying payments via `npm run db:psql` confirms all 3 rows share the same invoice_id, attempt_number is strictly increasing with no gaps, and only the attempt_number = 3 row has a null failure_reason. GET /api/billing/invoices/:id shows the invoice as \"paid\".",
+  "hints": [
+    "Each pay() call creates a new Payment row regardless of outcome — nothing is ever overwritten, which is exactly what makes the full history queryable afterward.",
+    "The decline and timeout test card numbers are documented in docs/api/billing.md; any other well-formed number succeeds."
+  ]
+}

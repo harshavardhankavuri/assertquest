@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-not-a-dispatcher",
+  "module": "reporting",
+  "title": "Not a Dispatcher",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "Revenue and volume reports are for the business side of SwiftCargo, not the customers whose shipments feed them. Confirm the entire reporting surface stays behind the dispatcher/admin gate.",
+  "successCondition": "As a logged-in customer, GET /api/reporting/summary?from=2026-01-01T00:00:00.000Z&to=2026-02-01T00:00:00.000Z returns 403 with error.code FORBIDDEN. The same query with a driver-role token also returns 403.",
+  "hints": [
+    "The module applies requireRole(\"dispatcher\", \"admin\") to every route via an app-level preHandler hook — customer and driver are both excluded.",
+    "A valid from/to pair is required to even reach the role check in some frameworks' handler ordering — but Fastify's preHandler hooks run before your route's validation, so a bad query alone won't produce this result; use a well-formed query."
+  ]
+}

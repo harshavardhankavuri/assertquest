@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-expired-badge",
+  "module": "auth",
+  "title": "Expired Badge",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "An access token that outlives its stated expiry would be a quiet security hole. Confirm GET /api/auth/me distinguishes an expired token from a merely malformed or unsigned one, using the distinct TOKEN_EXPIRED error code the API promises.",
+  "successCondition": "GET /api/auth/me with a syntactically valid but clearly bogus/unsigned bearer token (e.g. an edited JWT with a tampered signature) returns 401 with error.code UNAUTHORIZED. Separately, using a token whose exp claim has already passed (or waiting past the configured access-token TTL) returns 401 with error.code TOKEN_EXPIRED specifically — proving the two failure modes are distinguished at the code level, not just both generically 401.",
+  "hints": [
+    "docs/api/auth.md explicitly lists UNAUTHORIZED and TOKEN_EXPIRED as separate codes for GET /api/auth/me — don't treat them as interchangeable.",
+    "The access token TTL is short; check the accessTokenExpiresAt field from a login/register response to know exactly when a token you hold will flip into the expired case."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-filtered-manifest",
+  "module": "tracking",
+  "title": "Filtered Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Filtering the tracking table down to just \"in transit\" shipments should show exactly the shipments the database considers in transit — not one extra from a stale cache, not one missing because it filtered on the wrong field.",
+  "successCondition": "Create at least one shipment in each of the three visible statuses (booked, in_transit, delivered — advance shipments as needed to reach each state). GET /api/tracking?status=in_transit&pageSize=100 returns only shipments in that status. Querying the shipments table via `npm run db:psql` with `select count(*) from shipments where status = 'in_transit' and customer_id = '<your test customer id>'` (scoped to shipments you created) confirms the count exactly matches the API response's total for the same filter — no drift between the query filter and the actual DB state.",
+  "hints": [
+    "Scope your count query to just the shipments you created in this test (by customerId) — the seeded demo data likely has shipments in every status already, which would make an unscoped count misleading.",
+    "status is validated against the ShipmentStatus enum server-side (docs/api/tracking.md) — booked | in_transit | delivered are the only filterable values exposed."
+  ]
+}

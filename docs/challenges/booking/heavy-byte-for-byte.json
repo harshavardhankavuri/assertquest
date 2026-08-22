@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-byte-for-byte",
+  "module": "booking",
+  "title": "Byte For Byte",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "Customs paperwork is legally sensitive — a scanned certificate of origin that gets corrupted a single byte in storage is as good as lost. Prove what's stored in the database is exactly what was uploaded.",
+  "successCondition": "Upload a customs document built from a known local file (or a fixed byte pattern you generate). Retrieve the stored content directly from Postgres — via `npx prisma studio` or a psql query selecting the content bytea column and exporting it (`\\copy (select content from customs_documents where id = '<id>') to 'out.bin'` in psql, or Prisma Studio's binary viewer) — and confirm it is byte-for-byte identical to the original file you uploaded (same length, same hash/checksum).",
+  "hints": [
+    "CustomsDocument.content is a Postgres bytea column (Bytes in Prisma) — it stores the raw file, not a path or a base64-reencoded copy that could silently mangle bytes.",
+    "Comparing a checksum (e.g. sha256 of both files) is more reliable than eyeballing bytes, especially for a binary PDF/JPEG/PNG."
+  ]
+}

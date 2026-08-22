@@ -1,0 +1,11 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$APP_DOMAIN} {
+	reverse_proxy web:5173
+}
+
+{$LEARN_DOMAIN} {
+	reverse_proxy th-web:5174
+}

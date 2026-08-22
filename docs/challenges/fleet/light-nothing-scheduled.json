@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-nothing-scheduled",
+  "module": "fleet",
+  "title": "Nothing Scheduled",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A brand-new SwiftCargo deployment with no assignments made yet should show an empty, well-formed board, not an error.",
+  "successCondition": "GET /api/fleet/conflicts as a dispatcher, called when there are no overlapping assignments among the currently scheduled ones (or none scheduled at all), returns 200 with conflicts equal to an empty array [].",
+  "hints": [
+    "If your environment already has seeded assignments, this test still passes as long as none of the currently-existing assignments overlap in vehicle/driver + time window — you don't strictly need a totally empty environment.",
+    "Empty is a valid, successful state here — 200 with an empty array, not a 404 or an error."
+  ]
+}

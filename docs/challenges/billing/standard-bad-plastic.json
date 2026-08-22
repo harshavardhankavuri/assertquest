@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-bad-plastic",
+  "module": "billing",
+  "title": "Bad Plastic",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A customer fumbles the card number field entirely — too short, or full of letters. The mock gateway shouldn't be reached at all for a malformed card number.",
+  "successCondition": "Create an invoice, then POST /api/billing/invoices/:id/pay with { \"cardNumber\": \"123\" } (too short) returns 400 with error.code VALIDATION_ERROR. The same call with { \"cardNumber\": \"abcd1234abcd1234\" } (non-numeric) also returns 400 VALIDATION_ERROR. Neither call creates a Payment record — GET /api/billing/invoices/:id/payments afterward returns an empty payments array.",
+  "hints": [
+    "The card number field is validated as 13-19 digits per docs/api/billing.md, checked before the mock gateway logic ever runs.",
+    "Check the payments list after both bad attempts, not just after one, to confirm neither malformed request left a partial record."
+  ]
+}

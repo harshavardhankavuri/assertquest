@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-retry-after-decline",
+  "module": "billing",
+  "title": "Retry After Decline",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "FR-1004's payment retry flow needs to work with the same form the customer already has open — no page reload, no re-entering the whole invoice from scratch, just a second card number.",
+  "successCondition": "On the same open invoice, paying first with 4000000000000002 (declined) and then, without navigating away, submitting the same Pay form again with a well-formed non-special card number: the second attempt succeeds, the Badge updates to \"paid\", the payment form disappears, and the attempt list shows exactly two lines — \"Attempt 1: declined (...)\" followed by \"Attempt 2: succeeded\" — in that order.",
+  "hints": [
+    "The card number field is cleared after each submit (setCardNumber('')), so type a fresh number for the second attempt rather than assuming it persists.",
+    "Attempt numbers are assigned server-side and are per-invoice, not global — don't hardcode an expectation from a different invoice's history."
+  ]
+}

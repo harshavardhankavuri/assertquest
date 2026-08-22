@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-four-different-decks",
+  "module": "auth",
+  "title": "Four Different Decks",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 22,
+  "description": "FR-604 promises each role sees only its permitted nav items — not just that the routes are blocked, but that the sidebar itself never dangles a link a role can't use. Walk all four roles and map exactly what each sees.",
+  "successCondition": "Logging in as each of the four seeded roles and inspecting the left nav confirms: driver sees only Dashboard and Tracking; customer sees Dashboard, Book a shipment, Tracking, and Billing (not Fleet, Admin, or Reporting); dispatcher sees Dashboard, Book a shipment, Tracking, Fleet & scheduling, and Reporting (not Billing or Admin); admin sees all seven items including Admin console. Every role's set is checked by presence AND absence — a role must not see items outside its list.",
+  "hints": [
+    "The full role-to-nav-item mapping lives in NAV_ITEMS inside apps/web/src/app/NavShell.tsx if you want to double-check the expected set before writing assertions.",
+    "Test absence with a \"not present in the DOM\" assertion, not just \"not clicked\" — a hidden-but-present link would still be a real accessibility issue."
+  ]
+}

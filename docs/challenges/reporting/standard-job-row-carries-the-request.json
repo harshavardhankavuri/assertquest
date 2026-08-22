@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-job-row-carries-the-request",
+  "module": "reporting",
+  "title": "Job Row Carries The Request",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A scheduled report job needs to remember exactly what was asked for — the from/to/groupBy/timeZone it was requested with — so it can be reproduced or audited later without guessing.",
+  "successCondition": "POST /api/reporting/jobs with a specific, memorable set of values: from \"2026-01-01T00:00:00.000Z\", to \"2026-02-01T00:00:00.000Z\", groupBy \"month\", timeZone \"America/New_York\". Querying report_jobs via `npm run db:psql` for the new row confirms from_date, to_date, group_by, and time_zone exactly match what was submitted (from_date/to_date compared as UTC instants) — none of the four values were normalized, defaulted, or altered on the way in.",
+  "hints": [
+    "createReportJob (apps/api/src/modules/reporting/service.ts) stores the query fields directly on the ReportJob row before enqueueing the generation work — inspect the row immediately, you don't need to wait for it to become ready to check this.",
+    "select from_date, to_date, group_by, time_zone from report_jobs where id = '<id>'; is the whole check."
+  ]
+}

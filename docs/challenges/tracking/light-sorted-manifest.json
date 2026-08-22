@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-sorted-manifest",
+  "module": "tracking",
+  "title": "Sorted Manifest",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 15,
+  "description": "The dispatch dashboard's data table needs to sort, filter, and paginate shipments correctly. Request a page of shipments sorted by price and confirm the results actually come back in that order.",
+  "successCondition": "GET /api/tracking?sort=priceCents&order=asc&page=1&pageSize=5 returns 200 with an items array whose priceCents values are non-decreasing, and total/page/pageSize fields matching the request.",
+  "hints": [
+    "You'll need to be logged in — any role can list tracking data, but customers only see their own shipments.",
+    "Valid sort fields and the response shape are documented in docs/api/tracking.md."
+  ]
+}

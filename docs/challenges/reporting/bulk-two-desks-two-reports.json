@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-two-desks-two-reports",
+  "module": "reporting",
+  "title": "Two Desks, Two Reports",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Two dispatchers each schedule a report covering different date ranges around the same time. Confirm each job's data reflects its own query and never leaks the other dispatcher's window, while an admin polling both can see either.",
+  "successCondition": "Book 2 shipments in window W1 and 2 different shipments in a disjoint window W2. Dispatcher A calls POST /api/reporting/jobs for W1; Dispatcher B calls POST /api/reporting/jobs for W2. Poll both jobs to \"ready\". Dispatcher A's downloaded CSV totals (summed shipmentCount across rows) equal 2 and reflect only W1's shipments; Dispatcher B's equal 2 and reflect only W2's. Dispatcher A cannot GET Dispatcher B's job (403) and vice versa, but an admin can GET and download both successfully.",
+  "hints": [
+    "Make W1 and W2 genuinely non-overlapping date ranges (e.g. different months) so there's no ambiguity about which shipments belong to which window.",
+    "Poll each job's status individually rather than assuming both become ready at the same instant — they're two independent queued jobs."
+  ]
+}

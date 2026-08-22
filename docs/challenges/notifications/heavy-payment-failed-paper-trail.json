@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-payment-failed-paper-trail",
+  "module": "notifications",
+  "title": "Payment Failed Paper Trail",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A declined card shouldn't just fail quietly at the billing layer — the customer needs to actually hear about it, both in-app and by email, and the failure reason should be traceable through to the notification body.",
+  "successCondition": "Book a shipment, create an invoice, and pay it with cardNumber 4000000000000002 (guaranteed decline). After waiting past the notification queue delay, GET /api/notifications as that customer shows an entry with type \"payment.failed\" and a body mentioning the invoice id. GET /api/notifications/outbox as admin, filtered by the customer's email, shows a message with subject \"Payment failed\" whose body also references the decline.",
+  "hints": [
+    "The exact card number and decline behavior are documented in docs/api/billing.md's mock gateway table.",
+    "Both the in-app notification and the mock email are enqueued from the same notify() call in the billing service — if one appears, the other should too, once you've waited past the queue delay."
+  ]
+}

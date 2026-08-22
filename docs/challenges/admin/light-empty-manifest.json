@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-empty-manifest",
+  "module": "admin",
+  "title": "Empty Manifest",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A dispatcher fat-fingers the bulk action panel and submits it with nothing selected. The API shouldn't quietly accept an action with no shipments attached.",
+  "successCondition": "POST /api/admin/shipments/bulk as an admin with body { \"action\": \"approve\", \"shipmentIds\": [] } returns 400 with error.code VALIDATION_ERROR, per the bulkActionSchema minimum of one id.",
+  "hints": [
+    "shipmentIds is validated with a minimum array length of 1 — an empty array fails schema validation before any shipment lookup happens.",
+    "Log in as admin first; without a valid admin token you'll get 401/403 instead of the validation error you're testing for."
+  ]
+}

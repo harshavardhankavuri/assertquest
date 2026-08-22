@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-many-hands",
+  "module": "admin",
+  "title": "Many Hands",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Ten rows, four different ways to fail: an unknown customer, a garbage weight, a missing column, and a duplicate of an already-accepted row. A real import batch is messy — prove the report handles all of it in one pass.",
+  "successCondition": "Uploading a 10-row CSV containing at least 6 valid rows and one each of: an unknown customerEmail, a non-numeric weightKg, and a row missing a required column, renders an Accepted stat tile matching the valid row count and a Rejected stat tile matching 3 (or more, if intentionally duplicating a failure type), with the rejected-row list showing one line per rejected row bearing a distinct, relevant error message (not a generic identical message for all three) — verified by reading each list item's text individually.",
+  "hints": [
+    "Total rows in the stat tile should equal accepted + rejected exactly — use that as a quick sanity check before inspecting individual rows.",
+    "A missing required column and a non-numeric value produce different error text — read docs/api/admin.md's validation notes if your assertions expect the wrong phrasing."
+  ]
+}

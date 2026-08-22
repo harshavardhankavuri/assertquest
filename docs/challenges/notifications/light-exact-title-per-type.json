@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-exact-title-per-type",
+  "module": "notifications",
+  "title": "Exact Title Per Type",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Each kind of event has one specific, documented title — \"Shipment booked\" should never come back as \"shipment booked\", \"Booking confirmed\", or any other near-miss.",
+  "successCondition": "Book a shipment. After waiting past the queue delay, querying the notifications table via `npm run db:psql` for the newest row belonging to that customer confirms type is exactly the literal string 'shipment.booked' and title is exactly the literal string 'Shipment booked' — matching the events table in docs/api/notifications.md character-for-character, not just approximately.",
+  "hints": [
+    "type and title are both hardcoded string literals passed into the notify() call at the booking call site (apps/api/src/modules/booking/service.ts), not generated or templated dynamically.",
+    "Delivery is asynchronous (NOTIFICATION_QUEUE_DELAY_MS, default 500ms per docs/self-host.md) — poll rather than check immediately."
+  ]
+}

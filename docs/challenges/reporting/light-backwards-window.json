@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-backwards-window",
+  "module": "reporting",
+  "title": "Backwards Window",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A report where the end date comes before the start date is a contradiction that shouldn't be allowed to silently return an empty (or worse, nonsensical) result.",
+  "successCondition": "GET /api/reporting/summary as a dispatcher with from set to a later date than to (e.g. from=2026-06-01T00:00:00.000Z&to=2026-01-01T00:00:00.000Z) returns 400 with error.code VALIDATION_ERROR referencing the to field.",
+  "hints": [
+    "The reportQuerySchema's refine check requires from to be strictly before to — this applies identically to both GET /summary and POST /jobs since they share the same schema.",
+    "Try from exactly equal to to as a related boundary case — the strict less-than should reject that too."
+  ]
+}

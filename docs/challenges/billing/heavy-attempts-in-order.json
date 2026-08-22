@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-attempts-in-order",
+  "module": "billing",
+  "title": "Attempts in Order",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "Three payment attempts on one invoice — declined, timed out, then finally successful — need to read back in the exact order they happened, each with its own honest outcome, not a jumbled or overwritten history.",
+  "successCondition": "On one invoice, submitting the Pay form three times in sequence with 4000000000000002 (declined), then 4000000000000119 (timed out), then a well-formed ordinary card number (succeeded), renders exactly three list items in oldest-to-newest order: \"Attempt 1: declined (card_declined: insufficient funds)\", \"Attempt 2: timed_out (gateway_timeout: no response from processor)\", \"Attempt 3: succeeded\" — with no failureReason text appended to the successful attempt's line.",
+  "hints": [
+    "The attempt list re-fetches via GET /api/billing/invoices/:id/payments after each pay action — give each request time to resolve before submitting the next.",
+    "Only failed/timed-out attempts include a parenthesized reason — a successful line has no trailing \"(...)\" at all."
+  ]
+}

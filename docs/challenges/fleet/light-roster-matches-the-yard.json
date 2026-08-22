@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-roster-matches-the-yard",
+  "module": "fleet",
+  "title": "Roster Matches The Yard",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "The vehicle list a dispatcher sees on the scheduling board should be a direct reflection of what's actually sitting in the vehicles table — no more, no fewer.",
+  "successCondition": "GET /api/fleet/vehicles as dispatcher/admin. Querying `select count(*), array_agg(plate) from vehicles` via `npm run db:psql` confirms the API response's vehicles array has exactly the same length as the DB row count, and that every plate in the API response appears in the DB's plate list (and vice versa) — no vehicle is missing or duplicated between the two.",
+  "hints": [
+    "There's no POST /api/fleet/vehicles endpoint — the fleet is entirely seed data, so this is really just confirming GET /api/fleet/vehicles is a faithful, complete read of the table.",
+    "plate carries a @unique constraint in prisma/schema.prisma, so comparing by plate is a safe way to match rows between the two sources."
+  ]
+}

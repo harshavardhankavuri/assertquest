@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-summary-starts-empty",
+  "module": "booking",
+  "title": "Summary Starts Empty",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "The Booking Summary sidebar is supposed to fill in as you go — which means it has to have a clean, honest empty state before you've entered anything at all.",
+  "successCondition": "On first loading /book with a fresh wizard, the Booking Summary sidebar's Origin, Destination, and Package fields all display the placeholder text \"—\" (em dash), not blank strings, not \"undefined\", and not \"0\".",
+  "hints": [
+    "The sidebar is the third column on desktop widths — resize or scroll if it's not immediately visible.",
+    "This is checking the literal rendered text, so distinguish an em dash \"—\" from a similar-looking hyphen \"-\"."
+  ]
+}

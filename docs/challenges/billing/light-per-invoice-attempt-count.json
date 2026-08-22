@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-per-invoice-attempt-count",
+  "module": "billing",
+  "title": "Per-Invoice Attempt Count",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "Every invoice keeps its own tally of payment attempts — a second invoice's first try shouldn't inherit a number from someone else's ledger.",
+  "successCondition": "Create two separate invoices for two different shipments, then make exactly one POST /api/billing/invoices/:id/pay call against each. Both responses show payment.attemptNumber equal to 1, even though two Payment rows now exist system-wide. Confirm via `npm run db:psql` that both payments rows have attempt_number = 1 and different invoice_id values.",
+  "hints": [
+    "attemptNumber is computed per-invoice (count of existing payments for that invoiceId, plus one) inside apps/api/src/modules/billing/service.ts, not from a global sequence.",
+    "Book two separate shipments first so you have two distinct shipmentIds to invoice."
+  ]
+}

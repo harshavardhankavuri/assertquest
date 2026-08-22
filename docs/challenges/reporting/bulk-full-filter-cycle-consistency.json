@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-full-filter-cycle-consistency",
+  "module": "reporting",
+  "title": "Full Filter Cycle Consistency",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 38,
+  "description": "Change every filter on the Reporting page multiple times in a row — range, group-by, timezone — and prove the stat tiles, both charts, and the data table always move together as one consistent picture, never caught mid-update showing a mismatched mix of old and new.",
+  "successCondition": "Across four consecutive filter changes (e.g. widen the date range, switch groupBy to Month, switch timeZone to a different zone, then narrow the date range again), after each \"Update\" click and once loading settles, the StatTile totals, both bar charts' bars, and the data table rows are cross-checked against each other for internal consistency (StatTiles equal the sum of the currently-shown buckets, chart bars match table rows) — for all four states, not just the final one.",
+  "hints": [
+    "Snapshot and check consistency after each of the four updates individually, rather than only checking the state after the last one — an intermediate stale-render bug could otherwise slip through.",
+    "Give each Update click's request time to resolve before capturing that step's snapshot, especially if Practice mode's slow network toggle is also on."
+  ]
+}

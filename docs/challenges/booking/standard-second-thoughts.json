@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-second-thoughts",
+  "module": "booking",
+  "title": "Second Thoughts",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "The booking wizard is supposed to preserve everything you've entered when you navigate back a step (FR-702). Walk through Origin/Destination, then Package Details, forward to Pricing, then back — and check whether every step actually remembers what you typed.",
+  "successCondition": "A test fills in Origin, Destination, and Package Details (weight/length/width/height), advances to the Pricing step, then clicks Back twice. Origin and Destination remain populated, but the Package Details fields are found reset to empty — document this discrepancy rather than assuming both steps behave the same way.",
+  "hints": [
+    "The wizard lives at /book once logged in as any role that can book shipments (customer, dispatcher, admin).",
+    "Don't just check the step you land on — check every field on every step you've already filled in."
+  ]
+}

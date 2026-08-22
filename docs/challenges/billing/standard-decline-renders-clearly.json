@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-decline-renders-clearly",
+  "module": "billing",
+  "title": "Decline Renders Clearly",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "A declined card at the dock shouldn't be a silent failure — the customer needs to see why, in plain terms, right where they tried to pay.",
+  "successCondition": "Paying an open invoice with card number 4000000000000002 (the mock gateway's declined case) keeps the invoice's Badge showing \"open\", and the payment attempt list gains one new line reading \"Attempt 1: declined (card_declined: insufficient funds)\" — visible on the page without needing to inspect network traffic.",
+  "hints": [
+    "This card number is deterministic and documented in docs/api/billing.md — no need for a real payment simulator.",
+    "The payment form doesn't disappear after a decline, since the invoice is still open — that's intentional, it enables a retry."
+  ]
+}

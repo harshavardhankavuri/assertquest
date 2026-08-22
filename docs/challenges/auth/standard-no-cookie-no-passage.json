@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-no-cookie-no-passage",
+  "module": "auth",
+  "title": "No Cookie, No Passage",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "The refresh endpoint reads the rotation token from an httpOnly cookie, never from the request body. Confirm a caller who tries to skip the cookie and just claim a refresh token in JSON gets nowhere.",
+  "successCondition": "POST /api/auth/refresh with no th_refresh cookie set, but with a body of { \"refreshToken\": \"<a real, valid refresh token obtained from a prior login\" }, returns 401 with error.code UNAUTHORIZED — the body's refreshToken field is never read.",
+  "hints": [
+    "You'll need to log in first via POST /api/auth/login to obtain a genuine refresh token to place in the body, so the test proves the body is ignored rather than the token being invalid.",
+    "Send the refresh request with cookies stripped explicitly (most HTTP clients auto-attach cookies from the same session by default) — verify your tool isn't silently reattaching it."
+  ]
+}

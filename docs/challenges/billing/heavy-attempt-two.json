@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-attempt-two",
+  "module": "billing",
+  "title": "Attempt Two",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "A customer's card is declined on the first try, so they retry with a better card. Both attempts should be preserved in the invoice's history, in order, and the invoice should only flip to paid once the second one lands.",
+  "successCondition": "Create an invoice. POST /api/billing/invoices/:id/pay with cardNumber 4000000000000002 returns 200 with payment.status \"declined\", attemptNumber 1, and the returned invoice.status still \"open\". A second POST with a well-formed non-decline/timeout card returns 200 with payment.status \"succeeded\", attemptNumber 2, and invoice.status now \"paid\". GET /api/billing/invoices/:id/payments returns both attempts, oldest first, with attemptNumber 1 and 2 respectively.",
+  "hints": [
+    "The declined attempt leaves the invoice open specifically so a retry is possible — that's FR-1004, documented in docs/api/billing.md.",
+    "attemptNumber is derived from a count of prior Payment rows for that invoice, so ordering matters — don't fire the two pay calls concurrently."
+  ]
+}

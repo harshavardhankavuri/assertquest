@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-unknown-vehicle",
+  "module": "fleet",
+  "title": "Unknown Vehicle",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher's drag-and-drop assigns a shipment to a vehicle id that doesn't exist in the fleet — a stale id from a deleted vehicle, perhaps. The board shouldn't create a dangling assignment.",
+  "successCondition": "Book a shipment. PUT /api/fleet/assignments/:shipmentId as a dispatcher with a body containing a made-up vehicleId (one that doesn't match any vehicle from GET /api/fleet/vehicles), a real driverId, and valid scheduledStart/scheduledEnd returns 400 with error.code VALIDATION_ERROR, and GET /api/fleet/assignments confirms no assignment was created for that shipment.",
+  "hints": [
+    "Fetch a real driverId from GET /api/fleet/drivers so the only invalid field in your request is vehicleId — isolate the one variable you're testing.",
+    "The error message names the specific unknown vehicleId — worth asserting on for a stronger test."
+  ]
+}

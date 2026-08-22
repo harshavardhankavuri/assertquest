@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-pending-until-proven",
+  "module": "reporting",
+  "title": "Pending Until Proven",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A freshly-requested report hasn't actually been built yet — the job's own record should say so honestly the instant it's created, before the queue has done any work.",
+  "successCondition": "POST /api/reporting/jobs with a valid from/to/groupBy/timeZone body. The 202 response's job.status is not \"ready\". Immediately (without waiting) querying the report_jobs table via `npm run db:psql` for that job's id confirms status = 'pending' and result_csv IS NULL — the row exists but genuinely has no generated content yet.",
+  "hints": [
+    "ReportJobStatus defaults to \"pending\" at the Prisma schema level (prisma/schema.prisma) — the queued job that builds the CSV hasn't run yet at the moment this INSERT happens.",
+    "Query immediately after the POST response, before any queue delay could elapse, to catch the true initial state."
+  ]
+}

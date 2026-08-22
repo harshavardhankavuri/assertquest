@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: assertquest
+          POSTGRES_PASSWORD: assertquest
+          POSTGRES_DB: assertquest
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U assertquest"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://assertquest:assertquest@localhost:5432/assertquest
+      ACCESS_TOKEN_SECRET: ci-access-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm install
+
+      - run: npm run build --workspace @assertquest/shared
+
+      - run: npm run --workspace @assertquest/api prisma:generate
+      - run: npm run --workspace @assertquest/api prisma:migrate
+
+      - run: npm run typecheck
+
+      - run: npm test --workspace @assertquest/api

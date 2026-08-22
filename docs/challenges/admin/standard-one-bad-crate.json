@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-one-bad-crate",
+  "module": "admin",
+  "title": "One Bad Crate",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher tries to bulk-cancel a batch of shipments, but one of the ids in the list points at a shipment that already reached its destination. The rest of the batch shouldn't be held hostage by that one crate.",
+  "successCondition": "Book two shipments, mark one as delivered by repeatedly calling POST /api/tracking/:id/advance as a dispatcher/admin until its status becomes \"delivered\", then POST /api/admin/shipments/bulk as admin with action \"cancel\" and shipmentIds containing both. The response is 200 with succeeded 1, failed 1, and a results array where the delivered shipment's entry has success false and an error string containing \"Cannot cancel a delivered shipment\", while the other shipment's entry has success true.",
+  "hints": [
+    "POST /api/tracking/:id/advance steps a shipment one tick at a time (booked -> in_transit -> ... -> delivered) — you may need to call it several times depending on distance; check the shipment's status field after each call.",
+    "The response is always 200 even when some items fail — check the per-item results array, not the HTTP status code."
+  ]
+}

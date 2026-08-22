@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-update-button-uses-current-filters",
+  "module": "reporting",
+  "title": "Update Button Uses Current Filters",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Editing the From date, the timezone, and the group-by all at once, then clicking Update, needs to send exactly what's currently in those fields — not whatever the page loaded with initially.",
+  "successCondition": "After the initial page load's default report renders, changing all three of From, To, and Timezone to different values and clicking \"Update\" results in a data table and stat tiles that reflect the newly-selected range and timezone (different totals from the initial load, assuming the seeded data supports a visible difference) — not a report matching the original default query.",
+  "hints": [
+    "The query object passed to loadSummary is recomputed from current from/to/groupBy/timeZone state on every render — a stale-closure bug would freeze it at initial values instead.",
+    "Choose a From/To range that's meaningfully different from the ~30-day default so any regression back to the initial query is obviously detectable."
+  ]
+}

@@ -1,0 +1,35 @@
+name: Mirror SwiftCargo self-host repo
+
+# Publishes a filtered, SwiftCargo-only copy of this repo (see
+# scripts/build-selfhost-mirror.sh) to a public self-host repo on every push to main.
+# Requires a repo secret SELFHOST_MIRROR_TOKEN: a token with push access to the
+# target repo below (fine-grained PAT scoped to just that repo is enough).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  MIRROR_REPO: harshavardhankavuri/swiftcargo-selfhost
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build filtered self-host tree
+        run: bash scripts/build-selfhost-mirror.sh /tmp/selfhost
+
+      - name: Push to mirror repo
+        env:
+          MIRROR_TOKEN: ${{ secrets.SELFHOST_MIRROR_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd /tmp/selfhost
+          git init -q -b main
+          git config user.name "assertquest-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Sync from assertquest@${GITHUB_SHA}"
+          git push -q --force "https://x-access-token:${MIRROR_TOKEN}@github.com/${MIRROR_REPO}.git" main:main

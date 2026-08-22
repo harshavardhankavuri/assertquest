@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-cookie-cut-loose",
+  "module": "auth",
+  "title": "Cookie Cut Loose",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 30,
+  "description": "Clicking \"log out\" needs to actually end the voyage, not just hide the cabin door. Confirm the click both clears the UI immediately and revokes the session server-side, so a page reload can't silently let the passenger back aboard.",
+  "successCondition": "After logging in and clicking the \"log out\" button in the sidebar footer, the UI immediately redirects to /login (nav disappears, no authed content flashes). Reloading the browser afterward keeps the user on /login rather than silently restoring a session — proving the httpOnly th_refresh cookie was actually revoked server-side (via POST /api/auth/logout) and the app's silent-refresh-on-mount correctly finds nothing valid to restore.",
+  "hints": [
+    "Local state clears synchronously on click, but the cookie revocation call happens in the background — reload only after giving that request a moment to complete.",
+    "A false pass looks like: UI redirects to /login on click, but a reload right after still shows the dashboard — that means the cookie wasn't actually revoked."
+  ]
+}

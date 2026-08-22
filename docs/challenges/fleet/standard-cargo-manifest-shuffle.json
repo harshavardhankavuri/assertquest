@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-cargo-manifest-shuffle",
+  "module": "fleet",
+  "title": "Cargo Manifest Shuffle",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 25,
+  "description": "A dockworker reading a manifest expects each crate to have one label and a consistent order. Enable \"Duplicate ids\" and \"Random list order\" on the Fleet & Scheduling board and see whether your test can still reliably find and drag one specific shipment card.",
+  "successCondition": "With both \"Duplicate ids\" and \"Random list order\" switched on, a test loads /fleet, locates a specific shipment card by its visible route/content (not by row index or a bare id selector), and successfully drags it into a vehicle lane — repeated across two page reloads even though the row order and one row's id differ each time.",
+  "hints": [
+    "Log in as a dispatcher or admin — the fleet board is dispatch-only.",
+    "With \"Duplicate ids\" on, the 2nd row in a lane shares its id with the 1st — scope your locator to the row's visible text/content instead of an id selector."
+  ]
+}

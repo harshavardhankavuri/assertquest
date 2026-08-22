@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-starting-position",
+  "module": "booking",
+  "title": "Starting Position",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A shipment that hasn't left the origin dock yet should show up exactly there on the map, not at null island or the destination.",
+  "successCondition": "POST /api/booking with a specific origin lat/lng. Querying the shipments table via `npm run db:psql` for the new row confirms current_lat and current_lng exactly equal origin_lat and origin_lng — the shipment starts tracking from where it was actually booked, not the destination or a zeroed default.",
+  "hints": [
+    "currentLat/currentLng are set equal to originLat/originLng at creation time (see apps/api/src/modules/booking/service.ts) — nothing in Module 3 (Tracking) moves them until /api/tracking/:id/advance is called.",
+    "Pick an origin from GET /api/booking/geocode with a distinctive lat/lng (e.g. Port of Los Angeles) so the match is unambiguous."
+  ]
+}

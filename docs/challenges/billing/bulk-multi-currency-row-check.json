@@ -1,0 +1,14 @@
+{
+  "id": "billing-bulk-multi-currency-row-check",
+  "module": "billing",
+  "title": "Multi-Currency Row Check",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Book five shipments and invoice each in a different one of SwiftCargo's five supported currencies, then prove the Billing table reads correctly across the whole row — no currency's formatting quietly breaks the others.",
+  "successCondition": "Booking five shipments and generating one invoice per shipment across all five BILLING_CURRENCIES values (USD, EUR, GBP, JPY, INR) results in five rows on /billing, each showing its Shipment Price column in the shipment's original USD pricing and its Invoice column showing the converted amount with the correct currency symbol/code and correct decimal handling (JPY with zero decimal places, the other four with two) — every row checked individually against its own invoice's raw amountCents and currency from the API.",
+  "hints": [
+    "The \"Shipment Price\" column always shows the original USD price the booking was made at — only the \"Invoice\" column reflects the chosen billing currency and its converted amount.",
+    "Fixed exchange rate constants live in apps/api/src/modules/billing/currency.ts if you want to precompute expected converted values rather than trusting the API blindly."
+  ]
+}

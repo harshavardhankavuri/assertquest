@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-dispatchers-own-jobs",
+  "module": "reporting",
+  "title": "Dispatcher's Own Jobs",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "One dispatcher's scheduled export shouldn't be visible to another dispatcher poking around with a guessed job id — only admins get the bird's-eye view across everyone's jobs.",
+  "successCondition": "Dispatcher A calls POST /api/reporting/jobs to create a job, capturing its id. Dispatcher B (a distinct dispatcher account) calls GET /api/reporting/jobs/:id with that id and receives 403 with error.code FORBIDDEN. An admin account calling GET /api/reporting/jobs/:id with the same id succeeds with 200.",
+  "hints": [
+    "canSeeAll is derived purely from role === \"admin\" in the route handler — dispatcher is never treated as \"can see all\" even though dispatcher and admin share equal access elsewhere in the API (like billing/booking listings).",
+    "Register two distinct dispatcher accounts to get non-overlapping requestedById values to test with."
+  ]
+}

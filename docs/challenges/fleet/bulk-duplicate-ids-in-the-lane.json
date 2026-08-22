@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-duplicate-ids-in-the-lane",
+  "module": "fleet",
+  "title": "Duplicate IDs in the Lane",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Two cards in the same lane sharing one id/data-testid is exactly the kind of bug that makes a naive #id selector grab the wrong shipment — Practice mode can force it deliberately so you can practice scoping your locators correctly.",
+  "successCondition": "With Practice mode's \"Duplicate ids\" toggle switched on and a lane containing at least two shipment cards, a test confirms a bare id/data-testid selector for that shared id now matches more than one element in that lane (proving the duplication is real), then successfully drags the SECOND of the two duplicate-id cards specifically — by scoping the locator to its parent lane container plus its distinguishing content (shipment id text or position) rather than the shared id alone — and confirms the correct shipment (not its neighbor) ends up moved.",
+  "hints": [
+    "The toggle lives under \"Locators\" in the Practice mode drawer — with duplicateIds on, the second row in any lane with 2+ cards is deliberately given the first row's id.",
+    "A framework's getByTestId-style locator will throw or pick an arbitrary match when more than one element shares an id — scope to the lane column, then filter by visible text, to disambiguate."
+  ]
+}

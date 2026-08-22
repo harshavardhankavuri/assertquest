@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-rotated-out",
+  "module": "auth",
+  "title": "Rotated Out",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "Refreshing a session is supposed to retire the old boarding pass the moment a new one is issued, not just hand out a spare.",
+  "successCondition": "Log in, then call POST /api/auth/refresh with the resulting th_refresh cookie. The response sets a new th_refresh cookie. Querying refresh_tokens via `npm run db:psql` shows: the original row now has a non-null revoked_at, and a second row exists for the same user with a null revoked_at whose token_hash differs from the first — the rotation created a new row rather than mutating the old one's hash in place.",
+  "hints": [
+    "apps/api/src/modules/auth/service.ts's refresh() updates the presented token's row to set revokedAt, then calls issueSession() which inserts a fresh row — two DB writes, not one.",
+    "You'll need the raw cookie value from the login response to call /refresh — most HTTP clients show Set-Cookie headers in their response inspector."
+  ]
+}

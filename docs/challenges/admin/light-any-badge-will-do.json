@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-any-badge-will-do",
+  "module": "admin",
+  "title": "Any Badge Will Do",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "The audit log is the admin console's paper trail — dispatchers and drivers shouldn't be able to page through who did what. Confirm the gate is enforced, not just hidden in the UI.",
+  "successCondition": "GET /api/admin/audit-log with a valid Authorization header for a non-admin role (customer, dispatcher, or driver) returns 403 with error.code FORBIDDEN. The same request with a valid admin token returns 200 with an entries array.",
+  "hints": [
+    "Register two accounts with POST /api/auth/register — one admin, one any other role — to get both tokens.",
+    "Every non-admin role should be rejected identically; the response shape is documented in docs/api/admin.md."
+  ]
+}

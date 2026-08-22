@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-empty-search",
+  "module": "booking",
+  "title": "Empty Search",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A customer opens the booking wizard's address field and hasn't typed anything yet. The autocomplete shouldn't dump the entire hub list at them.",
+  "successCondition": "GET /api/booking/geocode with no q query parameter at all, and separately with q set to an empty string, both return 200 with results equal to an empty array [].",
+  "hints": [
+    "This endpoint requires no authentication at all — test it with a bare, unauthenticated request.",
+    "Test the missing-parameter case and the explicit-empty-string case as two separate requests; they're documented as behaving the same way, but that's worth confirming independently."
+  ]
+}

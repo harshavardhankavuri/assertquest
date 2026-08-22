@@ -1,0 +1,14 @@
+{
+  "id": "billing-standard-already-settled",
+  "module": "billing",
+  "title": "Already Settled",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Once an invoice is paid, it should be closed for business — a second payment attempt against it is a mistake, not a valid retry.",
+  "successCondition": "Create an invoice and pay it successfully with a well-formed card number that isn't one of the mock gateway's decline/timeout numbers (invoice status becomes \"paid\"). A second POST /api/billing/invoices/:id/pay against that same invoice, with any card number, returns 409 with error.code CONFLICT and no new Payment record is created — GET /api/billing/invoices/:id/payments still shows only the one successful attempt.",
+  "hints": [
+    "Any card number other than 4000000000000002 and 4000000000000119 succeeds deterministically, per docs/api/billing.md's mock gateway table.",
+    "Check the payments count before and after the second attempt to prove the 409 truly short-circuited before creating a Payment row."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-no-file-no-manifest",
+  "module": "admin",
+  "title": "No File, No Manifest",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "An admin fires off the CSV import request but forgets to attach the file. The API shouldn't hang or 500 — it should say plainly that nothing was uploaded.",
+  "successCondition": "POST /api/admin/shipments/import as admin, sent as multipart/form-data with no file field present at all, returns 400 with error.code VALIDATION_ERROR and a message indicating no file was uploaded.",
+  "hints": [
+    "You still need a valid multipart Content-Type on the request even though the file part itself is absent — an empty JSON body won't exercise this path.",
+    "Compare this against sending a file field that contains a header row but zero data rows, which is a different (valid, 0-row) case."
+  ]
+}

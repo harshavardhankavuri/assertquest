@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-special-delivery",
+  "module": "reporting",
+  "title": "Special Delivery",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Scheduled reports are generated asynchronously (FR-1303) — the CSV isn't ready the instant you request it. Request one, and prove it actually goes through a pending state before becoming downloadable, and that the download matches what the synchronous summary would say.",
+  "successCondition": "POST /api/reporting/jobs returns 202 with a job whose status is not yet \"ready\". Polling GET /api/reporting/jobs/:id eventually shows status \"ready\". GET /api/reporting/jobs/:id/download then returns a CSV (Content-Type text/csv) whose per-row shipmentCount/revenueCents match the equivalent GET /api/reporting/summary call for the same from/to/groupBy/timeZone. GET .../download before the job is ready returns 409.",
+  "hints": [
+    "NOTIFICATION_QUEUE_DELAY_MS also controls how long report jobs take to become ready (see docs/api/reporting.md) — lower it for faster local iteration if you're impatient.",
+    "A test that only checks once, immediately after POST /api/reporting/jobs, will falsely conclude generation is synchronous — poll with a timeout instead."
+  ]
+}

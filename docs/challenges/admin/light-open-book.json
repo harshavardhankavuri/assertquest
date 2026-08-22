@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-open-book",
+  "module": "admin",
+  "title": "Open Book",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "Feature flags aren't admin-only secrets at SwiftCargo — other pages read them too, so the console just shows the truth plainly. Confirm the Feature Flags panel renders every known flag with a legible on/off badge.",
+  "successCondition": "Logged in as any authenticated user who can reach /admin, the Feature Flags panel renders exactly three rows — priorityLane, extendedTracking, newAdminUi — each showing the flag key text and a Badge reading \"on\" (success tone) or \"off\" (neutral tone) matching the API's current value.",
+  "hints": [
+    "The panel is the first card on the Admin console page, above Bulk Actions.",
+    "Badge tone is driven directly by the boolean value returned from GET /api/admin/feature-flags — no separate loading state to race."
+  ]
+}

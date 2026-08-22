@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-drag-back-to-unassigned",
+  "module": "fleet",
+  "title": "Drag Back to Unassigned",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Sometimes a shipment needs to come off a truck entirely, not move to a different one. Dragging an assigned card back to the \"Unassigned\" column should cleanly remove the assignment.",
+  "successCondition": "After a shipment card is assigned to a vehicle column, dragging it from there and dropping it onto the \"Unassigned\" column results in the card appearing in \"Unassigned\" afterward, the vehicle's column no longer containing it, the vehicle's count decreasing by one, and the shipment's row disappearing entirely from the Schedule table below (not just showing an empty vehicle).",
+  "hints": [
+    "Dropping on Unassigned calls DELETE /api/fleet/assignments/:id, a full removal — not a reassignment to a null vehicle.",
+    "The Schedule table only lists rows for shipments with an active assignment — an unassigned shipment has no row there at all, by design."
+  ]
+}

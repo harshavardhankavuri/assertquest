@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-export-matches-table",
+  "module": "tracking",
+  "title": "Export Matches Table",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "The CSV export exists so a dispatcher can take the tracking table offline into a spreadsheet — but it always exports unpaginated (capped at 100 rows), unlike the on-screen table. Confirm the export's content genuinely matches the underlying data, filters included, even when the live table view is paginated down to a handful of rows at a time.",
+  "successCondition": "Book 5 shipments as a dispatcher-visible set (or as a dispatcher/admin account directly). GET /api/tracking?status=booked&pageSize=2&page=1 (a small page) returns only 2 items. GET /api/tracking/export.csv?status=booked (same filter, no pagination params — always capped at 100 rows per docs/api/tracking.md) returns a CSV whose data rows include all 5 (or however many actually match status=booked) shipment ids, with the header exactly id,status,origin,destination,weightKg,distanceKm,priceCents,currency,createdAt, and each row's values match the corresponding shipment's fields from the JSON listing exactly (distanceKm formatted to one decimal place).",
+  "hints": [
+    "The CSV export ignores page/pageSize entirely even if you pass them — docs/api/tracking.md says it's \"always unpaginated, capped at 100 rows\" — don't expect the small page size from your table view call to affect the export.",
+    "distanceKm in the CSV is formatted with toFixed(1) — a raw floating-point comparison against the JSON's unformatted distanceKm will need a formatting-aware comparison, not exact string equality."
+  ]
+}

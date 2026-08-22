@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-connecting-banner-disappears-on-open",
+  "module": "tracking",
+  "title": "Connecting Banner Disappears on Open",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 26,
+  "description": "For the brief moment before the live WebSocket handshake completes, the page is honest about it — a visible banner says \"Connecting to live updates…\". The moment the connection is actually open, that banner needs to be gone, not lingering as a stale warning.",
+  "successCondition": "On first loading /tracking, a role=\"status\" banner reading \"Connecting to live updates…\" is briefly visible (connectionStatus starts \"connecting\"), and the page header's action area shows a disabled button reading \"Connecting…\"; once the WebSocket's {\"type\": \"connected\"} message is received (connectionStatus becomes \"open\"), both the banner and the header button disappear entirely — verified by observing both elements transition from present to absent within a few seconds of page load, not just checking the final settled state.",
+  "hints": [
+    "This transition can be fast in local dev — poll frequently right after navigation rather than waiting a fixed delay before your first check, or you may miss the \"connecting\" state entirely.",
+    "Both the banner and the header's disabled button key off the exact same connectionStatus value — a bug that clears one but not the other would be a real inconsistency to flag."
+  ]
+}

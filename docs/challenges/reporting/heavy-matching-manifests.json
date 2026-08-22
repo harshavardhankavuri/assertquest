@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-matching-manifests",
+  "module": "reporting",
+  "title": "Matching Manifests",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The scheduled CSV export exists purely as a downloadable version of the live summary chart — the two must agree number for number, or dispatchers would have two different \"truths\" about the same period.",
+  "successCondition": "Book at least 2 shipments within a known window. GET /api/reporting/summary with a given from/to/groupBy/timeZone returns a buckets array. POST /api/reporting/jobs with the identical from/to/groupBy/timeZone, then poll GET /api/reporting/jobs/:id until status is \"ready\", then GET /api/reporting/jobs/:id/download. The downloaded CSV's header is exactly \"period,shipmentCount,revenueCents\" and its data rows, parsed and compared to the summary's buckets array (matching by period), have identical shipmentCount and revenueCents values for every period.",
+  "hints": [
+    "Use the exact same from/to/groupBy/timeZone JSON for both calls, or a boundary shipment could land in a different bucket between the two requests.",
+    "The CSV rows are in the same order the buckets array was built in — parse and compare row by row, but matching on the period column is the safer approach in case ordering isn't guaranteed to you as an API consumer."
+  ]
+}

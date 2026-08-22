@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-only-the-owner-hears",
+  "module": "notifications",
+  "title": "Only The Owner Hears",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A dozen customers could have shipments in flight at once — booking one of them shouldn't ring a bell in anyone else's inbox.",
+  "successCondition": "As customer A, book a shipment. As a different customer B (with existing notifications of their own from prior activity, or none at all), wait past the queue delay and confirm GET /api/notifications as B does NOT include a \"Shipment booked\" entry for A's shipment. Querying the notifications table via `npm run db:psql` confirms the new row's user_id equals A's user id exactly, and no new row with user_id equal to B's id was created by A's booking.",
+  "hints": [
+    "notify() is always called with the specific userId of the shipment's own customer (apps/api/src/modules/booking/service.ts) — there's no broadcast-to-all-customers code path anywhere in this event.",
+    "Register two separate throwaway customer accounts so you have full control over which one's inbox you're checking."
+  ]
+}

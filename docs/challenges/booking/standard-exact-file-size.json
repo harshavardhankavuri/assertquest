@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-exact-file-size",
+  "module": "booking",
+  "title": "Exact File Size",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A customs officer trusts the manifest's declared weight only if it matches the crate on the scale. Prove the document's declared byte count matches what was actually uploaded, down to the byte.",
+  "successCondition": "Upload a customs document of a known, deliberately-chosen size (e.g. build a PDF/JPEG exactly 12345 bytes). The 201 response's document.sizeBytes equals 12345 exactly. Querying customs_documents via `npm run db:psql` confirms both size_bytes = 12345 AND octet_length(content) = 12345 — the declared size column and the actual stored byte payload agree with each other and with your source file, not just one or the other.",
+  "hints": [
+    "sizeBytes is computed server-side from the actual uploaded buffer's length (apps/api/src/modules/booking/service.ts), not trusted from any client-supplied header.",
+    "Padding a small valid PDF/JPEG with trailing bytes (most formats tolerate appended junk) is an easy way to hit an exact byte count for the test."
+  ]
+}

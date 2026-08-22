@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-borrowed-envelope",
+  "module": "notifications",
+  "title": "Borrowed Envelope",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A curious customer notices notification ids look guessable and tries marking a stranger's message as read. That message belongs to someone else's inbox, not theirs.",
+  "successCondition": "Customer A books a shipment, waits for the resulting notification to appear via GET /api/notifications, and notes its id. Customer B (a distinct account) calls POST /api/notifications/:id/read against that id and receives 403 with error.code FORBIDDEN. GET /api/notifications as Customer A afterward still shows that notification with read false — Customer B's attempt did not flip it.",
+  "hints": [
+    "Wait for the booking notification to actually appear in Customer A's list before grabbing its id — the queue delay means it isn't there instantly.",
+    "The ownership check is a straightforward userId match on the notification row, independent of role — even an admin or dispatcher account attempting this would need its own separate consideration, but this test focuses on the customer-vs-customer case."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-on-the-books",
+  "module": "reporting",
+  "title": "On the Books",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Date-range filters need a precise, documented boundary — otherwise \"this month's report\" and \"last month's report\" either double-count or drop a shipment that lands exactly on the line. Prove which side of the `to` boundary is included.",
+  "successCondition": "Book a shipment and note its createdAt. GET /api/reporting/summary with to set to exactly that createdAt does NOT include it (totalShipments excludes it), but the same query with to set to one millisecond later DOES include it — proving `to` is exclusive, not inclusive.",
+  "hints": [
+    "The created shipment's createdAt comes back in the booking response — use it directly rather than estimating current time.",
+    "The exact inclusive/exclusive convention is documented in docs/api/reporting.md — don't assume, verify."
+  ]
+}

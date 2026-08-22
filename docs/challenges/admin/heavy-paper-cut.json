@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-paper-cut",
+  "module": "admin",
+  "title": "Paper Cut",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "Freight paperwork is full of commas — \"Port of Los Angeles, CA, USA\" is one field, not three. A CSV import that mishandles quoting turns one clean shipment into a garbled reject. Prove the import UI handles it correctly end to end.",
+  "successCondition": "Uploading a CSV whose originLabel and destinationLabel fields are quoted strings containing commas (e.g. \"Port of Los Angeles, CA, USA\") alongside otherwise-valid columns results in the CSV import report showing that row as accepted (counted in the Accepted stat tile, not listed among the rejected-row list items), and the newly created shipment subsequently appears on the Tracking dashboard with the full comma-containing label intact, not truncated at the first comma.",
+  "hints": [
+    "Required columns are documented in docs/api/admin.md — quote any field containing a comma per standard CSV rules.",
+    "Check the label rendered on /tracking afterward, not just the import report — a parsing bug could still accept the row while corrupting the label."
+  ]
+}

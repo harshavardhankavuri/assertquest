@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-five-out-of-seven",
+  "module": "booking",
+  "title": "Five Out Of Seven",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A busy customs desk fields a whole batch of uploads at once, some good and some bad, interleaved in no particular order. The database's final tally should match reality exactly, regardless of the mix.",
+  "successCondition": "For one shipment, upload 7 documents in this exact interleaved order: valid, valid, invalid-mime, valid, oversized (over 5MB), valid, valid. Five uploads succeed (201), two are rejected (400 VALIDATION_ERROR) — confirm the 5/2 split matches. GET /api/booking/:id/documents returns exactly 5 documents. Querying customs_documents via `npm run db:psql` (select count(*) from customs_documents where shipment_id = '<id>') confirms exactly 5 rows, and cross-check each returned document's sizeBytes against the specific valid file it corresponds to, confirming none of the 5 accidentally stored one of the rejected files' bytes.",
+  "hints": [
+    "Building a >5MB file is easy with a script that writes 5*1024*1024 + 1 arbitrary bytes with a valid PDF/JPEG/PNG extension and MIME type — the size check, not the MIME check, is what rejects it.",
+    "Track which of your 7 source files is which (by a marker byte sequence or distinct size) so you can confidently match each surviving DB row back to a specific valid upload."
+  ]
+}

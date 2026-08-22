@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-no-phantom-cargo",
+  "module": "admin",
+  "title": "No Phantom Cargo",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A bulk action against a shipment id that doesn't exist should leave exactly zero trace in the shipments table — not a ghost row, not a partial write, nothing.",
+  "successCondition": "Record the current total shipment count via `npm run db:psql` (select count(*) from shipments). Call POST /api/admin/shipments/bulk with a single fabricated UUID that doesn't correspond to any real shipment, action \"cancel\". The response's results shows success: false, error: \"Shipment not found\", succeeded: 0, failed: 1. Re-querying the shipment count confirms it is EXACTLY unchanged from before the call — the failed lookup never inserted, updated, or otherwise touched the shipments table.",
+  "hints": [
+    "bulkShipmentAction (apps/api/src/modules/admin/service.ts) does a findUnique first and immediately continues to the next item on a miss — no prisma.shipment.update or .create is ever reached for an unknown id.",
+    "Use a syntactically valid but non-existent UUID (e.g. change a few characters of a real one) so the request passes basic validation and actually reaches the not-found branch, rather than being rejected earlier for malformed input."
+  ]
+}

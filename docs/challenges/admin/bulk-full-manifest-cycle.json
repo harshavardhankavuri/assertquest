@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-full-manifest-cycle",
+  "module": "admin",
+  "title": "Full Manifest Cycle",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "Take a shipment from a spreadsheet row all the way to an audited, approved booking without ever leaving the browser: import it, select it, approve it, and confirm the paper trail records every step in order.",
+  "successCondition": "A test uploads a one-row valid CSV through the Admin console's import dropzone, confirms the Accepted stat tile reads 1 and the new shipment's id appears; without reloading, the same shipment now appears as a checkbox row in the Bulk Actions panel (reload() runs after import); the test checks that row and clicks \"Approve selected\", confirming the Succeeded stat tile reads 1; finally the Audit log card is confirmed to contain both a \"shipment.csv_import\" entry and a \"shipment.bulk_approve\" entry for the acting admin, with the import entry appearing below (older than) the approve entry.",
+  "hints": [
+    "CsvImportPanel's onImported callback triggers the same reload() that populates BulkActionsPanel's shipment list — no manual page refresh needed between steps.",
+    "The audit log only records shipment.bulk_approve, not a per-item entry — assert on the single action-level entry, not one per shipment."
+  ]
+}

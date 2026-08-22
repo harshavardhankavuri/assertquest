@@ -1,0 +1,14 @@
+{
+  "id": "fleet-standard-vanished-assignment",
+  "module": "fleet",
+  "title": "Vanished Assignment",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A dispatcher tries to remove a scheduling card that's already gone — maybe two dispatchers clicked delete on the same card at once. The second delete shouldn't succeed silently.",
+  "successCondition": "Create an assignment, note its id, DELETE /api/fleet/assignments/:id once (returns 204), then DELETE the exact same id again — the second call returns 404 with error.code NOT_FOUND.",
+  "hints": [
+    "The assignment's own id (not the shipmentId used to create it) is what the delete route takes as its path param — capture it from the PUT response's assignment.id field.",
+    "GET /api/fleet/assignments after the first delete is a good sanity check that the assignment is really gone before you attempt the second delete."
+  ]
+}

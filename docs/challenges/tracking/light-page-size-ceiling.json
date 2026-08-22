@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-page-size-ceiling",
+  "module": "tracking",
+  "title": "Page Size Ceiling",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "The tracking table's page size can't be cranked up indefinitely — someone requesting a thousand rows at once should be turned away, not silently capped.",
+  "successCondition": "GET /api/tracking?pageSize=101 as a logged-in user returns 400 with error.code VALIDATION_ERROR. GET /api/tracking?pageSize=100 (the maximum) returns 200 successfully.",
+  "hints": [
+    "pageSize is validated as an integer between 1 and 100 inclusive — 101 is one past the documented ceiling.",
+    "Any authenticated role works for this test since the validation happens before the ownership/visibility filtering."
+  ]
+}

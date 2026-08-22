@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-mixed-manifest",
+  "module": "admin",
+  "title": "Mixed Manifest",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "An admin bulk-cancels a batch of shipments, but one of the ids in the batch doesn't exist and another belongs to an already-delivered shipment. Confirm the operation reports per-item results instead of failing (or silently succeeding on) the whole batch.",
+  "successCondition": "POST /api/admin/shipments/bulk with action \"cancel\" and a mix of a valid open shipment id, a nonexistent id, and a delivered shipment's id returns 200 with results containing one success:true entry and two success:false entries (with error messages), and succeeded/failed counts matching. The valid shipment's status actually becomes \"cancelled\" afterward.",
+  "hints": [
+    "Use POST /api/tracking/:id/advance repeatedly (or the seeded flow) to get a shipment into \"delivered\" status to use as the failing case.",
+    "This endpoint always returns 200 — a partial failure is communicated in the response body's results array, not via HTTP status."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-two-rows-two-channels",
+  "module": "notifications",
+  "title": "Two Rows, Two Channels",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A shipment reaching its destination is important enough to reach the customer two different ways — prove that's really two separate outbox entries, not one message stamped with two channel labels.",
+  "successCondition": "Advance a shipment to \"delivered\" status. After waiting past the queue delay, querying mock_messages via `npm run db:psql` for that user's id shows exactly 2 new rows for this event: one with channel = 'email' and one with channel = 'sms', each with its own independent id, and both with body content referencing the delivery. Confirm there is no single row somehow representing both channels at once.",
+  "hints": [
+    "notify() (apps/api/src/modules/notifications/service.ts) does two separate prisma.mockMessage.create calls when both options.email and options.sms are true — never a single combined row.",
+    "shipment.delivered is the one event type in the table (docs/api/notifications.md) that sends on both channels — every other event type sends email only."
+  ]
+}

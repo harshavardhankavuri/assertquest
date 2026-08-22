@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-chart-is-real-image",
+  "module": "reporting",
+  "title": "Chart Is a Real Image",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "A screen reader can't see an SVG bar chart's shapes — it needs the chart to describe itself in words. Confirm both charts are properly labeled as images with a real data summary.",
+  "successCondition": "On /reporting with data present, both bar chart <svg> elements have role=\"img\" and an aria-label containing every rendered bucket's label and formatted value in a readable \"label value, label value\" pattern — not just a generic title like \"chart\".",
+  "hints": [
+    "The aria-label is built directly from the same bars array driving the visual rendering (BarChart.tsx) — cross-check its text against what's on screen.",
+    "There are two separate chart figures (shipment volume and revenue) — check both aria-labels independently, since they summarize different data."
+  ]
+}

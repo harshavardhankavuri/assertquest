@@ -1,0 +1,14 @@
+{
+  "id": "admin-standard-unknown-crate-number",
+  "module": "admin",
+  "title": "Unknown Crate Number",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Someone typos a shipment id into the bulk-approve box. The API needs to report that one id as not found without pretending the whole request failed.",
+  "successCondition": "POST /api/admin/shipments/bulk as admin with action \"approve\" and shipmentIds set to a single made-up id (e.g. a random UUID that was never created) returns 200 with succeeded 0, failed 1, and results[0] has success false and error \"Shipment not found\".",
+  "hints": [
+    "This is a 200 response with a per-item failure, not a 404 — the endpoint never fails the whole request over one bad id.",
+    "Any string that doesn't match a real shipment's id works; it doesn't need to be a well-formed UUID to prove the not-found path."
+  ]
+}

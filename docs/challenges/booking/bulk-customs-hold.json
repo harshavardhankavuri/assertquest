@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-customs-hold",
+  "module": "booking",
+  "title": "Customs Hold",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Customs documents must pass real server-side validation, not just the wizard's client-side checks (FR-705). Attempt to upload a disallowed file type, an oversized file, and a valid file to an existing shipment, and map out exactly which are accepted.",
+  "successCondition": "POST /api/booking/:id/documents rejects a text/plain file and a file over 5MB with 400 { error: { code: \"VALIDATION_ERROR\" } }, while a PDF or image under the limit succeeds with 201. GET /api/booking/:id/documents afterward lists only the accepted document(s), proving rejected uploads were never persisted.",
+  "hints": [
+    "Book a shipment first (or use a seeded one) to get a shipment id to upload against.",
+    "Allowed MIME types and the size limit are documented in docs/api/booking.md — don't just test one invalid case, test the boundary from both sides."
+  ]
+}

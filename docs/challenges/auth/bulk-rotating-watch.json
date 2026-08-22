@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-rotating-watch",
+  "module": "auth",
+  "title": "Rotating Watch",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 45,
+  "description": "SwiftCargo rotates refresh tokens on every use to limit the damage of a stolen cookie. Prove the rotation actually invalidates the old token: refresh once successfully, then try to reuse the original refresh token a second time.",
+  "successCondition": "The first POST /api/auth/refresh call (with the original cookie) succeeds and returns a new session. A second call reusing the same original refresh token is rejected with 401 { error: { code: \"UNAUTHORIZED\" } }.",
+  "hints": [
+    "The refresh token is delivered as an httpOnly cookie (th_refresh), not in the response body — you'll need to capture it at the HTTP layer, not by reading JSON.",
+    "Each successful refresh issues a brand-new refresh token and revokes the one that was presented; check the refresh_tokens table's revokedAt column if you want to verify at the DB layer too."
+  ]
+}

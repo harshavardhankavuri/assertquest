@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-no-such-role",
+  "module": "auth",
+  "title": "No Such Role",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "SwiftCargo only recognizes four crew roles. A registration attempt claiming an invented role, like \"superadmin\", shouldn't be allowed to slip through.",
+  "successCondition": "POST /api/auth/register with role set to a value outside admin, dispatcher, driver, customer (e.g. \"superadmin\") returns 400 with error.code VALIDATION_ERROR, and no account is created — a subsequent login attempt with that same email and password returns 401, not a successful session.",
+  "hints": [
+    "The valid role enum is admin | dispatcher | driver | customer, checked by the registerSchema before any database write happens.",
+    "Confirm no account was created by trying to log in with the rejected email/password afterward, rather than assuming from the 400 alone."
+  ]
+}

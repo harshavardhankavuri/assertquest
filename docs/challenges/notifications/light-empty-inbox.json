@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-empty-inbox",
+  "module": "notifications",
+  "title": "Empty Inbox",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A brand-new crew member's notification center should start out quiet — no phantom messages waiting for them before they've done anything.",
+  "successCondition": "Register a new account and immediately call GET /api/notifications with its token, before triggering any notify-worthy action. The response is 200 with notifications equal to an empty array [] and unreadCount equal to 0.",
+  "hints": [
+    "Use a genuinely fresh account for this — an account that's already booked a shipment or logged in multiple times may have notifications queued from those earlier actions.",
+    "This check should happen fast enough that even the delayed notification queue (default 500ms) hasn't had anything to deliver, since nothing was triggered in the first place."
+  ]
+}

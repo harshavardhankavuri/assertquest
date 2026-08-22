@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-two-ledgers-no-crosstalk",
+  "module": "billing",
+  "title": "Two Ledgers, No Crosstalk",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "The same customer can have several shipments in flight at once, each with its own invoice — make sure paying off one never bleeds into another's numbers.",
+  "successCondition": "As the same customer, book two shipments and create an invoice for each. Pay invoice A fully (succeeded card) but leave invoice B untouched. GET /api/billing/invoices for that customer shows invoice A as \"paid\" and invoice B still \"open\". Querying via `npm run db:psql`: invoice B's row has zero associated payments rows (select count(*) from payments where invoice_id = '<B id>' is 0), and both invoices' customer_id columns correctly match the same customer while their shipment_id columns differ.",
+  "hints": [
+    "Each Payment row's invoiceId scopes it to exactly one invoice — there's no shared \"customer wallet\" table that payments write to instead.",
+    "GET /api/billing/invoices lists every invoice for the caller — filter the response by shipmentId to tell A and B apart."
+  ]
+}

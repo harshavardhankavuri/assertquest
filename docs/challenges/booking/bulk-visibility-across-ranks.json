@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-visibility-across-ranks",
+  "module": "booking",
+  "title": "Visibility Across Ranks",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Three different customers each book a shipment. A dispatcher should see the whole fleet at a glance; each customer should only ever see their own crate. Prove the listing endpoint's visibility rule holds consistently across every role at once.",
+  "successCondition": "As three separate customer accounts, each book exactly one shipment (three total, three distinct customerIds). GET /api/booking as each customer returns a shipments array containing exactly 1 shipment — their own, confirmed by matching customerId. GET /api/booking as a dispatcher account and separately as an admin account each return a shipments array that includes all 3 shipment ids. No customer's list contains either of the other two customers' shipment ids.",
+  "hints": [
+    "Track shipmentId -> customerId as you create the three bookings so the final cross-check is a straightforward set comparison.",
+    "The dispatcher/admin lists may contain more than 3 shipments if the environment has pre-existing data — assert by containment of your 3 known ids, not by exact array length."
+  ]
+}

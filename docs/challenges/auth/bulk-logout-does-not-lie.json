@@ -1,0 +1,14 @@
+{
+  "id": "auth-bulk-logout-does-not-lie",
+  "module": "auth",
+  "title": "Logout Does Not Lie",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 35,
+  "description": "Two devices, two sessions, one logout button pressed on only one of them. Prove SwiftCargo's logout is scoped to the exact session it was called on, not every session the account happens to have open.",
+  "successCondition": "Log in twice as the same demo account (session A and session B, two distinct th_refresh cookies). Call POST /api/auth/logout with session A's cookie only. Querying refresh_tokens via `npm run db:psql` shows session A's row now has a non-null revoked_at while session B's row still has a null revoked_at. Confirm behaviorally too: POST /api/auth/refresh with session A's cookie now returns 401, while POST /api/auth/refresh with session B's cookie still returns 200 with a fresh token pair.",
+  "hints": [
+    "logout() (apps/api/src/modules/auth/service.ts) scopes its update to the exact tokenHash presented — it has no concept of \"this user's other sessions\" to touch.",
+    "Keep both cookie values in separate variables from the start; it's easy to accidentally overwrite one with the other."
+  ]
+}

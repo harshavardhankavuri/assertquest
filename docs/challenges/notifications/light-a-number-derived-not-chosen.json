@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-a-number-derived-not-chosen",
+  "module": "notifications",
+  "title": "A Number, Derived Not Chosen",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "There are no real phone numbers anywhere in SwiftCargo — every SMS \"recipient\" is manufactured on the spot from the user's own id, and it should be the same fake number every single time for that user.",
+  "successCondition": "Advance a shipment to \"delivered\" (which sends both email and sms per docs/api/notifications.md). Querying mock_messages via `npm run db:psql` for the channel = 'sms' row, confirm its `to` column exactly equals +1555 followed by the first 7 hex characters of the recipient user's id (with dashes stripped) — e.g. user id a1b2c3d4-... yields +1555a1b2c3d.",
+  "hints": [
+    "The derivation formula (mockPhoneForUser in apps/api/src/modules/notifications/service.ts) strips hyphens from the user id first, then takes the first 7 characters — get the exact user id from GET /api/auth/me to compute the expected value.",
+    "This delay is asynchronous (NOTIFICATION_QUEUE_DELAY_MS, default 500ms) — poll GET /api/notifications/outbox rather than checking the instant after /advance."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-worth-the-wait",
+  "module": "notifications",
+  "title": "Worth the Wait",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "Booking a shipment should eventually produce a notification, but not necessarily inside the same request that created it — SwiftCargo enqueues delivery on a delay. Prove the timing, not just the eventual outcome.",
+  "successCondition": "Book a shipment as a customer, then immediately (within roughly 100ms) call GET /api/notifications — the notifications array does not yet contain a shipment.booked entry for this action. Poll again after waiting past the configured queue delay (NOTIFICATION_QUEUE_DELAY_MS, default 500ms) — now the notifications array contains an entry with type \"shipment.booked\" and unreadCount has increased by at least 1.",
+  "hints": [
+    "docs/api/notifications.md is explicit that a test checking immediately and finding nothing yet is not broken — that immediate-empty result is itself part of what you're proving here, not a bug in your test.",
+    "Give yourself comfortable margin past the default 500ms delay (e.g. wait 800ms-1s) to avoid flaky timing right at the boundary."
+  ]
+}

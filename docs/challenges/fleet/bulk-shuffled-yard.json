@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-shuffled-yard",
+  "module": "fleet",
+  "title": "Shuffled Yard",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 35,
+  "description": "Practice mode's \"Random list order\" toggle reshuffles every lane's card order on each reload — a fair simulation of a board where insertion order was never a promise. Prove your assertions survive being shuffled.",
+  "successCondition": "With Practice mode's \"Random list order\" toggle switched on and a vehicle lane containing at least three shipment cards, a test asserts the presence and correct vehicle-column membership of each shipment by its content (id or origin/destination label), not by its position/index in the lane — the same assertions pass across at least two separate page reloads even though the on-screen order of the cards differs between reloads.",
+  "hints": [
+    "The toggle lives under \"Locators\" in the Practice mode drawer.",
+    "shuffleIfEnabled re-shuffles on every render when the toggle is on, so don't cache a card's index from one reload and reuse it after reloading — always re-locate by content."
+  ]
+}

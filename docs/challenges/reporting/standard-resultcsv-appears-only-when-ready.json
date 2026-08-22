@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-resultcsv-appears-only-when-ready",
+  "module": "reporting",
+  "title": "resultCsv Appears Only When Ready",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "The generated CSV bytes shouldn't exist in the database a moment before the job is actually marked ready to download — the two facts need to change together, atomically, not in a window where one is true and the other isn't yet.",
+  "successCondition": "POST /api/reporting/jobs. Immediately query report_jobs via `npm run db:psql` and confirm result_csv IS NULL while status is still 'pending'. Poll until status becomes \"ready\", then re-query and confirm result_csv IS NOT NULL (octet_length(result_csv) > 0) at the exact same moment status reads 'ready' — there's no observable state where status says ready but result_csv is still empty, or vice versa.",
+  "hints": [
+    "Both status: \"ready\" and resultCsv: Buffer.from(csv) are set in the SAME prisma.reportJob.update call (apps/api/src/modules/reporting/service.ts) — a single atomic write, not two separate ones that could be observed mid-transition.",
+    "GET /api/reporting/jobs/:id/download itself enforces this indirectly (409 if not ready) — but this challenge is about confirming the underlying DB row's own consistency, not just the download endpoint's guard."
+  ]
+}

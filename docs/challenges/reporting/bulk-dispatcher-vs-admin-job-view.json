@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-dispatcher-vs-admin-job-view",
+  "module": "reporting",
+  "title": "Dispatcher vs Admin Job View",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 35,
+  "description": "Two dispatchers each request their own scheduled report — an admin should be able to see and download both, but each dispatcher should only ever be able to reach their own via the UI, never the other's.",
+  "successCondition": "With two dispatcher accounts each generating a CSV report job on /reporting for different date ranges, dispatcher A's ReportJobPanel only ever shows and can download A's own job (a direct GET to B's job id, e.g. via a manually-crafted download URL using B's job id while authenticated as A, returns 403 or 404 rather than B's CSV content); an admin session, generating no new job of their own but querying GET /api/reporting/jobs/:id for both A's and B's job ids, can retrieve and download both successfully.",
+  "hints": [
+    "The panel component only ever tracks one job id per browser session (its own local state) — to test cross-account access you'll need to manually construct a request using another user's job id, not just click around the UI.",
+    "docs/api/reporting.md states admins can see every dispatcher's jobs while a dispatcher can only see their own — this challenge is verifying that boundary holds even when a dispatcher knows another's job id."
+  ]
+}

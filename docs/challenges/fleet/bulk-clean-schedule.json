@@ -1,0 +1,14 @@
+{
+  "id": "fleet-bulk-clean-schedule",
+  "module": "fleet",
+  "title": "Clean Schedule",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher builds out a full day of back-to-back, non-overlapping assignments across a small fleet. Prove the conflict detector stays quiet when it should — a naive overlap check that's off by one boundary condition would wrongly flag adjacent, non-overlapping slots.",
+  "successCondition": "Book three shipments. Assign all three to the same vehicleId and same driverId with strictly back-to-back windows (e.g. 08:00-10:00, 10:00-12:00, 12:00-14:00 — each scheduledEnd exactly equal to the next scheduledStart). All three PUT calls succeed. GET /api/fleet/conflicts returns conflicts with no entry referencing any of these three assignment ids — touching boundaries are correctly treated as non-overlapping.",
+  "hints": [
+    "The overlap check is a < b.end && b.start < a.end (strict inequalities) — touching endpoints (a.end === b.start) should NOT count as overlapping, which is exactly what this test pins down.",
+    "Double-check your three time windows really do touch exactly at the boundary with no gap and no overlap — a one-second mismatch either way changes what you're proving."
+  ]
+}

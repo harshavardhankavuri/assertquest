@@ -1,0 +1,14 @@
+{
+  "id": "tracking-light-status-badge-tones",
+  "module": "tracking",
+  "title": "Status Badge Tones",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 12,
+  "description": "A dispatcher scanning the tracking table shouldn't have to read every word — the Badge color for each status should be legible at a glance, and consistent with what that color means everywhere else in SwiftCargo.",
+  "successCondition": "On /tracking, a shipment with status \"booked\" renders its Badge with warning tone, \"in_transit\" renders teal tone, \"delivered\" renders success tone, and \"cancelled\" renders neutral tone — checked for at least one shipment of each of the four statuses.",
+  "hints": [
+    "You may need to use the status filter dropdown and the dispatcher/admin \"Advance\" button to get at least one shipment into each of the four states.",
+    "statusTone() in TrackingDashboard.tsx is the exact mapping being tested — read it if you want to double-check expected tones before writing assertions."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-price-precision-at-scale",
+  "module": "admin",
+  "title": "Price Precision At Scale",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "One correctly-priced imported row could be a lucky coincidence — prove the CSV import's pricing math holds up across a whole batch of rows with genuinely different package shapes, not just the easy case.",
+  "successCondition": "Import a 5-row CSV of all-valid rows, deliberately varying weightKg/lengthCm/widthCm/heightCm/origin/destination so that at least 2 rows are weight-driven (raw weightKg exceeds volumetric weight) and at least 2 are volumetric-driven (volumetric weight exceeds raw weightKg). All 5 rows are accepted. For each of the 5, independently call POST /api/booking/quote with that row's identical origin/destination/package to compute the expected priceCents/distanceKm. Querying the shipments table via `npm run db:psql` for all 5 imported shipmentIds confirms every single one's price_cents and distance_km exactly matches its corresponding quote's values — no drift across any of the 5 rows, in either pricing regime.",
+  "hints": [
+    "volumetricWeightKg = (lengthCm * widthCm * heightCm) / 5000 per docs/api/booking.md — pick dimensions deliberately to land on both sides of that comparison across your 5 rows.",
+    "Match each shipment back to its source CSV row by originLabel/destinationLabel (make each row's labels distinct) so you don't accidentally compare the wrong pair of numbers."
+  ]
+}

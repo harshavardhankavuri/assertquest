@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-dropdown-lists-newest-first",
+  "module": "notifications",
+  "title": "Dropdown Lists Newest First",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "When the day's events pile up in the dropdown, the most recent one should be right at the top — a customer shouldn't have to scroll past yesterday's booking confirmation to see today's delivery notice.",
+  "successCondition": "After triggering two distinct notification events for the same user in sequence (e.g. booking a shipment, then paying its invoice to completion), waiting past the async delivery delay, and opening the notification dropdown, the second (more recent) event's notification renders above the first (older) event's notification in DOM order.",
+  "hints": [
+    "GET /api/notifications already returns newest-first (per docs/api/notifications.md) — this challenge is verifying the dropdown's rendering preserves that order, not reversing it.",
+    "Space the two triggering actions out clearly and wait past NOTIFICATION_QUEUE_DELAY_MS (default 500ms) between them so their createdAt timestamps are unambiguously ordered."
+  ]
+}

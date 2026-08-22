@@ -1,0 +1,14 @@
+{
+  "id": "auth-heavy-same-face-twice",
+  "module": "auth",
+  "title": "Same Face Twice",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "Trying to register a second crew member under an email already on the manifest should fail loudly and leave the form exactly as it was typed — not silently clear it, and not pretend it worked.",
+  "successCondition": "Registering with an email that already belongs to a seeded account (e.g. customer@swiftcargo.test) on /register renders a visible error Alert, the browser stays on /register (no navigation to /), and the email/password/role fields the user typed remain populated afterward rather than being reset to blank.",
+  "hints": [
+    "The API returns 409 for a duplicate email (see docs/api/auth.md) — the UI's job is to turn that into a readable message, not a silent failure.",
+    "Check field values after the failed submit specifically — a naive implementation might reset form state on any submit attempt, success or not."
+  ]
+}

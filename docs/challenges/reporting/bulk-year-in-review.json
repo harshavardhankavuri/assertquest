@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-year-in-review",
+  "module": "reporting",
+  "title": "Year in Review",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 40,
+  "description": "A dispatcher builds a full month-by-month report across a wide window spanning several months of activity, checking that revenue and volume roll up faithfully at scale, not just for one or two shipments.",
+  "successCondition": "Book at least 6 shipments spread across at least 3 distinct calendar months (UTC), with known priceCents for each (record them as you book). GET /api/reporting/summary with groupBy=month over a from/to window covering all of them returns totalShipments equal to the total count booked, totalRevenueCents equal to the exact sum of all their priceCents values, and a buckets array with one entry per distinct month containing shipments, each bucket's shipmentCount and revenueCents matching the manually-tallied per-month totals from your recorded bookings.",
+  "hints": [
+    "Record each booking's createdAt and priceCents immediately after creating it — you'll need to manually group them by UTC month yourself to build the expected buckets to compare against.",
+    "If your environment has pre-existing shipment data in the same window, either pick a from/to range narrow enough to exclude it, or account for it explicitly in your expected totals rather than assuming a clean slate."
+  ]
+}

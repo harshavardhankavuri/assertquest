@@ -1,0 +1,14 @@
+{
+  "id": "reporting-light-summary-matches-raw-sql",
+  "module": "reporting",
+  "title": "Summary Matches Raw SQL",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "The synchronous summary chart is really just a query over the shipments table with some bucketing math on top — prove its headline totals agree with counting the rows yourself.",
+  "successCondition": "GET /api/reporting/summary?from=<a from>&to=<a to>&groupBy=day&timeZone=UTC. Querying the shipments table directly via `npm run db:psql` with `select count(*), sum(price_cents) from shipments where created_at >= '<from>' and created_at < '<to>'` confirms the API's totalShipments and totalRevenueCents exactly equal the SQL query's count and sum — the same half-open [from, to) range applies in both.",
+  "hints": [
+    "`to` is exclusive per docs/api/reporting.md — use >= for from and strictly < for to in your SQL to match the API's own semantics exactly.",
+    "Pick a from/to range wide enough to include the seeded demo shipments plus anything you've created, so the totals aren't trivially zero."
+  ]
+}

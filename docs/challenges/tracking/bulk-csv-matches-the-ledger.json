@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-csv-matches-the-ledger",
+  "module": "tracking",
+  "title": "CSV Matches The Ledger",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "Finance doesn't spot-check one column of the export — they reconcile the whole thing against the books. Prove every single field of every single exported row matches the database exactly, not just the ones that are easy to eyeball.",
+  "successCondition": "Book 5 shipments with deliberately varied data (different weights, prices, statuses via /advance, and at least one origin/destination label containing a comma). GET /api/tracking/export.csv and parse it (respecting CSV quoting for the comma-containing label). For each of the 5 shipments, querying the shipments table directly via `npm run db:psql` confirms every one of id, status, originLabel, destinationLabel, weightKg, distanceKm, priceCents, currency, and createdAt in the CSV row matches the corresponding DB column exactly — including that the comma-containing label round-trips through the CSV without getting truncated or misparsed into two columns.",
+  "hints": [
+    "A correct CSV parser (not a naive split(',')) is required to handle the comma-containing origin/destination label correctly — that's deliberately part of what this challenge is testing.",
+    "Match rows between the CSV and the DB by id, since export order and DB query order aren't guaranteed to be identical."
+  ]
+}

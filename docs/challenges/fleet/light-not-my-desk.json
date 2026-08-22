@@ -1,0 +1,14 @@
+{
+  "id": "fleet-light-not-my-desk",
+  "module": "fleet",
+  "title": "Not My Desk",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "The scheduling board is the dispatch team's own tool — a customer browsing the vehicle roster has no business there. Confirm every fleet route rejects a customer role, not just some of them.",
+  "successCondition": "As a logged-in customer, GET /api/fleet/vehicles, GET /api/fleet/drivers, GET /api/fleet/assignments, and GET /api/fleet/conflicts each return 403 with error.code FORBIDDEN.",
+  "hints": [
+    "Every route in this module shares the same two preHandler hooks (authenticate, then requireRole(\"dispatcher\", \"admin\")) — test all four listed routes, not just one, to confirm the gate is applied module-wide.",
+    "A driver role should be rejected the same way — try that as an extra check if you have time."
+  ]
+}

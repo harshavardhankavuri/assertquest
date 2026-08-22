@@ -1,0 +1,14 @@
+{
+  "id": "billing-heavy-formatted-across-currencies",
+  "module": "billing",
+  "title": "Formatted Across Currencies",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 30,
+  "description": "FR-1002 demands correct multi-currency formatting, and yen is the trap: it has no minor unit, so a naive /100 divide would render ¥796.58 instead of a whole number. Generate invoices in several currencies and check every rendered amount.",
+  "successCondition": "Generating invoices for three different shipments in USD, INR, and JPY renders each amount via the page's own formatter with correct locale punctuation and, critically, the JPY amount shows zero decimal places (a whole yen figure, e.g. \"¥79,658\", not \"¥796.58\") while USD and INR both show exactly two decimal places — checked against the raw amountCents each invoice's API response actually returned, not an assumed value.",
+  "hints": [
+    "formatAmount in InvoiceRow.tsx divides by 10**digits, where digits is 0 for JPY and 2 otherwise — read that logic before writing your expected values.",
+    "Generate the invoices via the UI's currency selector, not a raw API call, since this challenge is checking the rendered text specifically."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "notifications-standard-body-has-the-real-details",
+  "module": "notifications",
+  "title": "Body Has The Real Details",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A notification that just says \"something happened\" is useless — a customer reading their payment-failed alert should be able to tell which shipment or invoice it's actually about.",
+  "successCondition": "Pay an invoice with the decline test card. After waiting past the queue delay, querying the notifications table via `npm run db:psql` for the resulting payment.failed row confirms the body column contains specific, non-generic content tying it to the actual event — e.g. a dollar amount, currency, or failure reason string, not just a static \"Your payment failed\" with no identifying detail. Cross-check the body's amount/currency against the actual invoice.amountCents/currency you paid.",
+  "hints": [
+    "Check what fields the notify() call site for payment failure (apps/api/src/modules/billing/service.ts or wherever pay() lives) actually interpolates into the body string — the exact wording matters less than whether it's genuinely event-specific.",
+    "The decline test card number is documented in docs/api/billing.md."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-badge-reflects-status",
+  "module": "billing",
+  "title": "Badge Reflects Status",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "One glance at the Billing table should tell a dispatcher whether an invoice is still owed or already settled — that's the whole job of the status Badge next to each amount.",
+  "successCondition": "On /billing, a freshly generated invoice (status \"open\") renders its Badge with warning tone and the text \"open\"; after a successful payment, the same row's Badge updates to success tone and the text \"paid\" — without a full page reload, purely from the client-side state update following the pay action.",
+  "hints": [
+    "Badge tone comes straight from the invoice's status field — \"paid\" maps to success, anything else maps to warning.",
+    "Use a card number other than the two known decline/timeout numbers so the payment actually succeeds."
+  ]
+}

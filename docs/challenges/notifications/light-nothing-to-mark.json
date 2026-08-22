@@ -1,0 +1,14 @@
+{
+  "id": "notifications-light-nothing-to-mark",
+  "module": "notifications",
+  "title": "Nothing to Mark",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "Clicking \"mark all as read\" with an empty or already-clean inbox shouldn't error — it should just report that nothing needed doing.",
+  "successCondition": "POST /api/notifications/read-all, called by a freshly registered account with no notifications at all, returns 200 with marked equal to 0. Calling it again immediately after returns 200 with marked equal to 0 as well.",
+  "hints": [
+    "marked reflects how many rows the updateMany call actually touched — 0 is a perfectly valid, successful response here, not an error.",
+    "Use a brand-new account so you can be confident there are exactly zero unread notifications to begin with."
+  ]
+}

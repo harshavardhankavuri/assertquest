@@ -1,0 +1,44 @@
+services:
+  api:
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://assertquest:${POSTGRES_PASSWORD}@postgres:5432/assertquest
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      THP_ACCESS_TOKEN_SECRET: ${THP_ACCESS_TOKEN_SECRET}
+
+  web:
+    restart: unless-stopped
+
+  th-web:
+    restart: unless-stopped
+    build:
+      args:
+        VITE_SWIFTCARGO_URL: https://${APP_DOMAIN}
+
+  postgres:
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - web
+      - th-web
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+      LEARN_DOMAIN: ${LEARN_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

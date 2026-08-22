@@ -1,0 +1,14 @@
+{
+  "id": "admin-heavy-target-type-and-id-correctness",
+  "module": "admin",
+  "title": "Target Type And ID Correctness",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "An audit log entry that just says \"something happened\" is useless to an investigator — the targetType and targetId columns are what let you jump straight from a log line to the actual record it's about.",
+  "successCondition": "Trigger two different audited actions: (1) log in as a demo account (produces an auth.login entry), and (2) call POST /api/admin/shipments/bulk on a real shipment (produces a shipment.bulk_cancel or shipment.bulk_approve entry). Querying audit_log via `npm run db:psql` for both new rows confirms: the auth.login row has target_type = 'user' and target_id equal to the logged-in user's own id; the shipment.bulk_* row has target_type = 'shipment' and target_id is null (bulk actions record the affected ids in metadata.shipmentIds instead, since there's more than one target) — the two action types populate targetType/targetId differently and correctly for their own shape.",
+  "hints": [
+    "Compare apps/api/src/modules/auth/service.ts's recordAudit call (single targetId, the user) against apps/api/src/modules/admin/service.ts's bulkShipmentAction call (targetType only, no targetId, plural ids live in metadata) — they're deliberately different shapes for a single-target vs multi-target action.",
+    "select action, target_type, target_id, metadata from audit_log order by created_at desc limit 5; is a fast way to eyeball several recent entries' shapes at once."
+  ]
+}

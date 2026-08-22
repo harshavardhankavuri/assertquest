@@ -1,0 +1,14 @@
+{
+  "id": "booking-heavy-reprice-on-back-and-forth",
+  "module": "booking",
+  "title": "Reprice on Back and Forth",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "Change your mind about how heavy the crate is after already seeing a quote, and the price on screen had better change with it — a stale quote from before the edit would quietly undercharge or overcharge the customer.",
+  "successCondition": "After reaching the Pricing step and noting the displayed total, clicking Back to Package Details, changing the weight to a meaningfully larger value, and clicking Next again re-fetches the quote (a fresh POST /api/booking/quote with the new weight) and the Pricing step now displays a different, higher total than the one originally shown — not the stale first quote.",
+  "hints": [
+    "PricingStep's quote fetch is keyed off an effect depending on origin/destination/packageDetails — confirm packageDetails is actually one of the values changing between the two visits, not accidentally frozen.",
+    "Compare the exact total figures from both visits rather than eyeballing that \"a number changed\" — a subtle bug might still show the old total with new-looking formatting."
+  ]
+}

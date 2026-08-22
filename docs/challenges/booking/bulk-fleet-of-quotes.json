@@ -1,0 +1,14 @@
+{
+  "id": "booking-bulk-fleet-of-quotes",
+  "module": "booking",
+  "title": "Fleet of Quotes",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "A dispatcher is comparing shipping costs across five different hub-to-hub routes before choosing which lane to book. Confirm the pricing engine produces internally consistent, monotonically sensible results across a spread of distances and package sizes.",
+  "successCondition": "Using at least 3 real hub pairs from GET /api/booking/geocode at increasing distances apart, and an identical package for all three, call POST /api/booking/quote for each. The three priceCents values strictly increase as distanceKm increases (holding the package constant), and for every one of the three responses, priceCents exactly equals baseFeeCents + weightFeeCents + distanceFeeCents.",
+  "hints": [
+    "Pick hub pairs with a clearly increasing distance spread (e.g. two hubs on the same coast, then one across an ocean) so the monotonic relationship isn't muddied by near-identical distances.",
+    "weightFeeCents should be identical across all three calls since the package doesn't change — only distanceFeeCents (and therefore priceCents) should move."
+  ]
+}

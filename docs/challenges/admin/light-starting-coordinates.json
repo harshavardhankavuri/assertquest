@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-starting-coordinates",
+  "module": "admin",
+  "title": "Starting Coordinates",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "A shipment created through the CSV bulk-import side door should still start its journey exactly where the manifest says it's coming from — no different than one booked through the normal wizard.",
+  "successCondition": "Import a single valid row via POST /api/admin/shipments/import with a specific originLat/originLng. The row is accepted. Querying the shipments table via `npm run db:psql` for the new shipmentId confirms current_lat and current_lng exactly equal origin_lat and origin_lng — the import path sets the starting position the same way Module 2's booking flow does.",
+  "hints": [
+    "importShipmentsCsv (apps/api/src/modules/admin/service.ts) sets currentLat/currentLng from the row's own origin fields when creating the shipment, mirroring booking's service.",
+    "The customerEmail column must reference an existing account with role \"customer\" or the whole row is rejected — use a seeded demo customer."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tracking-bulk-filtered-export-vs-page",
+  "module": "tracking",
+  "title": "Filtered Export vs Page",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "The on-screen table and the CSV export are two different views of the same filter — the table is paginated ten at a time, but the export (FR-803) always hands over every matching row up to its own cap, unpaginated. Prove both are correct for what they each promise.",
+  "successCondition": "With the status filter set to a single value (e.g. \"in_transit\") that matches more than 10 shipments, the on-screen table shows exactly 10 rows (page size) all with that status; clicking \"Export CSV\" downloads a file whose data rows (excluding the header) all also have that same status in the status column, whose row count matches min(total matching shipments, 100), and whose row count is greater than the 10 shown on screen — proving the export isn't just dumping the current page.",
+  "hints": [
+    "docs/api/tracking.md notes the export shares the status filter with the table but is always unpaginated, capped at 100 rows — no sort/page params apply to it.",
+    "If fewer than 100 shipments match your filter, the export's row count should equal the exact total, not always exactly 100."
+  ]
+}

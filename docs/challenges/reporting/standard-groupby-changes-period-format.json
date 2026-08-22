@@ -1,0 +1,14 @@
+{
+  "id": "reporting-standard-groupby-changes-period-format",
+  "module": "reporting",
+  "title": "Group By Changes Period Format",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Switching from a daily view to a monthly one should collapse the whole table's period column into month-shaped labels — not leave a mix of formats, and not just relabel the same rows.",
+  "successCondition": "With a date range spanning at least two months, setting \"Group by\" to \"Day\" and clicking Update renders period values in the data table matching YYYY-MM-DD; switching \"Group by\" to \"Month\" and clicking Update again re-renders the same range with fewer rows, each period value matching YYYY-MM (no day component) — and the sum of shipmentCount across the monthly rows equals the sum across the daily rows for the same overall range.",
+  "hints": [
+    "The row count should genuinely drop when switching to Month grouping (multiple days collapse into one bucket) — if it doesn't change, the toggle likely isn't wired to the request.",
+    "Cross-checking the totals between the two groupings is a strong correctness signal beyond just checking the label format looks different."
+  ]
+}

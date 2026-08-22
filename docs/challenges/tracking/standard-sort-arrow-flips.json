@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-sort-arrow-flips",
+  "module": "tracking",
+  "title": "Sort Arrow Flips",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Clicking a column header to sort is only half the interaction — clicking it again should flip the direction, and clicking a different column entirely should start that new column fresh, not carry over the old direction.",
+  "successCondition": "Clicking the \"Price\" column header on /tracking sorts ascending and shows a \" ▲\" suffix on that header; clicking it again sorts descending and shows \" ▼\"; clicking a different header (e.g. \"Distance\") afterward sorts that column ascending with \" ▲\" shown on Distance, while Price's header no longer shows any arrow.",
+  "hints": [
+    "toggleSort in TrackingDashboard.tsx resets order to \"asc\" whenever the clicked field differs from the currently sorted field — only a repeat click on the same field flips direction.",
+    "Check the actual row order (by the underlying values, not just the arrow glyph) to confirm the sort is real, not just a cosmetic label change."
+  ]
+}

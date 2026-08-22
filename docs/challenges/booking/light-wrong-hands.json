@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-wrong-hands",
+  "module": "booking",
+  "title": "Wrong Hands",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A driver account has no business creating new shipments — that's a customer, dispatcher, or admin action. Confirm the role gate on booking creation actually excludes drivers.",
+  "successCondition": "POST /api/booking as a logged-in driver-role account, with an otherwise valid origin/destination/package body, returns 403 with error.code FORBIDDEN.",
+  "hints": [
+    "Register a driver-role account with POST /api/auth/register to get a driver token to test with.",
+    "The allowed roles for this route are exactly customer, dispatcher, and admin — driver is the one role deliberately left out."
+  ]
+}

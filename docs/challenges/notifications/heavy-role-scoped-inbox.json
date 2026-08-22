@@ -1,0 +1,14 @@
+{
+  "id": "notifications-heavy-role-scoped-inbox",
+  "module": "notifications",
+  "title": "Role-Scoped Inbox",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "A dispatcher advancing someone else's shipment shouldn't accidentally light up their own notification bell for it — every notification belongs to exactly one user, and the dropdown should only ever show that user's own.",
+  "successCondition": "With two distinct customer accounts, each having triggered at least one notifying event (e.g. each booking their own shipment), logging in as customer A shows only customer A's notifications in the dropdown (customer B's notification title/body never appears), and logging in as customer B shows the mirror image — checked by content, not just count, since two customers could coincidentally have the same unread count.",
+  "hints": [
+    "GET /api/notifications is scoped to the calling user server-side — this challenge is confirming the UI doesn't accidentally leak or mix state across an account switch (e.g. stale state left over from a previous session in the same browser tab).",
+    "Log out fully between checking the two accounts so no cached notification state from customer A survives into customer B's session."
+  ]
+}

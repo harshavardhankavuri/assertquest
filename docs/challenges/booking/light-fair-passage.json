@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-fair-passage",
+  "module": "booking",
+  "title": "Fair Passage",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A customer wants to know what a shipment will cost before booking it. Call the pricing calculator with a known origin, destination, and package, and confirm the quote is computed correctly.",
+  "successCondition": "POST /api/booking/quote with a valid origin/destination/package body returns 200 with a priceCents equal to baseFeeCents + weightFeeCents + distanceFeeCents from the same response body.",
+  "hints": [
+    "GET /api/booking/geocode?q=<text> returns matching hub locations you can use as origin/destination points.",
+    "The response body shape is documented in docs/api/booking.md."
+  ]
+}

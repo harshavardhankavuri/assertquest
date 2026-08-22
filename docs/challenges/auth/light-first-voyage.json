@@ -1,0 +1,14 @@
+{
+  "id": "auth-light-first-voyage",
+  "module": "auth",
+  "title": "First Voyage",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "SwiftCargo needs a new dispatcher account. Register a user, then log in with those credentials and confirm the API hands back a valid access token.",
+  "successCondition": "POST /api/auth/register followed by POST /api/auth/login both return 2xx with a user object and a non-empty accessToken.",
+  "hints": [
+    "Registration and login both live under /api/auth.",
+    "The response body shape is documented in docs/api/auth.md."
+  ]
+}

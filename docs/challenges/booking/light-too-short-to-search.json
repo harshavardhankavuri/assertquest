@@ -1,0 +1,14 @@
+{
+  "id": "booking-light-too-short-to-search",
+  "module": "booking",
+  "title": "Too Short to Search",
+  "difficulty": "light",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 10,
+  "description": "A single letter shouldn't trigger a dropdown full of every port on Earth. The address autocomplete waits for at least two characters before it bothers the mocked geocoding endpoint at all.",
+  "successCondition": "Typing a single character into either the Origin or Destination field on /book renders no suggestions dropdown; typing a second character (two total, matching a known freight hub label) does render the suggestions list.",
+  "hints": [
+    "The threshold is a client-side check (query.trim().length < 2) before the geocode API is even called — a network inspector will show no request fires for a 1-character query.",
+    "Clear the field back to empty between the two checks so leftover suggestions from a prior query don't give a false pass."
+  ]
+}

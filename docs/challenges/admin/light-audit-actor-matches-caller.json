@@ -1,0 +1,14 @@
+{
+  "id": "admin-light-audit-actor-matches-caller",
+  "module": "admin",
+  "title": "Audit Actor Matches Caller",
+  "difficulty": "light",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 15,
+  "description": "An audit trail is only trustworthy if it names the right person — the admin who actually clicked the button, not the customer whose shipment got touched.",
+  "successCondition": "As a specific admin account, call POST /api/admin/shipments/bulk to cancel one shipment belonging to a different customer. GET /api/admin/audit-log's newest entry has actorId equal to the ADMIN's user id and actorEmail equal to the admin's own email — not the shipment-owning customer's. Querying the audit_log table via `npm run db:psql` for that row confirms actor_id matches the admin's id exactly.",
+  "hints": [
+    "recordAudit (apps/api/src/core/audit.ts) is always called with the authenticated caller's own id as actorId — the shipment's customerId only ever appears inside metadata/targetId, never as the actor.",
+    "GET /api/admin/audit-log is admin-only and newest-first, so the entry you just created should be the first item in the response array."
+  ]
+}

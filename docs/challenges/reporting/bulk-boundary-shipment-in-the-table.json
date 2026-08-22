@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-boundary-shipment-in-the-table",
+  "module": "reporting",
+  "title": "Boundary Shipment in the Table",
+  "difficulty": "bulk",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 38,
+  "description": "One shipment, created within minutes of a UTC month boundary, can land in two entirely different calendar months depending on which timezone you view the report in — and that has to show up correctly and consistently in the actual on-screen table, not just in raw API responses.",
+  "successCondition": "Booking a shipment with a createdAt timestamp within about an hour of a UTC month boundary (or using a seeded shipment known to sit there), then viewing the Reporting page's data table with timeZone=UTC grouped by Month, and separately with a timezone offset far enough (e.g. Asia/Tokyo or America/Los_Angeles) to push that shipment's local calendar date across the boundary, results in the shipment counted in different period rows (different YYYY-MM values) between the two views — visibly reflected in the rendered table's shipmentCount figures for the two adjacent month rows, not just inferred from the API.",
+  "hints": [
+    "docs/api/reporting.md is explicit that this is intentional bucketing-in-the-viewed-timezone behavior, not a bug — the challenge is confirming the UI table actually renders the shift correctly, not flagging it as wrong.",
+    "Compare the shipmentCount of the two adjacent month rows across both timezone views — the total across both months combined should stay the same even as the individual month figures shift."
+  ]
+}

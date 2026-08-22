@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-sealed-envelope",
+  "module": "booking",
+  "title": "Sealed Envelope",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Some pickup paperwork arrives sealed in its own envelope before it reaches you. Enable \"Iframe content\" in Practice mode and confirm your automation can reach inside the embedded confirmation widget on the Dashboard.",
+  "successCondition": "With \"Iframe content\" switched on, a test opens the Dashboard, switches into the pickup-confirmation iframe's frame context (not the top-level document), clicks the \"Confirm pickup\" button inside it, and asserts the button's text changes to \"Confirmed inside iframe ✓\" within that frame.",
+  "hints": [
+    "A same-page CSS selector will not find the button — use your framework's frame API first (e.g. frameLocator in Playwright, driver.switch_to.frame in Selenium).",
+    "The widget only renders on the Dashboard (/) while \"Iframe content\" is on — check the Practice sandbox card at the bottom of the page."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "admin-bulk-full-reconciliation",
+  "module": "admin",
+  "title": "Full Reconciliation",
+  "difficulty": "bulk",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 40,
+  "description": "A full afternoon at the admin console: importing a partner's manifest, approving a batch, and cancelling another. At close of business, walk the audit trail end to end and confirm it tells the complete, accurate story of everything that happened.",
+  "successCondition": "In order: (1) POST /api/admin/shipments/import a 3-row CSV (2 valid, 1 rejected), (2) POST /api/admin/shipments/bulk to approve the 2 newly-imported shipments, (3) POST /api/admin/shipments/bulk to cancel one of those same 2 shipments. Querying audit_log via `npm run db:psql` (select action, metadata, created_at from audit_log order by created_at desc limit 3) confirms exactly 3 new rows exist in the correct chronological order (import oldest of the three, then bulk_approve, then bulk_cancel newest), each with metadata accurately reflecting its own step (import: totalRows/accepted/rejected; approve: succeeded 2/failed 0; cancel: succeeded 1/failed 0). Cross-check the final shipments table state: the cancelled shipment has approved=true AND status='cancelled', the other imported shipment has approved=true AND status='booked'.",
+  "hints": [
+    "Each of the 3 API calls is its own independent recordAudit call — there's no batching across separate HTTP requests, so 3 calls always means 3 rows regardless of how related they are in intent.",
+    "Keep the 2 imported shipmentIds from step 1's response handy — you'll need them as the exact shipmentIds array for both bulk calls in steps 2 and 3."
+  ]
+}

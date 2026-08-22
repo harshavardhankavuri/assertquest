@@ -1,0 +1,14 @@
+{
+  "id": "auth-standard-reused-boarding-pass",
+  "module": "auth",
+  "title": "Reused Boarding Pass",
+  "difficulty": "standard",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 20,
+  "description": "A boarding pass that's already been torn at the gate shouldn't get a second trip through. Prove a refresh token can't be spent twice.",
+  "successCondition": "Log in, call POST /api/auth/refresh once with the th_refresh cookie (this succeeds and rotates it), then call POST /api/auth/refresh AGAIN with that same original cookie value. The second call returns 401 with { error: { code: \"UNAUTHORIZED\" } }. Confirm via `npm run db:psql` that the original refresh_tokens row's revoked_at was already set (by the first, successful rotation) before the second call was even made — the rejection is reading existing state, not a new write.",
+  "hints": [
+    "apps/api/src/modules/auth/service.ts's refresh() rejects any presented token whose stored row already has a non-null revokedAt.",
+    "Save the original cookie value in a variable before the first refresh call, since the server will try to replace it with a new one you don't want to accidentally use instead."
+  ]
+}

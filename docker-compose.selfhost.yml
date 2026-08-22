@@ -1,0 +1,14 @@
+# Self-host stack: SwiftCargo (the app under test) only — no AssertQuest learning
+# platform (th-web, challenge board, /api/th/* routes). Run with:
+#   docker compose -f docker-compose.yml -f docker-compose.selfhost.yml up
+# This overrides the base compose file to drop th-web and disable the thPlatform
+# route surface on the api, so nothing AssertQuest-specific ships to self-hosters.
+services:
+  api:
+    environment:
+      ENABLE_ASSERTQUEST_PLATFORM: "false"
+
+  th-web:
+    # Assigning an unused profile is compose's way of opting a service out of `up`
+    # by default, without deleting it from the merged config.
+    profiles: ["assertquest-only"]

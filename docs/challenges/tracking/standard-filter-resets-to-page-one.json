@@ -1,0 +1,14 @@
+{
+  "id": "tracking-standard-filter-resets-to-page-one",
+  "module": "tracking",
+  "title": "Filter Resets to Page One",
+  "difficulty": "standard",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 20,
+  "description": "Land on page 3 of the unfiltered list, then filter down to a status with only a handful of matches, and you'd better not be stranded on a now-nonexistent page 3 staring at an empty table.",
+  "successCondition": "Navigating to page 2 or later of the tracking table, then changing the status filter to a different value, resets the pagination back to page 1 automatically (the \"Page X of Y\" label reads page 1, and the table shows rows rather than being empty due to a stale out-of-range page number).",
+  "hints": [
+    "The status filter's onChange handler explicitly calls setPage(1) alongside setStatus — confirm both actually happen together, not just the filter value changing.",
+    "Choose a status filter likely to have fewer total matches than your current page's offset would require, to make an unreset bug visibly produce an empty table."
+  ]
+}

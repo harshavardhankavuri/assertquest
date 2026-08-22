@@ -1,0 +1,14 @@
+{
+  "id": "booking-standard-zero-distance",
+  "module": "booking",
+  "title": "Zero Distance",
+  "difficulty": "standard",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 20,
+  "description": "A customer accidentally sets the same address as both origin and destination. The pricing formula should still hold together at the degenerate zero-distance boundary rather than erroring or producing a nonsensical negative fee.",
+  "successCondition": "POST /api/booking/quote with origin and destination set to identical lat/lng coordinates returns 200 with distanceKm equal to 0 (or a value effectively 0, within floating point noise), distanceFeeCents equal to 0, and priceCents equal to exactly baseFeeCents + weightFeeCents.",
+  "hints": [
+    "The haversine formula naturally returns ~0 for identical points, but floating-point sin/cos math can leave a tiny nonzero residue — assert with a small tolerance rather than exact equality on distanceKm.",
+    "distanceFeeCents is round(distanceKm * 8), so even a tiny residual distanceKm should still round to exactly 0 cents."
+  ]
+}

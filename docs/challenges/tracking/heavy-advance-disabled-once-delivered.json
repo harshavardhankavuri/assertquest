@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-advance-disabled-once-delivered",
+  "module": "tracking",
+  "title": "Advance Disabled Once Delivered",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui"],
+  "estimatedMinutes": 28,
+  "description": "A shipment that's already arrived has nowhere further to go — clicking \"Advance\" on a delivered shipment shouldn't do anything, and the button should say so by disabling itself the moment delivery happens.",
+  "successCondition": "As a dispatcher or admin, repeatedly clicking a shipment's \"Advance\" button (through booked -> in_transit -> ... -> delivered) leaves the button enabled at every intermediate status, and the moment the shipment's Badge reads \"delivered\", that same row's \"Advance\" button becomes disabled — verified by attempting one more click after delivery and confirming the status and position stay unchanged.",
+  "hints": [
+    "The number of clicks needed to reach \"delivered\" depends on the shipment's distance — a short domestic route reaches it in fewer ticks than a long international one.",
+    "disabled={s.status === \"delivered\"} is the exact condition — a stale prop or missed re-render could leave the button clickable one tick too long."
+  ]
+}

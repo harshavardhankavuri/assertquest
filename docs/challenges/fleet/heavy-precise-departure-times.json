@@ -1,0 +1,14 @@
+{
+  "id": "fleet-heavy-precise-departure-times",
+  "module": "fleet",
+  "title": "Precise Departure Times",
+  "difficulty": "heavy",
+  "surfaceTags": ["api", "db"],
+  "estimatedMinutes": 30,
+  "description": "A dispatcher who reschedules a shipment three times in a row expects the board to always reflect the LATEST times they set — never a stale window from an earlier drag-and-drop.",
+  "successCondition": "PUT /api/fleet/assignments/:shipmentId three times in a row for the same shipment, each time with a distinctly different scheduledStart/scheduledEnd pair. After each call, query the assignments table via `npm run db:psql` and confirm scheduled_start/scheduled_end match exactly that call's submitted values — including after the FIRST and SECOND calls, not just checking the final state, since a bug that only takes effect on odd-numbered updates would slip past a final-state-only check.",
+  "hints": [
+    "Query the DB after each of the three PUT calls, not just once at the end — this challenge is specifically about verifying every intermediate state, not just the destination.",
+    "Compare timestamps in UTC (at time zone 'UTC' in your SELECT) to avoid a false mismatch from your psql session's local timezone display."
+  ]
+}

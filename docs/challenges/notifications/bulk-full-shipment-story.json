@@ -1,0 +1,14 @@
+{
+  "id": "notifications-bulk-full-shipment-story",
+  "module": "notifications",
+  "title": "Full Shipment Story",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "Follow one shipment from booking through payment to delivery and confirm every single notify-worthy event along the way lands in both the customer's in-app inbox and the mock outbox, in the right order, with nothing missing or duplicated.",
+  "successCondition": "As a customer: book a shipment (waits for shipment.booked), create and pay its invoice successfully (waits for payment.succeeded), then as a dispatcher/admin advance it to delivered (waits for shipment.delivered). After waiting past the queue delay for each step, GET /api/notifications as the customer shows exactly 3 notifications of types shipment.booked, payment.succeeded, and shipment.delivered, newest first (delivered on top). GET /api/notifications/outbox as admin filtered by the customer's email shows 3 email messages with matching subjects, and filtered by the customer's derived mock phone number shows exactly 1 sms message (only the delivered event sends sms).",
+  "hints": [
+    "Do each step, wait for its notification to actually appear before moving to the next, and record its id/timestamp — trying to fire all three actions back-to-back without waiting will produce nondeterministic ordering in your assertions.",
+    "The email-channel message count (3) and sms-channel count (1) differ because only shipment.delivered sends sms — recheck docs/api/notifications.md's event table if your counts don't match."
+  ]
+}

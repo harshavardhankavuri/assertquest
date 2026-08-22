@@ -1,0 +1,14 @@
+{
+  "id": "billing-light-defaults-to-dollars",
+  "module": "billing",
+  "title": "Defaults to Dollars",
+  "difficulty": "light",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 10,
+  "description": "A customer creates an invoice without specifying a currency at all. SwiftCargo should quietly default to USD rather than rejecting the request.",
+  "successCondition": "Book a shipment, then POST /api/billing/shipments/:shipmentId/invoice with an empty JSON body ({}). The response is 201 with invoice.currency equal to \"USD\" and invoice.amountCents equal to the shipment's priceCents (USD to USD is a 1:1 conversion).",
+  "hints": [
+    "docs/api/billing.md states the currency field defaults to USD when omitted — this isn't a validation error case.",
+    "Compare amountCents directly against the shipment's priceCents from the booking response to confirm the 1:1 default-currency conversion."
+  ]
+}

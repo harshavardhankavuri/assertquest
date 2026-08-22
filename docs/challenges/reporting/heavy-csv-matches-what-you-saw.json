@@ -1,0 +1,14 @@
+{
+  "id": "reporting-heavy-csv-matches-what-you-saw",
+  "module": "reporting",
+  "title": "CSV Matches What You Saw",
+  "difficulty": "heavy",
+  "surfaceTags": ["ui", "api"],
+  "estimatedMinutes": 30,
+  "description": "The downloadable CSV is supposed to be the same report you were just looking at on screen — same range, same grouping, same numbers — not a report generated from whatever the query happened to be by the time the job actually ran.",
+  "successCondition": "With a specific date range, group-by, and timezone set and the on-screen data table rendered, clicking \"Generate CSV report\" and waiting for it to become ready, then downloading it via the \"Download CSV\" link (GET /api/reporting/jobs/:id/download), results in CSV content whose header row reads exactly \"period,shipmentCount,revenueCents\" and whose data rows exactly match the on-screen table's periods, shipment counts, and revenue-in-cents values, row for row.",
+  "hints": [
+    "The download link's href is api.reportJobDownloadUrl(job.id) — fetch it directly with the current auth to inspect the raw CSV text rather than relying on a browser save dialog.",
+    "Don't change any filter between generating the on-screen table and requesting the CSV job — this challenge is checking they agree for the same query, not across two different ones."
+  ]
+}

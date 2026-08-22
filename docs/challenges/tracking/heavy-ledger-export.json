@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-ledger-export",
+  "module": "tracking",
+  "title": "Ledger Export",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "Finance wants to pull the shipment table into a spreadsheet. Verify the CSV export is well-formed and its data matches the JSON listing it's exported from, byte for byte on the fields that matter.",
+  "successCondition": "GET /api/tracking/export.csv returns 200 with Content-Type text/csv, a header row of id,status,origin,destination,weightKg,distanceKm,priceCents,currency,createdAt, and exactly one data row per shipment returned by GET /api/tracking for the same filters — verify at least one field value in a row matches the corresponding shipment's field from the JSON response.",
+  "hints": [
+    "Compare against GET /api/tracking (not the paginated default) to get the full unfiltered set to diff against.",
+    "Don't forget to check for proper CSV escaping if any origin/destination label happens to contain a comma."
+  ]
+}

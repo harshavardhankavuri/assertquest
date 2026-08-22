@@ -1,0 +1,14 @@
+{
+  "id": "tracking-heavy-one-notification-not-ten",
+  "module": "tracking",
+  "title": "One Notification, Not Ten",
+  "difficulty": "heavy",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 30,
+  "description": "The delivered notification is supposed to fire exactly once, on the transition into delivered — a dispatcher clicking advance a few extra times after delivery shouldn't spam the customer's inbox with repeat \"delivered\" alerts.",
+  "successCondition": "Book a shipment and drive it to delivered via repeated POST /api/tracking/:id/advance calls as a dispatcher/admin. After it reaches delivered, call advance 3 more times. After waiting past the notification queue delay, GET /api/notifications as the customer shows exactly one notification with type \"shipment.delivered\" for this shipment, not multiple.",
+  "hints": [
+    "notifyIfJustDelivered in the tracking service only fires when previousStatus !== \"delivered\" and newStatus === \"delivered\" — that guard is exactly what this test is confirming holds under repeated calls.",
+    "Filter the notifications list by type and by the shipment id mentioned in the body text, in case other test activity has also generated shipment.delivered notifications for other shipments in the same account."
+  ]
+}

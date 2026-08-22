@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: assertquest
+      POSTGRES_PASSWORD: assertquest
+      POSTGRES_DB: assertquest
+    ports:
+      - "5432:5432"
+    volumes:
+      - assertquest_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U assertquest"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://assertquest:assertquest@postgres:5432/assertquest
+      PORT: 4000
+      NODE_ENV: production
+      ACCESS_TOKEN_SECRET: dev-access-secret-change-me
+      ACCESS_TOKEN_TTL_SECONDS: 900
+      REFRESH_TOKEN_TTL_SECONDS: 604800
+      GOOGLE_OAUTH_ENABLED: "false"
+      THP_ACCESS_TOKEN_SECRET: dev-th-platform-secret-change-me
+      ENABLE_ASSERTQUEST_PLATFORM: "true"
+    ports:
+      - "4000:4000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4000/health"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5173:5173"
+
+  th-web:
+    build:
+      context: .
+      dockerfile: apps/th-web/Dockerfile
+      args:
+        VITE_SWIFTCARGO_URL: http://localhost:5173
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "5174:5174"
+
+volumes:
+  assertquest_pg_data:

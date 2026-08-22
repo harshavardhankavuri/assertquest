@@ -1,0 +1,14 @@
+{
+  "id": "reporting-bulk-reporting-under-strain",
+  "module": "reporting",
+  "title": "Reporting Under Strain",
+  "difficulty": "bulk",
+  "surfaceTags": ["api"],
+  "estimatedMinutes": 35,
+  "description": "With the reporting module's flake simulation dialed up, a dispatcher's scheduled report job must never end up in a corrupted or ambiguous state — it should always resolve cleanly to either ready or failed, even if the request that created it barely survived a simulated outage.",
+  "successCondition": "With FLAKE_LATENCY_MS_REPORTING and FLAKE_FAILURE_RATE_REPORTING set to nonzero values, repeatedly (at least 5 times) call POST /api/reporting/jobs with a valid query. Every call either succeeds with 202 and a job in \"pending\" status, or fails with 503 { error: { code: \"INTERNAL_ERROR\" } } before a job was ever created (confirm via GET /api/reporting/jobs/:id on a captured id returning 404 for any call that 503'd, meaning nothing partial was persisted). For every job that did reach \"pending\", poll it until it resolves — within a reasonable timeout, its status becomes either \"ready\" (with a downloadable CSV) or \"failed\" (with a non-null failureReason), never stuck indefinitely in \"pending\".",
+  "hints": [
+    "The flake hook rejects at the request level before the handler runs, so a 503 here means no ReportJob row was ever created — you can't check a job id you never received, so this hint is about not needing to check IDs you never got back.",
+    "Set the env vars before starting the API server — this requires control over server configuration, not just request payloads. If your test harness can't restart the server, focus on the polling-to-resolution half of this challenge with a lower failure rate."
+  ]
+}
