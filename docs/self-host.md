@@ -30,6 +30,12 @@ FR-502).
   port 4000 directly
 - Postgres: `localhost:5432` (user/password/db: `assertquest`)
 
+![Sign-in page](images/login.png)
+
+Sign in with any of the demo accounts below, and land on the dashboard:
+
+![SwiftCargo dashboard](images/dashboard.png)
+
 ## Demo accounts
 
 Every seeded SwiftCargo account shares the password `Password123!`:
@@ -43,6 +49,85 @@ Every seeded SwiftCargo account shares the password `Password123!`:
 
 This is a practice sandbox — no real user data is ever stored, so shared demo
 passwords are intentional and fine.
+
+## Testing features
+
+SwiftCargo isn't just a demo app — it's built to be automated against, so it
+ships with several purpose-built features for practicing and exercising test
+automation. All of these are visible from the running app; none require
+reading the source to discover.
+
+### The practice toolbar (client-side "chaos" toggles)
+
+Every page has a **Practice mode** button in the bottom-right corner. Clicking
+it opens a drawer of switches that inject real-world automation pain points
+into the live UI — each with a one-line tip on the robust way to handle it:
+
+![Practice toolbar drawer](images/practice-mode.png)
+
+The toggles are grouped by category:
+
+| Group | Toggles | What it exercises |
+|---|---|---|
+| Locators | Dynamic ids, Duplicate ids, Random list order | Writing locators that don't depend on brittle ids or row position |
+| Timing & loading | Slow loading elements, Layout shift | Waiting on state/elements instead of fixed sleeps |
+| Visual | Slow animations, Broken UI | Interacting via the locator API instead of raw pixel coordinates |
+| Network & links | Slow network, Broken links, Console noise | Timeout handling, link checking, and filtering console assertions |
+| DOM & dialogs | Iframe content, Shadow DOM, Click intercepted, Stale elements, Native dialogs | Frame-switching, shadow-piercing, overlay waits, re-querying elements, and `window.confirm()` handling |
+
+Four one-click difficulty presets (**Off / Beginner / Intermediate / Chaos**)
+bundle these for instructors or self-paced ramp-up, instead of flipping each
+switch by hand. Turning on the DOM & dialogs toggles adds a **Practice
+sandbox** panel to the dashboard with one interactive widget per toggle:
+
+![Practice sandbox widgets — iframe, shadow DOM, intercepted click, stale element, native dialog](images/practice-sandbox-widgets.png)
+
+This state lives entirely in the browser's `localStorage` (key
+`swiftcargo:practiceToggles`) — it's per-browser, has no server-side
+component, and resets independently of the `/api/test/*` endpoints below.
+
+### Server-side flakiness injection
+
+For practicing retries, timeouts, and reconnect logic against a real backend
+(not just the UI), the API supports environment-variable-driven flakiness per
+module — see `FLAKE_LATENCY_MS[_<MODULE>]` and `FLAKE_FAILURE_RATE[_<MODULE>]`
+in the table below. This also drops the tracking WebSocket connection at the
+configured rate, to practice reconnect handling (`docs/api/tracking.md`).
+
+### Feature flags
+
+`GET /api/admin/feature-flags` (open to any authenticated user, not just
+admins, since other pages conditionally render off it) reports which
+flags are on. The admin console surfaces them at a glance:
+
+![Admin console — feature flags, bulk shipment actions, CSV import](images/admin-console.png)
+
+Flags are set via env vars (`FEATURE_PRIORITY_LANE`, `FEATURE_EXTENDED_TRACKING`,
+`FEATURE_NEW_ADMIN_UI`) — there's no runtime toggle — so flipping one and
+restarting is itself a useful test of feature-flagged code paths. The same
+console also has bulk approve/cancel and CSV import for exercising
+partial-failure handling (`docs/api/admin.md`).
+
+### Test-control API
+
+Every module exposes its own seed/reset endpoints, scoped per module or
+globally, documented (and directly callable) from the Swagger UI's **Test
+Control** section at http://localhost:5173/docs:
+
+![Swagger UI — Test Control: /api/test/seed and /api/test/reset](images/api-docs-test-control.png)
+
+```bash
+curl -X POST "http://localhost:4000/api/test/reset?module=auth"
+curl -X POST "http://localhost:4000/api/test/seed"   # all modules
+```
+
+These are intentionally **unauthenticated** — it's a practice-sandbox control
+surface, never something to expose on a deployment with real user data. Use
+it to reset a scenario to a known state between test runs without tearing
+down the whole stack. The full Swagger UI documents every route across both
+SwiftCargo and the AssertQuest platform layer:
+
+![Swagger UI — full API index](images/api-docs.png)
 
 ## Environment variables
 
@@ -66,13 +151,10 @@ Set in `docker-compose.yml` for the containerized flow, or in `apps/api/.env`
 
 ## Resetting/seeding data
 
-Every module exposes its own seed/reset via the test-control API, scoped per module
-or globally:
+See [Test-control API](#test-control-api) above. Live shipment tracking, with
+the mocked GPS feed and WebSocket updates, looks like this:
 
-```bash
-curl -X POST "http://localhost:4000/api/test/reset?module=auth"
-curl -X POST "http://localhost:4000/api/test/seed"   # all modules
-```
+![Shipment tracking — live positions and status table](images/tracking.png)
 
 ## Running the API and web app outside Docker
 
