@@ -101,7 +101,7 @@ services:
     ports:
       - "4000:4000"
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:4000/health"]
       interval: 3s
       timeout: 3s
       retries: 30
