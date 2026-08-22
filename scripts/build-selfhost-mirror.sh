@@ -44,6 +44,7 @@ find "$OUT_DIR" \( -name '.env' -o -name '.env.*' \) ! -name '.env.example' -exe
 # source; see apps/api/src/app.ts and packages/shared/src/index.ts.
 for f in \
   "$OUT_DIR/apps/api/src/app.ts" \
+  "$OUT_DIR/apps/api/src/docs/openapi.ts" \
   "$OUT_DIR/apps/api/prisma/seed.ts" \
   "$OUT_DIR/packages/shared/src/index.ts"
 do

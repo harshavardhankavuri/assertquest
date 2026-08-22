@@ -12,12 +12,14 @@ export const openapiDocument = {
     title: "AssertQuest API",
     version: "1.0.0",
     description:
-      "Two independent APIs served from one process:\n\n" +
-      "- **SwiftCargo** (`/api/auth`, `/api/booking`, `/api/tracking`, `/api/billing`, `/api/fleet`, " +
+      "**SwiftCargo** (`/api/auth`, `/api/booking`, `/api/tracking`, `/api/billing`, `/api/fleet`, " +
       "`/api/admin`, `/api/notifications`, `/api/reporting`) — the freight-forwarding app under test. " +
-      "Its own account system (`User`), JWT access tokens (15m) + httpOnly refresh cookie (7d, scoped to `/api/auth`).\n" +
-      "- **AssertQuest platform** (`/api/th/*`) — the challenge board, leaderboard, and community discussion " +
-      "layer wrapped around SwiftCargo. A completely separate account system (`THUser`) and JWT.\n\n" +
+      "Its own account system (`User`), JWT access tokens (15m) + httpOnly refresh cookie (7d, scoped to `/api/auth`).\n\n" +
+      // selfhost-mirror:strip-start
+      "Also served from this same process: the **AssertQuest platform** (`/api/th/*`) — the challenge board, " +
+      "leaderboard, and community discussion layer wrapped around SwiftCargo. A completely separate account " +
+      "system (`THUser`) and JWT.\n\n" +
+      // selfhost-mirror:strip-end
       "`/api/test/*` is an unauthenticated seed/reset control surface for the practice sandbox — never enable " +
       "this on a deployment with real user data.",
   },
@@ -32,10 +34,12 @@ export const openapiDocument = {
     { name: "SwiftCargo / Admin" },
     { name: "SwiftCargo / Notifications" },
     { name: "SwiftCargo / Reporting" },
+    // selfhost-mirror:strip-start
     { name: "AssertQuest / Auth" },
     { name: "AssertQuest / Challenges" },
     { name: "AssertQuest / Leaderboard" },
     { name: "AssertQuest / Discussion" },
+    // selfhost-mirror:strip-end
     { name: "Test Control" },
   ],
   components: {
@@ -46,12 +50,14 @@ export const openapiDocument = {
         bearerFormat: "JWT",
         description: "SwiftCargo access token from `/api/auth/login`, `/register`, or `/refresh`. 15 minute TTL.",
       },
+      // selfhost-mirror:strip-start
       thBearer: {
         type: "http",
         scheme: "bearer",
         bearerFormat: "JWT",
         description: "AssertQuest platform access token from `/api/th/auth/login` or `/register`.",
       },
+      // selfhost-mirror:strip-end
     },
     schemas: {
       ApiError: {
@@ -406,6 +412,7 @@ export const openapiDocument = {
           readyAt: { type: "string", format: "date-time", nullable: true },
         },
       },
+      // selfhost-mirror:strip-start
       THUser: {
         type: "object",
         properties: {
@@ -499,6 +506,7 @@ export const openapiDocument = {
           createdAt: { type: "string", format: "date-time" },
         },
       },
+      // selfhost-mirror:strip-end
     },
     responses: {
       ValidationError: {
@@ -1131,6 +1139,7 @@ export const openapiDocument = {
       },
     },
 
+    // selfhost-mirror:strip-start
     "/api/th/auth/register": {
       post: {
         tags: ["AssertQuest / Auth"],
@@ -1338,6 +1347,7 @@ export const openapiDocument = {
         },
       },
     },
+    // selfhost-mirror:strip-end
 
     "/api/test/seed": {
       post: {
