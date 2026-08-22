@@ -9,19 +9,17 @@
 export const openapiDocument = {
   openapi: "3.0.3",
   info: {
-    title: "AssertQuest API",
+    title: "SwiftCargo API",
     version: "1.0.0",
     description:
       "**SwiftCargo** (`/api/auth`, `/api/booking`, `/api/tracking`, `/api/billing`, `/api/fleet`, " +
       "`/api/admin`, `/api/notifications`, `/api/reporting`) — the freight-forwarding app under test. " +
       "Its own account system (`User`), JWT access tokens (15m) + httpOnly refresh cookie (7d, scoped to `/api/auth`).\n\n" +
-      // selfhost-mirror:strip-start
-      "Also served from this same process: the **AssertQuest platform** (`/api/th/*`) — the challenge board, " +
-      "leaderboard, and community discussion layer wrapped around SwiftCargo. A completely separate account " +
-      "system (`THUser`) and JWT.\n\n" +
-      // selfhost-mirror:strip-end
       "`/api/test/*` is an unauthenticated seed/reset control surface for the practice sandbox — never enable " +
-      "this on a deployment with real user data.",
+      "this on a deployment with real user data.\n\n" +
+      "This document covers the SwiftCargo automation-practice target only. The AssertQuest platform layer " +
+      "(`/api/th/*` — challenge board, leaderboard, community discussion) sits on top of SwiftCargo but isn't " +
+      "itself a practice target, so it's intentionally left out of these docs.",
   },
   servers: [{ url: "/", description: "Same origin as the web app (reverse-proxied in prod, Vite dev proxy locally)" }],
   tags: [
@@ -34,12 +32,6 @@ export const openapiDocument = {
     { name: "SwiftCargo / Admin" },
     { name: "SwiftCargo / Notifications" },
     { name: "SwiftCargo / Reporting" },
-    // selfhost-mirror:strip-start
-    { name: "AssertQuest / Auth" },
-    { name: "AssertQuest / Challenges" },
-    { name: "AssertQuest / Leaderboard" },
-    { name: "AssertQuest / Discussion" },
-    // selfhost-mirror:strip-end
     { name: "Test Control" },
   ],
   components: {
@@ -50,14 +42,6 @@ export const openapiDocument = {
         bearerFormat: "JWT",
         description: "SwiftCargo access token from `/api/auth/login`, `/register`, or `/refresh`. 15 minute TTL.",
       },
-      // selfhost-mirror:strip-start
-      thBearer: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
-        description: "AssertQuest platform access token from `/api/th/auth/login` or `/register`.",
-      },
-      // selfhost-mirror:strip-end
     },
     schemas: {
       ApiError: {
@@ -412,101 +396,6 @@ export const openapiDocument = {
           readyAt: { type: "string", format: "date-time", nullable: true },
         },
       },
-      // selfhost-mirror:strip-start
-      THUser: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-          email: { type: "string", format: "email" },
-          displayName: { type: "string" },
-          publicRealName: { type: "boolean" },
-          role: { type: "string", enum: ["learner", "admin"] },
-          createdAt: { type: "string", format: "date-time" },
-        },
-      },
-      THAuthResponse: {
-        type: "object",
-        properties: {
-          user: { $ref: "#/components/schemas/THUser" },
-          accessToken: { type: "string" },
-        },
-      },
-      Challenge: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-          module: { type: "string" },
-          title: { type: "string" },
-          difficulty: { type: "string", enum: ["light", "standard", "heavy", "bulk"] },
-          surfaceTags: { type: "array", items: { type: "string", enum: ["api", "db", "ui"] } },
-          estimatedMinutes: { type: "integer" },
-          description: { type: "string" },
-          successCondition: { type: "string" },
-          hints: { type: "array", items: { type: "string" } },
-          status: { type: "string", enum: ["open", "in_progress", "cleared"] },
-        },
-      },
-      ChallengeListResponse: {
-        type: "object",
-        properties: {
-          challenges: { type: "array", items: { $ref: "#/components/schemas/Challenge" } },
-          total: { type: "integer" },
-          page: { type: "integer" },
-          pageSize: { type: "integer" },
-        },
-      },
-      ProfileSummary: {
-        type: "object",
-        properties: {
-          userId: { type: "string" },
-          displayName: { type: "string" },
-          totalChallenges: { type: "integer" },
-          totalCleared: { type: "integer" },
-          byModule: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                module: { type: "string" },
-                totalChallenges: { type: "integer" },
-                cleared: { type: "integer" },
-              },
-            },
-          },
-        },
-      },
-      LeaderboardEntry: {
-        type: "object",
-        properties: {
-          rank: { type: "integer" },
-          userId: { type: "string" },
-          name: { type: "string" },
-          clearedCount: { type: "integer" },
-        },
-      },
-      ActivityEntry: {
-        type: "object",
-        properties: {
-          userId: { type: "string" },
-          name: { type: "string" },
-          challengeId: { type: "string" },
-          challengeTitle: { type: "string" },
-          clearedAt: { type: "string", format: "date-time" },
-        },
-      },
-      DiscussionPost: {
-        type: "object",
-        properties: {
-          id: { type: "string" },
-          challengeId: { type: "string" },
-          authorId: { type: "string" },
-          authorName: { type: "string" },
-          body: { type: "string" },
-          upvotes: { type: "integer" },
-          createdAt: { type: "string", format: "date-time" },
-        },
-      },
-      // selfhost-mirror:strip-end
     },
     responses: {
       ValidationError: {
@@ -1139,215 +1028,6 @@ export const openapiDocument = {
       },
     },
 
-    // selfhost-mirror:strip-start
-    "/api/th/auth/register": {
-      post: {
-        tags: ["AssertQuest / Auth"],
-        summary: "Create a AssertQuest platform account",
-        requestBody: {
-          required: true,
-          content: { "application/json": { schema: { type: "object", required: ["email", "password"], properties: { email: { type: "string", format: "email" }, password: { type: "string", minLength: 8 } } } } },
-        },
-        responses: {
-          "201": { description: "Created", content: { "application/json": { schema: { $ref: "#/components/schemas/THAuthResponse" } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-        },
-      },
-    },
-    "/api/th/auth/login": {
-      post: {
-        tags: ["AssertQuest / Auth"],
-        summary: "Log in to the AssertQuest platform",
-        requestBody: {
-          required: true,
-          content: { "application/json": { schema: { type: "object", required: ["email", "password"], properties: { email: { type: "string", format: "email" }, password: { type: "string" } } } } },
-        },
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { $ref: "#/components/schemas/THAuthResponse" } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-        },
-      },
-    },
-    "/api/th/auth/me": {
-      get: {
-        tags: ["AssertQuest / Auth"],
-        summary: "Get the current AssertQuest user",
-        security: [{ thBearer: [] }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { user: { $ref: "#/components/schemas/THUser" } } } } } },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-          "404": { $ref: "#/components/responses/NotFound" },
-        },
-      },
-      patch: {
-        tags: ["AssertQuest / Auth"],
-        summary: "Update profile (e.g. opt into showing your real name)",
-        security: [{ thBearer: [] }],
-        requestBody: { content: { "application/json": { schema: { type: "object", properties: { publicRealName: { type: "boolean" } } } } } },
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { user: { $ref: "#/components/schemas/THUser" } } } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-        },
-      },
-    },
-
-    "/api/th/challenges": {
-      get: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "List/search challenges",
-        description: "Auth optional — passing a token annotates each challenge with the caller's progress status.",
-        security: [{ thBearer: [] }, {}],
-        parameters: [
-          { name: "module", in: "query", schema: { type: "string" } },
-          { name: "class", in: "query", schema: { type: "string", enum: ["light", "standard", "heavy", "bulk"] } },
-          { name: "surface", in: "query", schema: { type: "string", enum: ["api", "db", "ui"] } },
-          { name: "q", in: "query", schema: { type: "string" } },
-          { name: "page", in: "query", schema: { type: "integer", minimum: 1, default: 1 } },
-          { name: "pageSize", in: "query", schema: { type: "integer", minimum: 1, maximum: 100, default: 20 } },
-        ],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { $ref: "#/components/schemas/ChallengeListResponse" } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-        },
-      },
-    },
-    "/api/th/challenges/{id}": {
-      get: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "Get a challenge",
-        security: [{ thBearer: [] }, {}],
-        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { challenge: { $ref: "#/components/schemas/Challenge" } } } } } },
-          "404": { $ref: "#/components/responses/NotFound" },
-        },
-      },
-    },
-    "/api/th/challenges/{id}/related": {
-      get: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "Get challenges related to this one",
-        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { challenges: { type: "array", items: { $ref: "#/components/schemas/Challenge" } } } } } } },
-        },
-      },
-    },
-    "/api/th/challenges/{id}/reset": {
-      post: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "Reset a challenge's scenario data",
-        description: "No auth required — resetting a sandboxed scenario isn't a privileged action.",
-        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
-        responses: { "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { reset: { type: "string" } } } } } } },
-      },
-    },
-    "/api/th/challenges/{id}/start": {
-      post: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "Mark a challenge as started for the caller",
-        security: [{ thBearer: [] }],
-        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
-        responses: { "204": { description: "Started" }, "401": { $ref: "#/components/responses/Unauthorized" } },
-      },
-    },
-    "/api/th/challenges/{id}/clear": {
-      post: {
-        tags: ["AssertQuest / Challenges"],
-        summary: "Mark a challenge as cleared for the caller",
-        security: [{ thBearer: [] }],
-        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
-        responses: { "204": { description: "Cleared" }, "401": { $ref: "#/components/responses/Unauthorized" } },
-      },
-    },
-
-    "/api/th/leaderboard": {
-      get: {
-        tags: ["AssertQuest / Leaderboard"],
-        summary: "Get the leaderboard",
-        parameters: [
-          { name: "module", in: "query", schema: { type: "string" } },
-          { name: "range", in: "query", schema: { type: "string", enum: ["all", "month", "week"], default: "all" } },
-        ],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { entries: { type: "array", items: { $ref: "#/components/schemas/LeaderboardEntry" } } } } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-        },
-      },
-    },
-    "/api/th/profile/{userId}": {
-      get: {
-        tags: ["AssertQuest / Leaderboard"],
-        summary: "Get a user's public profile/progress summary",
-        parameters: [{ name: "userId", in: "path", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { $ref: "#/components/schemas/ProfileSummary" } } } },
-          "404": { $ref: "#/components/responses/NotFound" },
-        },
-      },
-    },
-    "/api/th/activity": {
-      get: {
-        tags: ["AssertQuest / Leaderboard"],
-        summary: "Recent solved-challenge activity feed",
-        parameters: [{ name: "limit", in: "query", schema: { type: "integer" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { entries: { type: "array", items: { $ref: "#/components/schemas/ActivityEntry" } } } } } } },
-        },
-      },
-    },
-    "/api/th/profile/me/reset-progress": {
-      post: {
-        tags: ["AssertQuest / Leaderboard"],
-        summary: "Reset the caller's own progress",
-        description: "Only ever resets the authenticated caller's progress, never another user's.",
-        security: [{ thBearer: [] }],
-        parameters: [{ name: "module", in: "query", schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { reset: { type: "boolean" }, module: { type: "string" } } } } } },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-        },
-      },
-    },
-
-    "/api/th/discussion/{challengeId}": {
-      get: {
-        tags: ["AssertQuest / Discussion"],
-        summary: "List discussion posts for a challenge",
-        parameters: [{ name: "challengeId", in: "path", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { posts: { type: "array", items: { $ref: "#/components/schemas/DiscussionPost" } } } } } } },
-        },
-      },
-      post: {
-        tags: ["AssertQuest / Discussion"],
-        summary: "Post to a challenge's discussion thread",
-        security: [{ thBearer: [] }],
-        parameters: [{ name: "challengeId", in: "path", required: true, schema: { type: "string" } }],
-        requestBody: { required: true, content: { "application/json": { schema: { type: "object", required: ["body"], properties: { body: { type: "string", minLength: 1, maxLength: 4000 } } } } } },
-        responses: {
-          "201": { description: "Created", content: { "application/json": { schema: { type: "object", properties: { post: { $ref: "#/components/schemas/DiscussionPost" } } } } } },
-          "400": { $ref: "#/components/responses/ValidationError" },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-        },
-      },
-    },
-    "/api/th/discussion/posts/{postId}/upvote": {
-      post: {
-        tags: ["AssertQuest / Discussion"],
-        summary: "Upvote a discussion post",
-        security: [{ thBearer: [] }],
-        parameters: [{ name: "postId", in: "path", required: true, schema: { type: "string" } }],
-        responses: {
-          "200": { description: "OK", content: { "application/json": { schema: { type: "object", properties: { post: { $ref: "#/components/schemas/DiscussionPost" } } } } } },
-          "401": { $ref: "#/components/responses/Unauthorized" },
-          "404": { $ref: "#/components/responses/NotFound" },
-        },
-      },
-    },
-    // selfhost-mirror:strip-end
 
     "/api/test/seed": {
       post: {
