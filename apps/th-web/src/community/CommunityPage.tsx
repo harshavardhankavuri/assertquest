@@ -3,8 +3,15 @@ import { Link } from "react-router-dom";
 import type { ActivityEntry } from "@assertquest/shared";
 import { Card, PageHeader } from "@assertquest/shared/ui";
 import { api } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 export function CommunityPage() {
+  useDocumentMeta(
+    "Community",
+    "Discuss automation testing challenges, share approaches, and connect with other AssertQuest learners.",
+    "/community",
+  );
+
   const [activity, setActivity] = useState<ActivityEntry[]>([]);
 
   useEffect(() => {

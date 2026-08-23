@@ -4,6 +4,7 @@ import type { Challenge, ChallengeListItem } from "@assertquest/shared";
 import { Alert, Badge, type BadgeTone, Button, Card } from "@assertquest/shared/ui";
 import { useAuth } from "../auth/AuthContext.js";
 import { api, ApiRequestError, SWIFTCARGO_URL } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 import { HintsList } from "./HintsList.js";
 import { DiscussionThread } from "./DiscussionThread.js";
 
@@ -39,6 +40,14 @@ export function ChallengePage() {
   }, [id, accessToken]);
 
   useEffect(reload, [reload]);
+
+  useDocumentMeta(
+    challenge?.title ?? "Challenge",
+    challenge
+      ? `${challenge.title} — a ${challenge.module} automation testing challenge on AssertQuest, covering ${challenge.surfaceTags.join(", ")}.`
+      : "An automation testing challenge on AssertQuest.",
+    `/challenges/${id ?? ""}`,
+  );
 
   // Mark "in progress" as soon as a logged-in learner opens the page — a
   // best-effort signal, never fails loudly if it doesn't stick.
@@ -126,7 +135,7 @@ export function ChallengePage() {
 
       <p className="mt-6">
         <a href={SWIFTCARGO_URL} target="_blank" rel="noreferrer" className="font-medium text-teal-700 hover:underline">
-          Open the live target
+          Open the live SwiftCargo instance
         </a>
       </p>
 

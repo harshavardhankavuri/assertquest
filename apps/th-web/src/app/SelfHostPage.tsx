@@ -1,4 +1,5 @@
 import { Card, PageHeader } from "@assertquest/shared/ui";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 const ENV_VARS: Array<{ name: string; def: string; purpose: string }> = [
   { name: "DATABASE_URL", def: "—", purpose: "Postgres connection string" },
@@ -19,6 +20,12 @@ const DEMO_ACCOUNTS: Array<{ system: string; role: string; email: string; passwo
 ];
 
 export function SelfHostPage() {
+  useDocumentMeta(
+    "Self-Hosting Guide",
+    "Run AssertQuest on your own machine — one Docker command starts Postgres, the SwiftCargo API, SwiftCargo, and this site, fully seeded and ready in under 5 minutes.",
+    "/self-host",
+  );
+
   return (
     <main className="pb-8">
       <PageHeader

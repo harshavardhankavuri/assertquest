@@ -4,8 +4,15 @@ import { LEADERBOARD_RANGES } from "@assertquest/shared";
 import type { LeaderboardEntry, LeaderboardRange } from "@assertquest/shared";
 import { Badge, Card, FormField, PageHeader, SelectInput, TextInput } from "@assertquest/shared/ui";
 import { api } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 export function LeaderboardPage() {
+  useDocumentMeta(
+    "Leaderboard",
+    "Track cleared automation testing challenges across the AssertQuest community, per module — anonymized by default.",
+    "/leaderboard",
+  );
+
   const [module, setModule] = useState("");
   const [range, setRange] = useState<LeaderboardRange>("all");
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);

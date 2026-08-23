@@ -5,6 +5,7 @@ import type { ChallengeListItem } from "@assertquest/shared";
 import { Alert, Badge, type BadgeTone, Button, Card, FormField, PageHeader, SelectInput, TextInput } from "@assertquest/shared/ui";
 import { useAuth } from "../auth/AuthContext.js";
 import { api, ApiRequestError } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 
 const DIFFICULTY_TONE: Record<string, BadgeTone> = {
   light: "teal",
@@ -23,6 +24,12 @@ const STATUS_TONE: Record<string, BadgeTone> = {
 // view per filter) — state is derived from searchParams, never held separately,
 // so a link to a filtered view reproduces exactly that view for anyone who opens it.
 export function ChallengeBoardPage() {
+  useDocumentMeta(
+    "Challenge Board",
+    "Browse 337+ automation testing challenges across API, DB, and UI surfaces, filterable by module and difficulty tier — practice against a real enterprise app, not a toy fixture.",
+    "/challenges",
+  );
+
   const { accessToken } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [challenges, setChallenges] = useState<ChallengeListItem[]>([]);

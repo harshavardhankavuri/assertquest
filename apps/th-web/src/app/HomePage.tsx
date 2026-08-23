@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import { Link } from "react-router-dom";
 import { Badge, Card, Marquee } from "@assertquest/shared/ui";
 import { SWIFTCARGO_URL } from "../lib/api.js";
+import { useDocumentMeta } from "../lib/useDocumentMeta.js";
 import { useParallax } from "./useParallax.js";
 import {
   ApiIcon,
@@ -142,6 +143,12 @@ function TriangleOutline({ className = "" }: { className?: string }) {
 }
 
 export function HomePage() {
+  useDocumentMeta(
+    "AssertQuest",
+    "AssertQuest is a free, self-hostable platform for practicing automation testing — API, DB, and UI — against SwiftCargo, a real enterprise logistics app. 337+ challenges, difficulty tiers, a leaderboard, and community discussion.",
+    "/",
+  );
+
   // Background decorative layers only, never text/controls — small, varied
   // offsets so foreground and background never desync distractingly. No-ops
   // under prefers-reduced-motion.
