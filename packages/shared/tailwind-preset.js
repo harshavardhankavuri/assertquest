@@ -1,38 +1,44 @@
 /**
- * Ocean Breeze design tokens (AssertQuest PRD §6), shared by every app's Tailwind config.
- * Foam/mist light surfaces, teal primary, coral secondary, navy headings, one dark
- * "porthole" surface for contrast grounding (terminal / self-host card style elements).
- * Typography and motion lean minimal/high-contrast (Linear/Vercel-inspired): one sans
- * family throughout, crisp borders over drop shadows, hover states that shift color
- * rather than translate/bounce.
+ * "Skill Track" design tokens — redesigned taking inspiration from HackerRank's
+ * practice-platform look: light surfaces, a near-black nav bar, and a vivid
+ * signature-green primary accent, organized around icon+label card grids.
+ * Same token *names* as before (foam/mist/navy/teal/coral/porthole) so every
+ * consuming component keeps working:
+ *   foam  = page canvas (near-white)
+ *   mist  = card/surface/border scale
+ *   navy  = foreground/text scale (900 darkest/heading, 500 muted body)
+ *   teal  = primary accent — HackerRank-style green
+ *   coral = secondary/danger accent, warm
+ *   porthole = the one deliberately dark surface — nav bar, code blocks —
+ *              echoing HackerRank's black nav on a white page
  */
 export default {
   theme: {
     extend: {
       colors: {
         foam: {
-          DEFAULT: "#F4FBFA",
-          50: "#FBFEFD",
-          100: "#F4FBFA",
-          200: "#E7F2F1",
+          DEFAULT: "#F7FAF8",
+          50: "#FCFEFD",
+          100: "#F7FAF8",
+          200: "#EBF3EE",
         },
         mist: {
-          DEFAULT: "#E7F2F1",
-          100: "#EFF6F5",
-          200: "#DCEAE9",
-          300: "#C7DBD9",
+          DEFAULT: "#EBF3EE",
+          100: "#F1F7F3",
+          200: "#DEEBE3",
+          300: "#C8DDCE",
         },
         teal: {
-          50: "#EAFBFA",
-          100: "#CFF3F1",
-          200: "#9FE6E2",
-          300: "#66D2CC",
-          400: "#31B8B1",
-          500: "#0E8A8C",
-          600: "#0B6F71",
-          700: "#0A5A5C",
-          800: "#0A484A",
-          900: "#0A3B3C",
+          50: "#EBFBF1",
+          100: "#CFF3DC",
+          200: "#9FE6B8",
+          300: "#66D28C",
+          400: "#31B85F",
+          500: "#12A24A",
+          600: "#0E8A3C",
+          700: "#0B6F30",
+          800: "#0A5828",
+          900: "#0A461F",
         },
         coral: {
           50: "#FFF1EE",
@@ -47,46 +53,46 @@ export default {
           900: "#742B20",
         },
         navy: {
-          50: "#EEF2F7",
-          100: "#D3DEEA",
-          200: "#A7BDD5",
-          300: "#7796B9",
-          400: "#4C6E93",
-          500: "#2E4E71",
-          600: "#1C3856",
-          700: "#12314D",
-          800: "#0E2740",
-          900: "#0B1F33",
+          50: "#EEF2F0",
+          100: "#D3DEDA",
+          200: "#A7BDB3",
+          300: "#77967F",
+          400: "#4C6E51",
+          500: "#334A38",
+          600: "#22331F",
+          700: "#1A2818",
+          800: "#131F13",
+          900: "#0D1710",
         },
         porthole: {
-          DEFAULT: "#0A1826",
-          surface: "#0F2436",
-          border: "#1B3448",
-          glow: "#1A6E70",
+          DEFAULT: "#0A0F0C",
+          surface: "#131914",
+          border: "#232B24",
+          glow: "#12A24A",
         },
       },
       fontFamily: {
         // Kept as an alias (not a second typeface) so existing `font-display` usage
-        // still resolves — the redesign standardizes on one sans family throughout.
-        display: ["Inter", "system-ui", "-apple-system", "sans-serif"],
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        // still resolves — IBM Plex Sans/Mono pairing throughout.
+        display: ["\"IBM Plex Sans\"", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["\"IBM Plex Sans\"", "system-ui", "-apple-system", "sans-serif"],
         mono: ["\"IBM Plex Mono\"", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       borderRadius: {
         pill: "9999px",
       },
       boxShadow: {
-        glass: "0 8px 32px rgba(10, 31, 51, 0.12)",
-        porthole: "0 0 0 1px rgba(26, 110, 112, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4)",
-        lift: "0 20px 40px -12px rgba(10, 31, 51, 0.25)",
+        glass: "0 8px 32px rgba(13, 23, 16, 0.12)",
+        porthole: "0 0 0 1px rgba(18, 162, 74, 0.35), 0 8px 24px rgba(0, 0, 0, 0.45)",
+        lift: "0 20px 40px -12px rgba(13, 23, 16, 0.2)",
       },
       backgroundImage: {
-        "harbor-gradient": "radial-gradient(circle at 15% 0%, rgba(14,138,140,0.28), transparent 42%), linear-gradient(180deg, #0B1F33 0%, #0A1826 100%)",
+        "harbor-gradient": "radial-gradient(circle at 15% 0%, rgba(18,162,74,0.22), transparent 42%), linear-gradient(180deg, #131914 0%, #0A0F0C 100%)",
         "harbor-grid": "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-        "foam-gradient": "linear-gradient(180deg, #F4FBFA 0%, #E7F2F1 100%)",
-        // Soft diagonal split (minrims.com-style product-page hero): a near-white
-        // plane meeting a faint mist wedge, no color saturation, just a shadow line.
-        "diagonal-fade": "linear-gradient(122deg, #FBFEFD 0%, #FBFEFD 42%, #EAF2F1 43%, #F4FBFA 100%)",
+        "foam-gradient": "linear-gradient(180deg, #F7FAF8 0%, #EBF3EE 100%)",
+        // Soft diagonal split: a near-white plane meeting a faint mist wedge, no
+        // color saturation, just a shadow line — same treatment as before.
+        "diagonal-fade": "linear-gradient(122deg, #FCFEFD 0%, #FCFEFD 42%, #EDF5F0 43%, #F7FAF8 100%)",
       },
       keyframes: {
         "fade-in-up": {

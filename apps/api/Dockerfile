@@ -19,4 +19,4 @@ RUN npm run build --workspace @assertquest/api
 WORKDIR /repo/apps/api
 EXPOSE 4000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npx tsx prisma/seed.ts && node dist/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && ([ \"$SEED_DEMO_DATA\" = \"false\" ] || npx tsx prisma/seed.ts) && node dist/server.js"]

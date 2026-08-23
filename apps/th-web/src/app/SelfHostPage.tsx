@@ -16,8 +16,6 @@ const DEMO_ACCOUNTS: Array<{ system: string; role: string; email: string; passwo
   { system: "SwiftCargo", role: "Dispatcher", email: "dispatcher@swiftcargo.test", password: "Password123!" },
   { system: "SwiftCargo", role: "Driver", email: "driver@swiftcargo.test", password: "Password123!" },
   { system: "SwiftCargo", role: "Customer", email: "customer@swiftcargo.test", password: "Password123!" },
-  { system: "AssertQuest", role: "Learner", email: "learner@assertquest.dev", password: "LearnTest123!" },
-  { system: "AssertQuest", role: "Admin", email: "th-admin@assertquest.dev", password: "LearnTest123!" },
 ];
 
 export function SelfHostPage() {

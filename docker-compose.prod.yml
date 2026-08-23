@@ -6,6 +6,7 @@ services:
       DATABASE_URL: postgresql://assertquest:${POSTGRES_PASSWORD}@postgres:5432/assertquest
       ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
       THP_ACCESS_TOKEN_SECRET: ${THP_ACCESS_TOKEN_SECRET}
+      SEED_DEMO_DATA: "false"
 
   web:
     restart: unless-stopped

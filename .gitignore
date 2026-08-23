@@ -12,3 +12,4 @@ apps/api/prisma/generated/
 playwright-report/
 test-results/
 .devdata/
+.claude/
