@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://assertquest.dev/</loc>
+    <loc>https://assertquest.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://assertquest.dev/challenges</loc>
+    <loc>https://assertquest.com/challenges</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://assertquest.dev/leaderboard</loc>
+    <loc>https://assertquest.com/leaderboard</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://assertquest.dev/community</loc>
+    <loc>https://assertquest.com/community</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://assertquest.dev/self-host</loc>
+    <loc>https://assertquest.com/self-host</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

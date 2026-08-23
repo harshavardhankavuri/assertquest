@@ -29,7 +29,7 @@ function setCanonical(path: string) {
     link.setAttribute("rel", "canonical");
     document.head.appendChild(link);
   }
-  link.setAttribute("href", `https://assertquest.dev${path}`);
+  link.setAttribute("href", `https://assertquest.com${path}`);
 }
 
 /** Sets the page title, meta description, canonical URL, and Open Graph tags for the current route. */
@@ -41,7 +41,7 @@ export function useDocumentMeta(title: string, description: string, path: string
     setCanonical(path);
     setPropertyTag("og:title", fullTitle);
     setPropertyTag("og:description", description);
-    setPropertyTag("og:url", `https://assertquest.dev${path}`);
+    setPropertyTag("og:url", `https://assertquest.com${path}`);
     setPropertyTag("og:type", "website");
     setPropertyTag("og:site_name", SITE_NAME);
     setMetaTag("twitter:card", "summary_large_image");

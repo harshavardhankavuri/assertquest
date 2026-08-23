@@ -4,4 +4,4 @@ Disallow: /login
 Disallow: /register
 Disallow: /profile/
 
-Sitemap: https://assertquest.dev/sitemap.xml
+Sitemap: https://assertquest.com/sitemap.xml
